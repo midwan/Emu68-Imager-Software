@@ -24,8 +24,8 @@ $WPF_DP_Button_AddNewAmigaPartition.add_click({
     
     Set-AmigaDiskSizeOverhangPixels -AmigaDisk $AmigaDiskName
     
-    $CurrentNumberofPartitionsonAmigaDisk = ($Script:GUICurrentStatus.AmigaPartitionsandBoundaries | Where-Object { $AmigaDiskName-match $_.PartitionName}).Count
-
+    $CurrentNumberofPartitionsonAmigaDisk = (@($Script:GUICurrentStatus.AmigaPartitionsandBoundaries | Where-Object { $_.PartitionName -match $AmigaDiskName })).count
+    
     if ($CurrentNumberofPartitionsonAmigaDisk -eq $Script:Settings.AmigaPartitionsperDiskMaximum){
         $null = Show-WarningorError -Msg_Header "Exceeded maximum number of partitions" -Msg_Body "You have $($Script:Settings.AmigaPartitionsperDiskMaximum) partitions on this disk! No more partitions can be added." -BoxTypeError -ButtonType_OK
         return
@@ -55,11 +55,11 @@ $WPF_DP_Button_AddNewAmigaPartition.add_click({
         
     if ($EmptyAmigaDisk -eq $true){
         $AvailableFreeSpace = (Get-Variable -name $AmigaDiskName).value.DiskSizeBytes
-        #Write-debug "Available free space is: $AvailableFreeSpace"
+        Write-debug "Empty Disk - Available free space is: $AvailableFreeSpace"
     }
     else {
         $AvailableFreeSpace = (Get-AmigaDiskFreeSpace -Disk (Get-Variable -Name $AmigaDiskName).Value -Position $AddType -PartitionNameNextto $PartitionNexttotouse)
-        # Write-debug "Available free space is: $AvailableFreeSpace "
+        Write-debug "Available free space is: $AvailableFreeSpace "
     }
     $AvailableFreeSpace = (Get-AmigaNearestSizeBytes -RoundDown $AvailableFreeSpace)
     #Write-debug "Available free space rounded down is: $AvailableFreeSpace"
