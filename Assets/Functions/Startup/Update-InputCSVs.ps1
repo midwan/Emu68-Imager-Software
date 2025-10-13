@@ -8,9 +8,7 @@ function Update-InputCSV {
     # $GidValue = 322661130
     # $ExistingCSV = '.\InputFiles\ListofPackagestoInstall.CSV'
     # $PathtoGoogleDrive_param = 'https://docs.google.com/spreadsheets/d/12UcKD7INDH9y7Tw_w1q3ebQOUS9JtARIs8Z9JWfLUWg/'
-    
-    $PathtoGoogleDrive_param = 'https://docs.google.com/spreadsheets/d/12UcKD7INDH9y7Tw_w1q3ebQOUS9JtARIcxcxcxcxcs8Z9JWfLUWg/'
-    
+   
     $ExistingCSV_Name = (split-path -leaf -Path $ExistingCSV)
 
     Write-InformationMessage "Checking for updates to $ExistingCSV_Name"
