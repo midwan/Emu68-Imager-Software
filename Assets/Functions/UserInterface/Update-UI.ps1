@@ -487,10 +487,14 @@ function Update-UI {
                        $WorkbenchPartitionSize = Get-ConvertedSize -Size $WorkbenchPartition.PartitionSizeBytes -ScaleFrom 'B' -AutoScale -NumberofDecimalPlaces 2
                        $WPF_DP_SimpleMode_WorkbenchSize_Value.Text = "$($WorkbenchPartitionSize.size) $($WorkbenchPartitionSize.scale)"
 
-                       $WorkPartition = (Get-Variable -Name "$($ID76Partition.PartitionName)_AmigaDisk_*" | Where-Object {$_.Value.VolumeName -eq "Work"}).value
-                       $WorkPartitionSize = Get-ConvertedSize -Size $WorkPartition.PartitionSizeBytes -ScaleFrom 'B' -AutoScale -NumberofDecimalPlaces 2
-                       $WPF_DP_SimpleMode_WorkSize_Value.Text = "$($WorkPartitionSize.size) $($WorkPartitionSize.scale)"
-                                            
+                       if ((Get-Variable -Name "$($ID76Partition.PartitionName)_AmigaDisk_*").count -ne 2){
+                           $WPF_DP_SimpleMode_WorkSize_Value.Text = "N/A (Multiple Work Partitions)"
+                       }
+                       else {
+                           $WorkPartition = (Get-Variable -Name "$($ID76Partition.PartitionName)_AmigaDisk_*" | Where-Object {$_.Value.VolumeName -eq "Work"}).value
+                           $WorkPartitionSize = Get-ConvertedSize -Size $WorkPartition.PartitionSizeBytes -ScaleFrom 'B' -AutoScale -NumberofDecimalPlaces 2
+                           $WPF_DP_SimpleMode_WorkSize_Value.Text = "$($WorkPartitionSize.size) $($WorkPartitionSize.scale)"
+                       }
                        $AmigaDiskName =  (Get-Variable -Name "*_AmigaDisk").Name
                        $AmigaDiskSizeBytes = [int64](Get-Variable -name  $AmigaDiskName).value.DiskSizeBytes
                        $AmigaEndofPartitionsBytes = [int64](Get-GUIPartitionStartEnd -PartitionType 'Amiga' -AmigaDiskName $AmigaDiskName).EndingPositionBytes

@@ -51,11 +51,11 @@ function Get-SettingsDataforSave {
     }
   
     $Output += "MBR Partition Details:"
-    $Output += "MBRPartitionHeader;Type;ImportedPartitionMethod;ImportedPartition;ImportedFilesSpaceBytes;VolumeName;StartingPositionBytes;PartitionSizeBytes;PartitionType;DefaultGPTMBRPartition;PartitionSubType;PartitionTypeGPTMBRorAmiga;ImportedPartitionPath;ImportedGPTMBRPartitionNumber;Name;ImportedFilesPath "
+    $Output += "MBRPartitionHeader;Type;PartitionName;ImportedPartitionMethod;ImportedPartition;ImportedFilesSpaceBytes;VolumeName;StartingPositionBytes;PartitionSizeBytes;PartitionType;DefaultGPTMBRPartition;PartitionSubType;PartitionTypeGPTMBRorAmiga;ImportedPartitionPath;ImportedGPTMBRPartitionNumber;Name;ImportedFilesPath "
     $MBRPartitions = $Script:GUICurrentStatus.GPTMBRPartitionsandBoundaries
     if ($MBRPartitions){
         $MBRPartitions | ForEach-Object {
-           $Output += "MBRPartitionDetails;$($_.Partition.ImportedPartitionMethod);$($_.Partition.ImportedPartition);$($_.Partition.ImportedFilesSpaceBytes);$($_.Partition.VolumeName);$($_.Partition.StartingPositionBytes);$($_.Partition.PartitionSizeBytes);$($_.Partition.PartitionType);$($_.Partition.DefaultGPTMBRPartition);$($_.Partition.PartitionSubType);$($_.Partition.PartitionTypeGPTMBRorAmiga);$($_.Partition.ImportedPartitionPath);$($_.Partition.ImportedGPTMBRPartitionNumber);$($_.Partition.Name);$($_.Partition.ImportedFilesPath)"           
+           $Output += "MBRPartitionDetails;$($_.Partition.PartitionName);$($_.Partition.ImportedPartitionMethod);$($_.Partition.ImportedPartition);$($_.Partition.ImportedFilesSpaceBytes);$($_.Partition.VolumeName);$($_.Partition.StartingPositionBytes);$($_.Partition.PartitionSizeBytes);$($_.Partition.PartitionType);$($_.Partition.DefaultGPTMBRPartition);$($_.Partition.PartitionSubType);$($_.Partition.PartitionTypeGPTMBRorAmiga);$($_.Partition.ImportedPartitionPath);$($_.Partition.ImportedGPTMBRPartitionNumber);$($_.Partition.Name);$($_.Partition.ImportedFilesPath)"           
         }
     }
     else {

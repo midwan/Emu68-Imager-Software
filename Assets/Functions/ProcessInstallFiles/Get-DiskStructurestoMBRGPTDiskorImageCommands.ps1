@@ -9,6 +9,9 @@ function Get-DiskStructurestoMBRGPTDiskorImageCommands {
 
     if ($Script:GUIActions.DiskTypeSelected -eq 'PiStorm - MBR'){
         $MBRPartitionstoAddtoDisk = @($Script:GUICurrentStatus.GPTMBRPartitionsandBoundaries)
+        if (-not ($Script:GUICurrentStatus.AmigaPartitionsandBoundaries)){
+            $Script:GUICurrentStatus.AmigaPartitionsandBoundaries = @(Get-AllGUIPartitionBoundaries -Amiga)
+        }      
         $RDBPartitionstoAddtoDisk = @($Script:GUICurrentStatus.AmigaPartitionsandBoundaries)
     }
     elseif ($Script:GUIActions.DiskTypeSelected -eq 'PiStorm - GPT'){

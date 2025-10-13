@@ -18,6 +18,7 @@ $WPF_DP_MediaSelect_DropDown.add_selectionChanged({
                 }
             }
         }
+        update-ui -DiskPartitionWindow
     }
 })
 
