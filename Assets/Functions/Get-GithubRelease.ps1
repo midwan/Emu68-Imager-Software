@@ -28,10 +28,28 @@ function Get-GithubRelease {
 
     $client = [System.Net.Http.HttpClient]::new()
     $client.DefaultRequestHeaders.UserAgent.ParseAdd("PowerShellHttpClient")
-    $GithubDetails = $client.GetStringAsync($GithubRelease).Result | ConvertFrom-Json
+    $GithubDetails = $null
+    
+    $Counter = 0
+    $IsSuccess = $null
+           
+    do {
+        $GithubDetails = $client.GetStringAsync($GithubRelease).Result | ConvertFrom-Json
+        if ($GithubDetails){
+            $IsSuccess = $true  
+        }
+        else {
+            Write-InformationMessage -message 'Download failed! Retrying in 3 seconds'
+            Start-Sleep -Seconds 3
+            $IsSuccess = $false
+        }
+        $Counter ++              
+    } until (
+        $IsSuccess -eq $true -or $Counter -eq 3 
+    )
 
     if ( -not $GithubDetails){
-        Write-ErrorMessage 'Error accessing Github! Qutting Progream'
+        Write-ErrorMessage 'Error accessing Github! Quitting Progream'
         exit
     }  
     if ($OnlyReleaseVersions -eq 'TRUE'){

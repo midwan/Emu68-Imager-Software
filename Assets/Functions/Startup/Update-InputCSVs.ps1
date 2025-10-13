@@ -8,7 +8,9 @@ function Update-InputCSV {
     # $GidValue = 322661130
     # $ExistingCSV = '.\InputFiles\ListofPackagestoInstall.CSV'
     # $PathtoGoogleDrive_param = 'https://docs.google.com/spreadsheets/d/12UcKD7INDH9y7Tw_w1q3ebQOUS9JtARIs8Z9JWfLUWg/'
-
+    
+    $PathtoGoogleDrive_param = 'https://docs.google.com/spreadsheets/d/12UcKD7INDH9y7Tw_w1q3ebQOUS9JtARIcxcxcxcxcs8Z9JWfLUWg/'
+    
     $ExistingCSV_Name = (split-path -leaf -Path $ExistingCSV)
 
     Write-InformationMessage "Checking for updates to $ExistingCSV_Name"
@@ -22,11 +24,34 @@ function Update-InputCSV {
     }
 
     $PathtoGoogleDrivetouse = "$($PathtoGoogleDrive_param)export?format=tsv&gid=$GidValue"
-   # $ImportedFile = (((Get-DownloadFile -DownloadURL $PathtoGoogleDrivetouse -NumberofAttempts 3).Content) -split "`r`n")
+    $ImportedFile = $null
+    
+    # $ImportedFile = (((Get-DownloadFile -DownloadURL $PathtoGoogleDrivetouse -NumberofAttempts 3).Content) -split "`r`n")
 
     $client = [System.Net.Http.HttpClient]::new()
     $client.DefaultRequestHeaders.UserAgent.ParseAdd("PowerShellHttpClient")
-    $ImportedFile = $client.GetStringAsync($PathtoGoogleDrivetouse).Result -split "`r`n"
+    
+    $Counter = 0
+    $IsSuccess = $null
+    
+    do {
+        $ImportedFile = $client.GetStringAsync($PathtoGoogleDrivetouse).Result -split "`r`n"
+        if ($ImportedFile){
+            $IsSuccess = $true  
+        }
+        else {
+            Write-InformationMessage -message 'Download failed! Retrying in 3 seconds'
+            Start-Sleep -Seconds 3
+            $IsSuccess = $false
+        }
+        $Counter ++              
+    } until (
+        $IsSuccess -eq $true -or $Counter -eq 3 
+    )
+    
+    # if ($IsSuccess -eq $false){
+    #     Write-InformationMessage -Message "Error downloading $ExistingCSV_Name! Using local file! Note, internet connectivity is needed to run the tool!" 
+    # }
 
     If ($ImportedFile){
         $TotalLines = $ImportedFile.Count
