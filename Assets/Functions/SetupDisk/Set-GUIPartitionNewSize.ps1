@@ -15,7 +15,8 @@ function Set-GUIPartitionNewSize {
     # $ActiontoPerform = 'MBR_ResizeFromRight'
     # $PartitionType = 'MBR'
    
-     #Write-debug "Function Set-GUIPartitionNewSize Partition:$PartitionName PartitionType:$PartitionType SizeBytes:$SizeBytes SizePixelstoChange:$SizePixelstoChange ActiontoPerform:$ActiontoPerform"
+    #Write-debug "Function Set-GUIPartitionNewSize Partition:$Partition PartitionType:$PartitionType SizeBytes:$SizeBytes SizePixelstoChange:$SizePixelstoChange ActiontoPerform:$ActiontoPerform"
+
     if (($ResizePixels) -and ($SizePixelstoChange -eq 0)){
         # Write-debug 'No change based on Pixels' 
         return $false
@@ -55,7 +56,7 @@ function Set-GUIPartitionNewSize {
             $MinimumSizeBytes = $SDCardMinimumsandMaximums.MBRMinimum
         }
         elseif ($Partition.PartitionSubType -eq 'ID76'){
-            $AmigaPartitionstoCheck = Get-AllGUIPartitionBoundaries -GPTMBR -Amiga | Where-Object {$_.PartitionName -match $Partition.PartitionName -and $_.PartitionType -eq 'Amiga'}
+            $AmigaPartitionstoCheck = @(Get-AllGUIPartitionBoundaries -GPTMBR -Amiga | Where-Object {$_.PartitionName -match $Partition.PartitionName -and $_.PartitionType -eq 'Amiga'})
             $AmigatoGPTMBROverhead = (Get-Variable -name ($Partition.PartitionName+'_AmigaDisk')).value.DiskSizeAmigatoGPTMBROverhead
             $TotalSpaceofAmigaPartitions = $AmigatoGPTMBROverhead
             for ($i = 0; $i -lt $AmigaPartitionstoCheck.Count; $i++) {
@@ -63,10 +64,12 @@ function Set-GUIPartitionNewSize {
             }
             if ($TotalSpaceofAmigaPartitions -gt $SDCardMinimumsandMaximums.ID76Minimum){
                 $MinimumSizeBytes = $TotalSpaceofAmigaPartitions 
+
             }
             else{
                 $MinimumSizeBytes = $SDCardMinimumsandMaximums.ID76Minimum
             }
+           # Write-Debug "Minimum size of MBR partition (bytes) is: $MinimumSizeBytes"
         }
     }
     elseif ($PartitionType -eq 'Amiga'){

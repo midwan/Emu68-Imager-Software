@@ -1,9 +1,0 @@
-OldValue;NewValue
-;BOARDTYPE=uaegfx
-;(SETTINGSFILE=SYS:DEVS/Picasso96Settings)
-;(BORDERBLANK=Yes)
-;(BorderBlank=System)
-;(BIGSPRITE=Yes)
-;SOFTSPRITE=Yes
-;IGNOREMASK=Yes
-

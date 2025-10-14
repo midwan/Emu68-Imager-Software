@@ -20,6 +20,12 @@ function Get-GithubRelease {
     # $LocationforDownload =  "$($Script:Settings.TempFolder)\StartupFiles\HSTImager.zip" 
     # $Sort_Flag= ''
 
+    # $GithubRelease = "https://api.github.com/repos/rondoval/emu68-genet-driver/releases" 
+    # $Tag_Name = "1.2.437" 
+    # $Name = "_console_windows_x64.zip" 
+    # $LocationforDownload =  "$($Script:Settings.TempFolder)\StartupFiles\HSTImager.zip" 
+    # $Sort_Flag= ''
+
     if (-not(Test-Path (split-path $LocationforDownload -parent))){
         $null = New-Item -Path (split-path $LocationforDownload -parent) -Force -ItemType Directory
     }
@@ -66,7 +72,7 @@ function Get-GithubRelease {
             $GithubDetails_ForDownload = $GithubDetails | Where-Object { $_.tag_name -eq $Tag_Name } | Select-Object -ExpandProperty assets | Where-Object { $_.name -match $Name }
         }
     }
-    $GithubDownloadURL =$GithubDetails_ForDownload[0].browser_download_url 
+    $GithubDownloadURL = $GithubDetails_ForDownload[0].browser_download_url 
     Write-InformationMessage -Message ('Downloading Files for URL: '+$GithubDownloadURL)
     # Write-debug "GithubDownload: $GithubDownloadURL LocationforDownload: $LocationforDownload"
     if ((Get-DownloadFile -DownloadURL $GithubDownloadURL -OutputLocation $LocationforDownload -NumberofAttempts 3) -eq $true){

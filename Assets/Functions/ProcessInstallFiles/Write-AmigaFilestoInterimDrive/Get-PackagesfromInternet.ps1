@@ -18,7 +18,7 @@ function Get-PackagesfromInternet {
         Write-StartSubTaskMessage 
         if ($Line.Source -eq "Github"){
             $GithubDownloadLocation = $Settings.WebPackagesDownloadLocation
-            if ($Line.GithubReleaseType -eq "Release"){
+            if (($Line.GithubReleaseType -eq "Release") -or ($Line.GithubReleaseType -eq "Release-NoArchive")){
                 $GithubOnlyReleaseVersions = 'TRUE'
             }
             else{

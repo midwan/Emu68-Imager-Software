@@ -21,7 +21,7 @@ function Get-GUIPartitionStartEnd {
     }
     elseif ($PartitionType -eq 'Amiga'){
         $ID76Partition = $AmigaDiskName.Substring(0,$AmigaDiskName.IndexOf('_AmigaDisk'))        
-        $ListofPartitions  = @(Get-AllGUIPartitions -PartitionType $PartitionType | Where-Object {$_.Name -Match $ID76Partition } | Sort-Object {[int]$_.value.StartingPositionBytes})
+        $ListofPartitions  = @(Get-AllGUIPartitions -PartitionType $PartitionType | Where-Object {$_.Name -Match $ID76Partition } | Sort-Object {[int64]$_.value.StartingPositionBytes})
     }
      
     if (-not $ListofPartitions){ # No Partitions at all

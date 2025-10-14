@@ -69,11 +69,14 @@ function Expand-Packages {
                 Write-ErrorMessage "Error extracting $($_.SourceLocation)! Exiting"
             }
         }
-        elseif ($_.FileExtension -eq '.lha' -or $FileExtension -eq '.zip'){
+        elseif (($_.FileExtension -eq '.lha') -or ($_.FileExtension -eq '.zip')){
             if (-not (Expand-Archive -InputFile $_.SourceLocation -OutputDirectory "$($_.FoldertoExtract)\")){
                 Write-ErrorMessage "Error extracting $($_.SourceLocation)! Exiting"
                 exit
             }
+        }
+        else {
+#            Write-debug "File $($_.SourceLocation) File extension: $($_.FileExtension)"
         }
     }
     

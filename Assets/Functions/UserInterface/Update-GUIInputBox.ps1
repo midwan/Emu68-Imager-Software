@@ -94,7 +94,7 @@ function Update-GUIInputBox {
                   if (-not ($Script:GUICurrentStatus.SelectedAmigaPartition)){
                     return
                 }
-                $ResizeCheck = (Set-GUIPartitionNewSize -ResizeBytes -Partitio $Script:GUICurrentStatus.SelectedAmigaPartition -SizeBytes (Get-ConvertedSize -Size $InputBox.Text -ScaleFrom $DropDownBox.SelectedItem -Scaleto 'B').size -PartitionType 'Amiga' -ActiontoPerform 'Amiga_ResizeFromRight')
+                $ResizeCheck = (Set-GUIPartitionNewSize -ResizeBytes -Partition $Script:GUICurrentStatus.SelectedAmigaPartition -SizeBytes (Get-ConvertedSize -Size $InputBox.Text -ScaleFrom $DropDownBox.SelectedItem -Scaleto 'B').size -PartitionType 'Amiga' -ActiontoPerform 'Amiga_ResizeFromRight')
             }
             if ($ResizeCheck -eq $false){
                 # Write-debug "Invalid Size"

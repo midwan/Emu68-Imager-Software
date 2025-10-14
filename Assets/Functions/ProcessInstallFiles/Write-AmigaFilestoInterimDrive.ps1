@@ -399,11 +399,17 @@ function Write-AmigaFilestoInterimDrive {
           }  
      
           elseif ($_.Source -eq 'Github' -or $_.Source -eq 'Web' -or $_.Source -eq 'Web - SearchforPackageAminet' -or $_.Source -eq 'Web - SearchforPackageWHDLoadWrapper'){
-              $ArchiveNameExtractedFilePath = Split-Path -Path $_.FileDownloadName -Leaf
-              if (($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".lha") -or ($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".lzx") -or ($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".zip")){
-                  $ArchiveNameExtractedFilePath = $ArchiveNameExtractedFilePath.Substring(0,$ArchiveNameExtractedFilePath.Length-4)
+              if ($_.GithubReleaseType -eq "Release-NoArchive") {
+                  $ArchiveNameExtractedFilePath = $null             
+                  $SourcePath = "$($Script:Settings.WebPackagesDownloadLocation)\$($_.FilestoInstall)"     
               }
-              $SourcePath = "$($Script:Settings.WebPackagesDownloadLocation)\$ArchiveNameExtractedFilePath\$($_.FilestoInstall)"   
+              else {
+                  $ArchiveNameExtractedFilePath = Split-Path -Path $_.FileDownloadName -Leaf
+                  if (($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".lha") -or ($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".lzx") -or ($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".zip")){
+                      $ArchiveNameExtractedFilePath = $ArchiveNameExtractedFilePath.Substring(0,$ArchiveNameExtractedFilePath.Length-4)
+                  }
+                  $SourcePath = "$($Script:Settings.WebPackagesDownloadLocation)\$ArchiveNameExtractedFilePath\$($_.FilestoInstall)"   
+              }                            
               $DestinationFolder = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)"
               $DestinationFolder = $DestinationFolder.TrimEnd('\')   
               if (-not (test-path $DestinationFolder -PathType Container)){
