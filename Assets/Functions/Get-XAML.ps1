@@ -13,9 +13,9 @@ function Get-XAML {
 
     [xml]$ParsedXML = (get-content $XMLFile) -replace 'mc:Ignorable="d"','' -replace "x:N",'N' -replace '^<Win.*', '<Window'
    
-    if (($Script:GUICurrentStatus.OperationMode -eq "Simple") -and ($ParsedXML.Window.Title -eq "Emu68 Imager")){
-        $ParsedXML.Window.'Window.Background'.ImageBrush.ImageSource = [System.IO.Path]::GetFullPath(".\Assets\WPF\Backgrounds\Background.png") -replace ("\\","/")
-    }
+    # if (($Script:GUICurrentStatus.OperationMode -eq "Simple") -and ($ParsedXML.Window.Title -eq "Emu68 Imager")){
+    #     $ParsedXML.Window.'Window.Background'.ImageBrush.ImageSource = [System.IO.Path]::GetFullPath(".\Assets\WPF\Backgrounds\Background.png") -replace ("\\","/")
+    # }
 
     $reader = (New-Object System.Xml.XmlNodeReader $ParsedXML)
 

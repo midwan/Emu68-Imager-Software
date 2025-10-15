@@ -39,7 +39,7 @@ Get-ChildItem -Path '.\Assets\Functions\' -Recurse | Where-Object { $_.PSIsConta
 
 #$DebugPreference = 'SilentlyContinue'
 
-$DebugPreference = 'Continue'
+#$DebugPreference = 'Continue'
 
 if (($env:TERM_PROGRAM)  -or ($psISE)) {
     $Script:GUICurrentStatus.RunMode = "VisualCodeorISE"
