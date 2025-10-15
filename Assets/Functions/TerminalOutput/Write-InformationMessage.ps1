@@ -14,6 +14,6 @@ function Write-InformationMessage {
     
     Write-Host " `t $Message" -ForegroundColor Yellow
     if (-not $NoLog){
-        $Message | Out-File $LogLocationtoUse -Append
+        $Message | Out-File $LogLocationtoUse -Append -Encoding utf8
     }
 }

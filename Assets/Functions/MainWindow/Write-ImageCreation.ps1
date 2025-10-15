@@ -232,6 +232,6 @@ function Write-ImageCreation {
 
      Write-InformationMessage -message "The full path to the file is: $([System.IO.Path]::GetFullPath($Script:Settings.LogLocation))"
 
-    "HST imager commands ran:" |Out-File $Script:Settings.LogLocation -Append
-     $FullListofCommands| Out-File $Script:Settings.LogLocation -Append
+    "HST imager commands ran:" |Out-File $Script:Settings.LogLocation -Append -Encoding utf8
+     $FullListofCommands.Command | Out-File $Script:Settings.LogLocation -Append -Encoding utf8 -Width 2000
 }

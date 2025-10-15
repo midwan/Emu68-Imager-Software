@@ -4,7 +4,6 @@ function Write-Emu68ImagerLog {
         [Switch]$Continue
     )
 
-    
     If ($Start){
         $LogNameDateTime = (Get-Date -Format yyyyMMddHHmmss).tostring()
         $DateandTime = (Get-Date -Format HH:mm:ss)
@@ -100,6 +99,6 @@ Activity Commences:
         
         $streamWriter.Close()
 
-        #$LogEntry| Out-File -FilePath $Script:Settings.LogLocation -Append
+        #$LogEntry| Out-File -FilePath $Script:Settings.LogLocation -Append -Encoding utf8
     }
 }
