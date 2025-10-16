@@ -50,7 +50,7 @@ function Set-PartitionGridActions {
                 $Script:GUICurrentStatus.PartitionHoveredOver = (Get-HighlightedGUIPartition -MouseX $Script:GUICurrentStatus.CurrentMousePositionX -MouseY $Script:GUICurrentStatus.CurrentMousePositionY)
           #  }
           #  Write-Host "  Get-HighlightedGUIPartition: $($measureResult_GetHighlight.TotalMilliseconds)ms"
-            
+            #Write-Debug "Partition Hovered over is: $($Script:GUICurrentStatus.PartitionHoveredOver)"
             if (-not ($Script:GUICurrentStatus.PartitionHoveredOver)){
                 $WPF_Partition.Cursor = ''   
             }
@@ -146,7 +146,7 @@ function Set-PartitionGridActions {
             $MouseCoordinates = Get-MouseCoordinatesRelativetoWindow
             $Script:GUICurrentStatus.MousePositionXatTimeofPress = $MouseCoordinates.MousePositionRelativetoWindowX
             $Script:GUICurrentStatus.MousePositionYatTimeofPress = $MouseCoordinates.MousePositionRelativetoWindowY
-            # Write-debug "X (At time of Button press):$($Script:GUICurrentStatus.MousePositionXatTimeofPress) Y (At time of Button press):$($Script:GUICurrentStatus.MousePositionYatTimeofPress)"                                
+            #Write-debug "X (At time of Button press):$($Script:GUICurrentStatus.MousePositionXatTimeofPress) Y (At time of Button press):$($Script:GUICurrentStatus.MousePositionYatTimeofPress)"                                
             if ($Script:GUICurrentStatus.PartitionHoveredOver){
                 if ($Script:GUICurrentStatus.PartitionHoveredOver.PartitionType -eq 'MBR'){
 
@@ -157,13 +157,13 @@ function Set-PartitionGridActions {
                         else {
                             $Script:GUICurrentStatus.ActionToPerform = 'MBR_Move' 
                         }
-                        # Write-debug $Script:GUICurrentStatus.ActionToPerform                      
+                        #Write-debug $Script:GUICurrentStatus.ActionToPerform                      
                     } 
                     if ($Script:GUICurrentStatus.PartitionHoveredOver.PartitionName -ne $Script:GUICurrentStatus.SelectedGPTMBRPartition.PartitionName){
                         $Script:GUICurrentStatus.SelectedGPTMBRPartition = $Script:GUICurrentStatus.PartitionHoveredOver.Partition
                         $Script:GUICurrentStatus.ActionToPerform = $null
                         $Script:GUICurrentStatus.SelectedAmigaPartition = $null
-                        # Write-debug "Selected MBR Partition:$($Script:GUICurrentStatus.SelectedGPTMBRPartition)"                       
+                        #Write-debug "Selected MBR Partition:$($Script:GUICurrentStatus.SelectedGPTMBRPartition.PartitionName)"                       
                     }
                 }
                 elseif ($Script:GUICurrentStatus.PartitionHoveredOver.PartitionType -eq 'Amiga'){
@@ -174,10 +174,10 @@ function Set-PartitionGridActions {
                         else {
                             $Script:GUICurrentStatus.ActionToPerform = 'Amiga_Move' 
                         }
-                        # Write-debug $Script:GUICurrentStatus.ActionToPerform                      
+                         #Write-debug $Script:GUICurrentStatus.ActionToPerform                      
                     } 
                     $Script:GUICurrentStatus.SelectedAmigaPartition = $Script:GUICurrentStatus.PartitionHoveredOver.Partition
-                    # Write-debug "Selected Amiga Partition:$($Script:GUICurrentStatus.SelectedAmigaPartition)"                       
+                     #Write-debug "Selected Amiga Partition:$($Script:GUICurrentStatus.SelectedAmigaPartition.PartitionName)"                       
                 }
             }
             else {
