@@ -57,6 +57,10 @@ $WPF_Window_Button_SetupDisk.Add_Click({
             $WPF_Window_Main.AddChild($WPF_Partition)
         }
         
+            $WPF_DP_DiskGrid_GPTMBR.UpdateLayout()
+        $Script:GUICurrentStatus.AmigaPartitionsandBoundaries = @(Get-AllGUIPartitionBoundaries -Amiga) 
+        $Script:GUICurrentStatus.GPTMBRPartitionsandBoundaries = @(Get-AllGUIPartitionBoundaries -GPTMBR)
+
         update-ui -MainWindowButtons -DiskPartitionWindow -FreeSpaceAlert -HighlightSelectedPartitions
 
 })
