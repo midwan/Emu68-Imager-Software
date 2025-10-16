@@ -5,6 +5,7 @@ arm_boost=1
 [all]
 disable_splash=1
 arm_64bit=1
+bootcode_delay=1
 
 # Limit total memory size to 2GB for now. Necessary for CM4/Pi4
 total_mem=2048
@@ -55,20 +56,26 @@ gpu_mem=32
 gpio=0-27=ip
 gpio=0-27=pu
 
-##If GPIO 24 is low (PS32-lite, Pulldown on PCB)
-[gpio24=0]
 ##If keyboard reset is kept hold, then put pistorm32 into stealth mode, boots stock A1200
 [gpio4=0]
 kernel=Emu68-pistorm32lite
 initramfs ps32lite-stealth-firmware.gz
-##Normal Boot
-[gpio4=1]
-bootcode_delay=1
+
+[all]
+##PiStorm32lite Boot
+[gpio24=0]
 kernel=Emu68-pistorm32lite
 [ROMPATH]
 
-##If GPIO 24 is high (Pistorm, Pullup on PCB)
+[all]
+# PiStorm16 Boot
 [gpio24=1]
+kernel=kernel/Emu68-pistorm16
+[ROMPATH]
+
+[all]
+## PiStorm Boot 
+[gpio17=0]
 kernel=Emu68-pistorm
 [ROMPATH]
 
