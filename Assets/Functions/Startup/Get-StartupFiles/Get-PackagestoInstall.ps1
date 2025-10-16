@@ -26,6 +26,7 @@ function Get-PackagestoInstall {
                     }
                     else {                      
                         $HashtoCheck = (Get-FileHash -Path $PathtoInstallFile -Algorithm MD5).hash
+                      #  Write-Debug "Hash recorded: $($_.FileHash) Hash to check: $HashtoCheck "
                         if ($HashtoCheck -ne $_.FileHash){
                             $PackagestoUpdate += $Package.PackageName
                             Write-InformationMessage -message "$($FiletoCheck.PackageName) is out of date! Package will be reinstalled."
@@ -43,3 +44,8 @@ function Get-PackagestoInstall {
 
     return $PackagestoUpdate
 }
+
+# Get-FileHash -Path "C:\Users\Matt\Downloads\hst-imager_v1.3.484-318b263_console_windows_x64.zip" -Algorithm MD5
+# Get-FileHash -Path "C:\Users\Matt\Downloads\hst-amiga_v0.5.202-22a72f7_console_windows_x64.zip" -Algorithm MD5
+# Get-FileHash -path "C:\Users\Matt\Downloads\hst-imager_v1.3.484-318b263_console_windows_x64\hst.imager.exe" -Algorithm MD5
+# Get-FileHash -path "C:\Users\Matt\Downloads\hst-amiga_v0.5.202-22a72f7_console_windows_x64\hst.amiga.exe" -Algorithm MD5
