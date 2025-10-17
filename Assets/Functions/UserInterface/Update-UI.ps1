@@ -441,8 +441,6 @@ function Update-UI {
                        $WPF_DP_Button_AddNewGPTMBRPartition.Visibility = "Hidden"
                        $WPF_DP_AddNewGPTMBRPartition_DropDown.Visibility = "Hidden"
                        $WPF_DP_AddNewGPTMBRPartition_Type_DropDown.Visibility = "Hidden"
-                       $WPF_DP_Button_ImportMBRPartition.Visibility = "Hidden"
-                       $WPF_DP_ImportMBRPartition_DropDown.Visibility = "Hidden"
                        $WPF_DP_SelectedMBRPartition_Label.Visibility = "Hidden"
                        $WPF_DP_SelectedMBRPartition_Value.Visibility = "Hidden"
                        $WPF_DP_MBRPartitionSelect_Label.Visibility = "Hidden"

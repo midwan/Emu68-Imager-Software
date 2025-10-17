@@ -192,15 +192,9 @@ function Write-ImageCreation {
 
         Write-InformationMessage -Message "This step could take a LONG time depending on the size of the partition!"
 
-        Import-MBRPartitiontoDisk
-
         Write-TaskCompleteMessage 
      
      }
-
-   #   if ($PartitionstoImport_Derived -eq $true){
-   #      Import-RDBPartitiontoDisk     
-   #   }
      
      if ($OutputTypetoUse -eq 'VHDImage'){
         $IsMounted = (Get-DiskImage -ImagePath $Script:GUIActions.OutputPath -ErrorAction Ignore).Attached
