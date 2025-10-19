@@ -69,7 +69,7 @@ function Write-ImageCreation {
 
      if ($OutputTypetoUse -eq "VHDImage"){
         $Message = "Running HST Imager to create image"
-        Start-HSTCommands -HSTScript $Script:GUICurrentStatus.HSTCommandstoProcess.NewDiskorImage -Section "NewDiskorImage" -ActivityDescription $Message -ReportTime -TotalSteps 7 -ReportActualSteps       
+        Start-HSTCommands -HSTScript $Script:GUICurrentStatus.HSTCommandstoProcess.NewDiskorImage -Section "NewDiskorImage" -ActivityDescription $Message -ReportTime -TotalSteps 7       
      }
              
      $Script:Settings.CurrentSubTaskNumber ++
@@ -88,7 +88,7 @@ function Write-ImageCreation {
            $Message = "Running HST Imager to create and initialise Disk"
            $totalsteps = 20
         }
-        Start-HSTCommands -HSTScript $Script:GUICurrentStatus.HSTCommandstoProcess.NewDiskorImage -Section "NewDiskorImage" -ActivityDescription $Message -ReportTime -TotalSteps $totalsteps -ReportActualSteps
+        Start-HSTCommands -HSTScript $Script:GUICurrentStatus.HSTCommandstoProcess.NewDiskorImage -Section "NewDiskorImage" -ActivityDescription $Message -ReportTime -TotalSteps $totalsteps
      }
 
      Write-TaskCompleteMessage 

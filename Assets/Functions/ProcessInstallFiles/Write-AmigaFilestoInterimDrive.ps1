@@ -316,6 +316,11 @@ function Write-AmigaFilestoInterimDrive {
       $Script:Settings.CurrentTaskName = "Copy Remaining files to Interim Drive"
       
       Write-StartTaskMessage
+      
+      $Script:Settings.TotalNumberofSubTasks = 2
+      $Script:Settings.CurrentSubTaskNumber = 1
+      $Script:Settings.CurrentSubTaskName = 'Copying files'
+      Write-StartSubTaskMessage
      
       $ListofPackagestoInstall | Where-Object {$_.Source -eq 'Local - ConfigTXT' -or $_.Source -eq 'Local - LHA File' -or $_.Source -eq 'Github' -or  $_.Source -eq 'Local' -or $_.Source -eq 'ArchiveinArchive' -or $_.Source -eq 'CD' `
                                                 -or $_.Source -eq 'Web' -or $_.Source -eq 'Web - SearchforPackageAminet' -or $_.Source -eq 'Web - SearchforPackageWHDLoadWrapper'}  | ForEach-Object {
@@ -480,7 +485,7 @@ function Write-AmigaFilestoInterimDrive {
     
     Write-StartTaskMessage
 
-    $Script:Settings.TotalNumberofSubTasks = 4
+    $Script:Settings.TotalNumberofSubTasks = 5
 
     If (-not ($wifiprefs)){
         $Script:Settings.TotalNumberofSubTasks -- #No wifi
