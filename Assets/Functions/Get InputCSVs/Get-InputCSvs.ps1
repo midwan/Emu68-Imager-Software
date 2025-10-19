@@ -9,7 +9,8 @@ function Get-InputCSVs {
       [switch]$PackagestoInstall,
       [switch]$PackagestoInstallEmu68Only,
       [switch]$FileSystems,
-      [switch]$IconPositions
+      [switch]$IconPositions,
+      [switch]$DocumentationURLs
 
     )
     
@@ -40,6 +41,9 @@ function Get-InputCSVs {
     }
     elseif ($IconPositions){
         $Pathtouse = $Script:Settings.IconPositionsCSV.Path
+    }
+    elseif ($DocumentationURLs){
+        $Pathtouse = $Script:Settings.DocumentationURLsCSV.Path
     }
 
     $CSV = @()
@@ -318,6 +322,10 @@ function Get-InputCSVs {
         $CSVtoReturn = $CSVtoReturn | Where-Object {$_.KickstartVersion -eq $Script:GUIActions.KickstartVersiontoUse}
     }
     
+    elseif ($DocumentationURLs) {
+        $CSVtoReturn = $CSV | Select-Object 'URL'
+    }
+
     return $CSVtoReturn
 }
 

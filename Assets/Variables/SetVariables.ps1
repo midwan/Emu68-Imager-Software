@@ -85,6 +85,10 @@ $Script:Settings = [PSCustomObject]@{
         Path = '.\InputFiles\IconPositions.CSV'
         GID = '1997107693'
     }        
+    DocumentationURLsCSV = [PSCustomObject]@{
+        Path = '.\InputFiles\DocumentationURLs.CSV'
+        GID = '432393286'
+    }         
     TotalNumberofTasks = $null
     CurrentTaskNumber = 0
     CurrentTaskName = $null
