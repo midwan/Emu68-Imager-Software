@@ -19,13 +19,13 @@
             <Run Text=" - Select the disk or image to write to, define the size"/><LineBreak/>
             <Run/><LineBreak/>
             <Run FontWeight="Bold" Text="Configure Emu68"/>
-            <Run Text=" - Configure Emu68 options. Where to define the version of Kickstart and Workbench you would like installed as well as configuring Wifi and screen options."/><LineBreak/>
+            <Run Text=" - Configure Emu68 options. Where to define the version of Kickstart and Workbench you would like to be installed as well as configuring Wifi and screen options."/><LineBreak/>
             <Run/><LineBreak/>
             <Run Text="If you wish to run by leaving everything at the default, the following steps will prepare an image with minimal customisation:"/><LineBreak/>
-            <Run Text="1. Go to the Configure Emu68 Page, set the ROM and OS Files location"/><LineBreak/>
-            <Run Text="2. Press the check files option"/><LineBreak/>
-            <Run Text="3. Go to the Set up Disk and set the output location"/><LineBreak/>
-            <Run Text="4. Press the run button  "/><LineBreak/>
+            <Run Text='1. Go to the "Configure Emu68 screen", set the ROM and OS Files location'/><LineBreak/>
+            <Run Text='2. Press the "Check Files" option'/><LineBreak/>
+            <Run Text='3. Go to the "Set up Disk" screen and set the output location'/><LineBreak/>
+            <Run Text='4. Press the "run" button'/><LineBreak/>
             <Run/><LineBreak/>
             <Run Text="Detailed help is available at the following locations:"/><LineBreak/>
             <Run/><LineBreak/>
