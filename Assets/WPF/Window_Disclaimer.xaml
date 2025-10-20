@@ -28,7 +28,7 @@
             <Run Foreground="Black" FontSize="14" Text="- All features are available"/><LineBreak/>
             <Run Foreground="Black"/><LineBreak/>
             <Run Foreground="Black" FontSize="14" Text="No one likes reading manuals! However, you are strongly encouraged to read at least the Quick Start section of the documentation! This can be accessed through the link "/> 
-            <Hyperlink x:Name="QuickStartDocumentationURL" FontSize="14" NavigateUri="https://discord.com/channels/784428461330530305/1291663799983673468"> here</Hyperlink>
+            <Hyperlink x:Name="QuickStartDocumentationURL" FontSize="14" NavigateUri="https://mja65.github.io/Emu68-Imager/quickstart.html"> here</Hyperlink>
             <Run Foreground="Black" FontSize="14" Text= " along with links to the other sections of the documentation. A link to the documentation is also available in the tool should you wish to access from there."/>
             <Span Background="White" FontSize="14" Foreground="Black"/><LineBreak/><Run/></TextBlock>
     </Grid>
