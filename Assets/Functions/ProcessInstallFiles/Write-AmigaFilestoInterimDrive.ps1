@@ -574,7 +574,7 @@ function Write-AmigaFilestoInterimDrive {
     
         Write-StartSubTaskMessage
 
-        $WirelessPrefs = (Get-WirelessPrefs -SSID $Script:GUIActions.SSID -WifiPassword $Script:WifiPassword)
+        $WirelessPrefs = (Get-WirelessPrefs -SSID $Script:GUIActions.SSID -WifiPassword $Script:GUIActions.WifiPassword)
 
         Export-TextFileforAmiga -DatatoExport $WirelessPrefs -AddLineFeeds 'TRUE' -ExportFile "$($Script:Settings.InterimAmigaDrives)\System\Prefs\Env-Archive\Sys\wireless.prefs"
         
