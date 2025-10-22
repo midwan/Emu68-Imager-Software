@@ -8,11 +8,13 @@ function Get-Emu68ImagerDocumentation {
    $DownloadURLs = Get-InputCSVs -DocumentationURLs
 
     foreach ($URLLine in $DownloadURLs){
+        
+        $Extension = [System.IO.Path]::GetExtension("$(Split-Path $URLLine.URL -Leaf)")
 
         If ((Split-Path $URLLine.URL -Leaf) -eq 'index.html'){
             $OutfileLocation = $LocationtoDownload 
         }
-        elseif (((Split-Path $URLLine.URL -Leaf) -eq 'screenshot1.png') -or ((Split-Path $URLLine.URL -Leaf) -eq 'screenshot2.png')) {
+        elseif ($Extension -eq '.png'){
             $OutfileLocation = $LocationtoDownload+'images\'
         }
         else {
