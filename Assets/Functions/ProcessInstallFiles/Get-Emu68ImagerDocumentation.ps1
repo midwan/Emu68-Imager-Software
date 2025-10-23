@@ -3,29 +3,34 @@ function Get-Emu68ImagerDocumentation {
         $LocationtoDownload
     )
 
-   # $LocationtoDownload ='E:\PiStorm\Docs\'
-
-   $DownloadURLs = Get-InputCSVs -DocumentationURLs
+    $LocationtoDownload ='E:\PiStorm\Docs\'
+    $DownloadURLs = Get-InputCSVs -DocumentationURLs
+    $AssetsNotDownloaded = 0
 
     foreach ($URLLine in $DownloadURLs){
         
-        $Extension = [System.IO.Path]::GetExtension("$(Split-Path $URLLine.URL -Leaf)")
-
-        If ((Split-Path $URLLine.URL -Leaf) -eq 'index.html'){
-            $OutfileLocation = $LocationtoDownload 
-        }
-        elseif ($Extension -eq '.png'){
-            $OutfileLocation = $LocationtoDownload+'images\'
+        If (([System.IO.Path]::GetExtension("$(Split-Path $URLLine.URL -Leaf)")) -eq ".png"){
+            $DownloadType = "Picture"
+            $OutfileLocation = "$($LocationtoDownload)images\"
         }
         else {
-            $OutfileLocation = ($LocationtoDownload+'html\')
-        }
+            $DownloadType = "Page"
+            If ((Split-Path $URLLine.URL -Leaf) -eq 'index.html'){
+                $OutfileLocation = $LocationtoDownload 
+            }
+            else {
+                $OutfileLocation = "$($LocationtoDownload)html\"
+            }
+        }        
+
         if (-not (test-path $OutfileLocation)){
                 $null = New-Item $OutfileLocation -ItemType Directory
         }
+    
+        #Write-Debug "Downloading file: $($URLLine.URL)"
         
-        if ((Get-DownloadFile -DownloadURL $URLLine.URL -OutputLocation ($OutfileLocation+(Split-Path $URLLine.URL -Leaf)) -NumberofAttempts 3) -eq $true){
-            if (($OutfileLocation+(Split-Path $URLLine.URL -Leaf)).IndexOf('.html') -gt 0){
+        if ((Get-DownloadFile -DownloadURL $URLLine.URL -OutputLocation "$OutfileLocation$(Split-Path $URLLine.URL -Leaf)" -NumberofAttempts 2) -eq $true){
+            if ($DownloadType -eq "Page"){
                 $URLContent = Get-Content ($OutfileLocation+(Split-Path $URLLine.URL -Leaf))
                 $RevisedURLContent = $null
                 foreach ($Line in $URLContent){
@@ -50,12 +55,21 @@ function Get-Emu68ImagerDocumentation {
                     }
                     $Null = Copy-Item -Path ($OutfileLocation+(Split-Path $URLLine.URL -Leaf)) -Destination ($LocationtoDownload+'html\Emu68-Imager.html')
                 }
-            }
-        }
-        else{
-            return $false
-        }
 
+            }
+
+        }
+        else {
+             $AssetsNotDownloaded ++
+        }
+    
     }
-    return $true
+    
+    if ($AssetsNotDownloaded -gt 0) {
+        return $false
+    }
+    else {
+        return $true
+    }
+    
 }
