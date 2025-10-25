@@ -60,7 +60,8 @@ function Get-Emu68ImagerDocumentation {
 
         }
         else {
-             $AssetsNotDownloaded ++
+            Write-InformationMessage -Message "Failed to download $($URLLine.URL)!"  
+            $AssetsNotDownloaded ++
         }
     
     }
