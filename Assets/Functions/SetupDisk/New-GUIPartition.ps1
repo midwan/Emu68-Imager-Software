@@ -244,8 +244,8 @@ function New-GUIPartition {
             $NewPartition.CanResizeRight = $true
             $NewPartition.CanMove = $true
             $NewPartition.CanChangeBootable = $true
-            $NewPartition.CanChangeMask = $true
-            $NewPartition.CanChangeDosType = $true
+            $NewPartition.CanChangeMask = $false
+            $NewPartition.CanChangeDosType = $false
             $NewPartition.CanChangeBuffers =$true
             $NewPartition.CanChangePriority = $true
             $NewPartition.CanChangeMountable = $true
