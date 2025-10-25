@@ -1,4 +1,4 @@
-$WPF_Setup_ADFpath_Button_Check.Add_Click({
+$WPF_StartPage_ADFpath_Button_Check.Add_Click({
     if ($Script:GUIActions.KickstartVersiontoUse){
         if ($Script:GUIActions.InstallMediaLocation){
             $ADFPathtoUse = $Script:GUIActions.InstallMediaLocation

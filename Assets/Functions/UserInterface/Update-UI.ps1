@@ -35,9 +35,6 @@ function Update-UI {
         $WPF_Window_Button_StartPage.Background = '#FFDDDDDD'
         $WPF_Window_Button_StartPage.Foreground = '#FF000000'
         
-        $WPF_Window_Button_SetupEmu68.Background = '#FFDDDDDD'
-        $WPF_Window_Button_SetupEmu68.Foreground = '#FF000000'
-
         if ($Script:GUICurrentStatus.CurrentWindow -eq "StartPage"){
             $WPF_Window_Button_StartPage.Background = '#FF017998' 
             $WPF_Window_Button_StartPage.Foreground = '#FFFFFFFF'
@@ -49,10 +46,6 @@ function Update-UI {
         elseif ($Script:GUICurrentStatus.CurrentWindow -eq 'DiskPartition'){
             $WPF_Window_Button_SetupDisk.Background = '#FF017998' 
             $WPF_Window_Button_SetupDisk.Foreground = '#FFFFFFFF'
-        }
-        elseif ($Script:GUICurrentStatus.CurrentWindow -eq 'Emu68Settings'){
-            $WPF_Window_Button_SetupEmu68.Background = '#FF017998' 
-            $WPF_Window_Button_SetupEmu68.Foreground = '#FFFFFFFF'
         }
        
     }
@@ -192,70 +185,70 @@ function Update-UI {
 
     if ($Emu68Settings){
         if ($Script:GUIActions.InstallOSFiles -eq $true){
-            $WPF_Setup_OSSelection_GroupBox.Visibility = 'Visible'
-            $WPF_Setup_SourceFiles_GroupBox.Visibility = 'Visible'
-            $WPF_Setup_ADFpath_Button.Visibility = 'Visible'
-            $WPF_Setup_ADFpath_Button_Check.Visibility = 'Visible'
-            $WPF_Setup_ADFPath_Label.Visibility = 'Visible'
-            $WPF_Setup_Settings_GroupBox.Visibility = 'Visible'
+            $WPF_StartPage_OSSelection_GroupBox.Visibility = 'Visible'
+            $WPF_StartPage_SourceFiles_GroupBox.Visibility = 'Visible'
+            $WPF_StartPage_ADFpath_Button.Visibility = 'Visible'
+            $WPF_StartPage_ADFpath_Button_Check.Visibility = 'Visible'
+            $WPF_StartPage_ADFPath_Label.Visibility = 'Visible'
+            $WPF_StartPage_Settings_GroupBox.Visibility = 'Visible'
         }
         elseif ($Script:GUIActions.InstallOSFiles -eq $false){
-            $WPF_Setup_OSSelection_GroupBox.Visibility = 'Visible'
-            $WPF_Setup_SourceFiles_GroupBox.Visibility = 'Visible'
-            $WPF_Setup_ADFpath_Button.Visibility = 'Hidden'
-            $WPF_Setup_ADFpath_Button_Check.Visibility = 'Hidden'
-            $WPF_Setup_ADFPath_Label.Visibility = 'Hidden'
-            $WPF_Setup_Settings_GroupBox.Visibility = 'Visible'
+            $WPF_StartPage_OSSelection_GroupBox.Visibility = 'Visible'
+            $WPF_StartPage_SourceFiles_GroupBox.Visibility = 'Visible'
+            $WPF_StartPage_ADFpath_Button.Visibility = 'Hidden'
+            $WPF_StartPage_ADFpath_Button_Check.Visibility = 'Hidden'
+            $WPF_StartPage_ADFPath_Label.Visibility = 'Hidden'
+            $WPF_StartPage_Settings_GroupBox.Visibility = 'Visible'
         }
         if ($Script:GUIActions.ROMLocation){
-            $WPF_Setup_RomPath_Label.Text = Get-FormattedPathforGUI -PathtoTruncate $Script:GUIActions.ROMLocation
-            $WPF_Setup_RomPath_Button.Background = 'Green'
-            $WPF_Setup_RomPath_Button.Foreground = 'White'
+            $WPF_StartPage_RomPath_Label.Text = Get-FormattedPathforGUI -PathtoTruncate $Script:GUIActions.ROMLocation
+            $WPF_StartPage_RomPath_Button.Background = 'Green'
+            $WPF_StartPage_RomPath_Button.Foreground = 'White'
         }
         else {
-            $WPF_Setup_RomPath_Label.Text = 'Using default Kickstart folder'
-            $WPF_Setup_RomPath_Button.Foreground = 'Black'
-            $WPF_Setup_RomPath_Button.Background = '#FFDDDDDD'
+            $WPF_StartPage_RomPath_Label.Text = 'Using default Kickstart folder'
+            $WPF_StartPage_RomPath_Button.Foreground = 'Black'
+            $WPF_StartPage_RomPath_Button.Background = '#FFDDDDDD'
         }
         if ($Script:GUIActions.InstallMediaLocation){
-            $WPF_Setup_ADFPath_Label.Text = Get-FormattedPathforGUI -PathtoTruncate $Script:GUIActions.InstallMediaLocation
-            $WPF_Setup_ADFPath_Button.Background = 'Green'
-            $WPF_Setup_ADFPath_Button.Foreground = 'White'
+            $WPF_StartPage_ADFPath_Label.Text = Get-FormattedPathforGUI -PathtoTruncate $Script:GUIActions.InstallMediaLocation
+            $WPF_StartPage_ADFPath_Button.Background = 'Green'
+            $WPF_StartPage_ADFPath_Button.Foreground = 'White'
 
         }
         else {           
-            $WPF_Setup_ADFPath_Label.Text = 'Using default install media folder'
-            $WPF_Setup_ADFPath_Button.Foreground = 'Black'
-            $WPF_Setup_ADFPath_Button.Background = '#FFDDDDDD'       
+            $WPF_StartPage_ADFPath_Label.Text = 'Using default install media folder'
+            $WPF_StartPage_ADFPath_Button.Foreground = 'Black'
+            $WPF_StartPage_ADFPath_Button.Background = '#FFDDDDDD'       
         }
 
         if ($Script:GUIActions.FoundKickstarttoUse){
-            $WPF_Setup_ROMpath_Button_Check.Background = 'Green'
-            $WPF_Setup_ROMpath_Button_Check.Foreground = 'White'
+            $WPF_StartPage_ROMpath_Button_Check.Background = 'Green'
+            $WPF_StartPage_ROMpath_Button_Check.Foreground = 'White'
         }
         else{
-            $WPF_Setup_Rompath_Button_Check.Background = '#FFDDDDDD'
-            $WPF_Setup_Rompath_Button_Check.Foreground = 'Black'
+            $WPF_StartPage_Rompath_Button_Check.Background = '#FFDDDDDD'
+            $WPF_StartPage_Rompath_Button_Check.Foreground = 'Black'
         }
         
         if ($Script:GUIActions.FoundInstallMediatoUse){
-            $WPF_Setup_ADFpath_Button_Check.Background = 'Green'
-            $WPF_Setup_ADFpath_Button_Check.Foreground = 'White'
+            $WPF_StartPage_ADFpath_Button_Check.Background = 'Green'
+            $WPF_StartPage_ADFpath_Button_Check.Foreground = 'White'
         }
         else{
-            $WPF_Setup_ADFpath_Button_Check.Background = '#FFDDDDDD'
-            $WPF_Setup_ADFpath_Button_Check.Foreground = 'Black'
+            $WPF_StartPage_ADFpath_Button_Check.Background = '#FFDDDDDD'
+            $WPF_StartPage_ADFpath_Button_Check.Foreground = 'Black'
         }
 
-        if (($Script:GUIActions.SSID) -and (-not ($WPF_Setup_SSID_Textbox.Text))){
-            $WPF_Setup_SSID_Textbox.Text = $Script:GUIActions.SSID 
+        if (($Script:GUIActions.SSID) -and (-not ($WPF_StartPage_SSID_Textbox.Text))){
+            $WPF_StartPage_SSID_Textbox.Text = $Script:GUIActions.SSID 
         }
-        if (($Script:GUIActions.WifiPassword) -and (-not ($WPF_Setup_Password_Textbox.Text))){
-            $WPF_Setup_Password_Textbox.Text = $Script:GUIActions.WifiPassword 
+        if (($Script:GUIActions.WifiPassword) -and (-not ($WPF_StartPage_Password_Textbox.Text))){
+            $WPF_StartPage_Password_Textbox.Text = $Script:GUIActions.WifiPassword 
         }
         
-        if (($Script:GUIActions.ScreenModetoUseFriendlyName) -and (-not ($WPF_Setup_ScreenMode_Dropdown.SelectedItem))) {
-           $WPF_Setup_ScreenMode_Dropdown.SelectedItem = $Script:GUIActions.ScreenModetoUseFriendlyName
+        if (($Script:GUIActions.ScreenModetoUseFriendlyName) -and (-not ($WPF_StartPage_ScreenMode_Dropdown.SelectedItem))) {
+           $WPF_StartPage_ScreenMode_Dropdown.SelectedItem = $Script:GUIActions.ScreenModetoUseFriendlyName
         }
     }
 

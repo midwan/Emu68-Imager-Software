@@ -1,4 +1,4 @@
-$WPF_Setup_RomPath_Button.Add_Click({
+$WPF_StartPage_RomPath_Button.Add_Click({
         If ($Script:GUICurrentStatus.FileBoxOpen -eq $true){
         return
     }

@@ -1,4 +1,4 @@
- $WPF_Setup_ROMpath_Button_Check.Add_Click({
+ $WPF_StartPage_ROMpath_Button_Check.Add_Click({
     if ($Script:GUIActions.KickstartVersiontoUse){
         if ($Script:GUIActions.ROMLocation){
             $RomPathtoUse = $Script:GUIActions.ROMLocation

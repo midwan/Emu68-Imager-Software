@@ -217,10 +217,10 @@ function Read-SettingsFile {
 
     $Script:GUICurrentStatus.AvailablePackagesNeedingGeneration = $false
 
-    $WPF_Setup_ScreenMode_Dropdown.SelectedItem = $Script:GUIActions.ScreenModetoUseFriendlyName
-    $WPF_Setup_KickstartVersion_Dropdown.SelectedItem = $Script:GUIActions.KickstartVersiontoUseFriendlyName
-    $WPF_Setup_Password_Textbox.Text = $Script:GUIActions.Password
-    $WPF_Setup_SSID_Textbox.Text = $Script:GUIActions.SSID
+    $WPF_StartPage_ScreenMode_Dropdown.SelectedItem = $Script:GUIActions.ScreenModetoUseFriendlyName
+    $WPF_StartPage_KickstartVersion_Dropdown.SelectedItem = $Script:GUIActions.KickstartVersiontoUseFriendlyName
+    $WPF_StartPage_Password_Textbox.Text = $Script:GUIActions.Password
+    $WPF_StartPage_SSID_Textbox.Text = $Script:GUIActions.SSID
     
     Set-InitialDiskValues -DiskType $DiskTypetouse -SizeBytes $GPTMBR.DiskSizeBytes -LoadSettings
 

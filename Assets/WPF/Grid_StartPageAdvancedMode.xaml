@@ -5,53 +5,76 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:local="clr-namespace:WpfApp14"
   mc:Ignorable="d">
-        <TextBlock x:Name="StartPage_TextBlock" HorizontalAlignment="Left" Margin="0,100,0,0" TextWrapping="Wrap"  FontSize="16" VerticalAlignment="Top" Width="1000" Height="800">
-            <Run FontWeight="Bold" Text="Mode of Operation - Advanced Mode"/>
-            <LineBreak/>    
-            <Run/><LineBreak/>        
-            <Run Text="In order to use this tool, click the buttons on the left side of the screen."/>
-            <LineBreak/>
-            <Run/><LineBreak/>            
-            <Run FontWeight="Bold" Text="Start "/>
-            <Run Text="- this page"/><LineBreak/>
-            <Run/><LineBreak/>
-            <Run FontWeight="Bold" Text="Set up Disk"/>
-            <Run Text=" - Select the disk or image to write to, define the size, as well as partitioning the disk and image according to your requirements"/><LineBreak/>
-            <Run/><LineBreak/>
-            <Run FontWeight="Bold" Text="Configure Emu68"/>
-            <Run Text=" - Configure Emu68 options. Where to define the version of Kickstart and Workbench you would like installed as well as configuring Wifi and screen options."/><LineBreak/>
-            <Run/><LineBreak/>
-            <Run FontWeight="Bold" Text="Select Packages"/>
-            <Run Text=" - Enable and/or disable default packages from installation. This will allow you to select and unselect certain OS install features like the language, as well you can remove or add the additional packages."/><LineBreak/>
-            <Run/><LineBreak/>
-            <Run FontWeight="Bold" Text="Load Settings "/>
-            <Run Text="- Load previously saved settings"/><LineBreak/>
-            <Run/><LineBreak/>
-            <Run FontWeight="Bold" Text="Save Settings"/>
-            <Run Text=" - Save settings from the imager should you wish to run the imager again with the same options"/><LineBreak/><Run/><LineBreak/>
-            <Run Text="If you wish to run by leaving everything at the default, the following steps will prepare an image with minimal customisation:"/><LineBreak/>
-            <Run Text='1. Go to the "Configure Emu68" screen, set the ROM and OS Files location'/><LineBreak/>
-            <Run Text='2. Press the "Check Files" option'/><LineBreak/>
-            <Run Text='3. Go to the "Set up Disk" screen and set the output location'/><LineBreak/>
-            <Run Text='4. Press the "Run" button'/><LineBreak/>
-            <Run/><LineBreak/>
-            <Run Text="Detailed help is available at the following locations:"/><LineBreak/>
-            <Run/><LineBreak/>
-            <Hyperlink x:Name="ImagerURL" NavigateUri="https://mja65.github.io/Emu68-Imager/">
-                Emu68 Imager Documentation
-            </Hyperlink>
-            <LineBreak />
-            <Run/><LineBreak/>
-            <Hyperlink x:Name="DiscordURL" NavigateUri="https://discord.com/channels/784428461330530305/1291663799983673468">
-                PiStorm Discord Channel (#emu68-imager-support)
-            </Hyperlink>
-            <LineBreak />
-            <Run/><LineBreak/>
-            <Run Text="Other Useful Links:"/><LineBreak/>
-            <Hyperlink x:Name="Emu68GithubURL" NavigateUri="https://github.com/michalsc/Emu68">
-                Emu68 GitHub
-            </Hyperlink>
-        </TextBlock>
+          <TextBlock x:Name="StartPage_TextBlock" HorizontalAlignment="Left" Margin="0,430,0,0" TextWrapping="Wrap"  FontSize="14" VerticalAlignment="Top" Width="1000" Height="350">
+         <Run FontWeight="Bold" Text="Mode of Operation - Advanced Mode"/>
+         <LineBreak/>    
+         <Run/><LineBreak/>        
+         <Run Text="In order to use this tool, click the buttons on the left side of the screen."/>
+         <LineBreak/>
+         <Run/><LineBreak/>            
+         <Run FontWeight="Bold" Text="Start "/>
+         <Run Text="- this page. Configure Emu68 options. Where to define the version of Kickstart and Workbench you would like installed as well as configuring Wifi and screen options."/><LineBreak/>
+           <Run FontWeight="Bold" Text="Set up Disk"/>
+         <Run Text=" - Select the disk or image to write to, define the size, as well as partitioning the disk and image according to your requirements"/><LineBreak/>
+         <Run FontWeight="Bold" Text="Select Packages"/>
+         <Run Text=" - Enable and/or disable default packages from installation. This will allow you to select and unselect certain OS install features like the language, as well you can remove or add the additional packages."/><LineBreak/>
+         <Run FontWeight="Bold" Text="Load Settings "/>
+         <Run Text="- Load previously saved settings"/><LineBreak/>
+         <Run FontWeight="Bold" Text="Save Settings"/>
+         <Run Text="- Save current settings"/><LineBreak/>
+         <Run/><LineBreak/>
+         <Run Text="Detailed help is available at the following locations:"/><LineBreak/>
+         <Run/><LineBreak/>
+         <Hyperlink x:Name="ImagerURL" NavigateUri="https://mja65.github.io/Emu68-Imager/">
+             Emu68 Imager Documentation
+         </Hyperlink>
+         <LineBreak />
+         <Run/><LineBreak/>
+         <Hyperlink x:Name="DiscordURL" NavigateUri="https://discord.com/channels/784428461330530305/1291663799983673468">
+             PiStorm Discord Channel (#emu68-imager-support)
+         </Hyperlink>
+         <LineBreak />
+         <Run/><LineBreak/>
+         <Run Text="Other Useful Links:"/><LineBreak/>
+         <Hyperlink x:Name="Emu68GithubURL" NavigateUri="https://github.com/michalsc/Emu68">
+             Emu68 GitHub
+         </Hyperlink>
+         </TextBlock>
+
+
+         <GroupBox x:Name="OSSelection_GroupBox" Header="OS Selection"  Background="Transparent" Margin="7,30,0,128" VerticalAlignment="Top" HorizontalAlignment="Center" Width="540">
+             <Grid Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top">
+                 <TextBox x:Name="KickstartVersion_Label" HorizontalAlignment="Left" Margin="10,10,10,0" TextWrapping="Wrap" Text="Select OS Version" VerticalAlignment="Top" Width="200" BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="14"/>
+                 <ComboBox x:Name="KickstartVersion_DropDown" ToolTip="Select the Kickstart version you wish to use (e.g. 3.1 or 3.2)" HorizontalAlignment="Left" Margin="10,32,10,0" VerticalAlignment="Top" Width="300"/>
+
+             </Grid>
+         </GroupBox>
+         <GroupBox x:Name="SourceFiles_GroupBox" Header="Source Files" Background="Transparent" Margin="7,120,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="540">
+             <Grid Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top">
+                 <Button x:Name="ADFpath_Button" Content="Click to set Install Media folder" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top"  Width="200" Height="30"/>
+                 <Button x:Name="ADFpath_Button_Check" ToolTip="Check availability of Install files" Content="Check" HorizontalAlignment="Left" Margin="215,60,0,0" VerticalAlignment="Top"  Width="40" Height="30" FontSize="10"/>
+                 <TextBox x:Name="ADFPath_Label" HorizontalAlignment="Left" Margin="263,60,0,0" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="Using default install media folder" VerticalAlignment="Top" Width="260" Height="30"  BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False"/>
+
+                 <Button x:Name="Rompath_Button" Content="Click to set custom Kickstart folder" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"  Width="200" Height="30"/>
+                 <Button x:Name="Rompath_Button_Check" ToolTip="Check availability of Kickstart file" Content="Check" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top"  Width="40" Height="30" FontSize="10"/>
+                 <TextBox x:Name="ROMPath_Label" HorizontalAlignment="Left" Margin="263,10,0,0" TextWrapping="Wrap" VerticalContentAlignment="Center" Text="Using default Kickstart folder" VerticalAlignment="Top" Width="260" Height="30"  BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False"/>
+
+             </Grid>
+         </GroupBox>
+         <GroupBox x:Name="Settings_GroupBox" Header="Settings" Height="150" Background="Transparent" Margin="7,250,0,0" Width="540" VerticalAlignment="Top" HorizontalAlignment="Center">
+             <Grid>
+                 <ComboBox x:Name="ScreenMode_Dropdown" ToolTip="Select if you wish to use a specific output resolution on your Raspberry Pi" HorizontalAlignment="Left" Margin="10,26,0,0" VerticalAlignment="Top" Width="375"/>
+                 <TextBox x:Name="ScreenMode_Label" HorizontalAlignment="Center" Margin="10,0,0,0" TextWrapping="Wrap" Width="320" Text="Select ScreenMode for Raspberry Pi to Output" VerticalAlignment="Top" BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="14"/>
+
+                 <TextBox x:Name="SSID_Label" HorizontalAlignment="Left" Margin="12,77,0,0" TextWrapping="Wrap" Text="Enter your SSID" VerticalAlignment="Top" Width="150" BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False"/>
+                 <TextBox x:Name="Password_Label" HorizontalAlignment="Left" Margin="6,100,0,0" TextWrapping="Wrap" Text="Enter your Wifi password"  VerticalAlignment="Top" Width="150" BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" HorizontalContentAlignment="Center"/>
+                 <TextBox x:Name="SSID_Textbox" ToolTip="Set your SSID for wifi on the Amiga (leave empty if you wish to configure on the Amiga)" HorizontalAlignment="Left" Margin="187,77,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="200" />
+                 <TextBox x:Name="Password_Textbox" ToolTip="Set your password for wifi on the Amiga (leave empty if you wish to configure on the Amiga)" HorizontalAlignment="Left" Margin="187,100,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="200" />
+                 <TextBox x:Name="WIfiSettings_Label" HorizontalAlignment="Center" Visibility="Visible" TextWrapping="Wrap" Text="WiFi Settings" VerticalAlignment="Center" Width="120" BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" HorizontalContentAlignment="Center" Margin="0,-4,0,0" Height="20" FontWeight="Bold" FontSize="14"/>
+
+             </Grid>
+
+         </GroupBox>
 
        
     </Grid>

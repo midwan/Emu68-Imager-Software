@@ -1,4 +1,4 @@
-$WPF_Setup_ADFPath_Button.Add_Click({
+$WPF_StartPage_ADFPath_Button.Add_Click({
     If ($Script:GUICurrentStatus.FileBoxOpen -eq $true){
         return
     }

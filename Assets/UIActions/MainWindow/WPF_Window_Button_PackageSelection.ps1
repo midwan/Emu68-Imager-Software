@@ -24,9 +24,6 @@ $WPF_Window_Button_PackageSelection.Add_Click({
             if ($WPF_Window_Main.Children[$i].Name -eq $WPF_Partition.Name){
                 $WPF_Window_Main.Children.Remove($WPF_Partition)
             }
-            if ($WPF_Window_Main.Children[$i].Name -eq $WPF_SetupEmu68.Name){
-                $WPF_Window_Main.Children.Remove($WPF_SetupEmu68)
-            }
             if ($WPF_Window_Main.Children[$i].Name -eq $WPF_StartPage.Name){
                 $WPF_Window_Main.Children.Remove($WPF_StartPage)
             }
