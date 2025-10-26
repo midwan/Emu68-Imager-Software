@@ -3,7 +3,7 @@ function Get-Emu68ImagerDocumentation {
         $LocationtoDownload
     )
 
-    $LocationtoDownload ='E:\PiStorm\Docs\'
+   # $LocationtoDownload ='E:\PiStorm\Docs\'
     $DownloadURLs = Get-InputCSVs -DocumentationURLs
     $AssetsNotDownloaded = 0
 
