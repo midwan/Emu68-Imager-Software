@@ -3,8 +3,6 @@ function Copy-EMU68BootFiles {
         $OutputLocationType
     )
        
-    $Script:Settings.CurrentTaskNumber ++
-
     if ($OutputLocationType -ne 'ImgImage'){
         $Script:Settings.CurrentTaskName = "Copying Files to Emu68 Boot Partition"
     }

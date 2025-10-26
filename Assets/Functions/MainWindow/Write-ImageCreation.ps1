@@ -33,8 +33,6 @@ function Write-ImageCreation {
         $OutputTypetoUse = "Physical Disk"
      }
      
-     $Script:Settings.CurrentTaskNumber = 0 
-
      if ($Script:GUIActions.InstallOSFiles -eq $false){
         Write-AmigaFilestoInterimDrive -DownloadFilesFromInternet # 15 tasks
      }
@@ -42,7 +40,6 @@ function Write-ImageCreation {
         Write-AmigaFilestoInterimDrive -DownloadFilesFromInternet -DownloadLocalFiles -ExtractADFFilesandIconFiles -AdjustingScriptsandInfoFiles -ProcessDownloadedFiles -CopyRemainingFiles -wifiprefs
      }
 
-     $Script:Settings.CurrentTaskNumber ++
      $Script:Settings.CurrentTaskName = "Downloading and copying Emu68 Documentation to Amiga Disk"
     
      Write-StartTaskMessage
@@ -53,7 +50,6 @@ function Write-ImageCreation {
     
      Write-TaskCompleteMessage 
 
-     $Script:Settings.CurrentTaskNumber ++
      $Script:Settings.CurrentTaskName = "Preparing Commands for setting up image or disk and running"
     
      Write-StartTaskMessage
@@ -93,7 +89,6 @@ function Write-ImageCreation {
 
      Write-TaskCompleteMessage 
 
-     $Script:Settings.CurrentTaskNumber ++
      $Script:Settings.CurrentTaskName = "Setting up Disk or Image and copying files"
      
      Write-StartTaskMessage

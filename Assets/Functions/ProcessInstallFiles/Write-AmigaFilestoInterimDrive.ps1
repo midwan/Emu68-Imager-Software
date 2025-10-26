@@ -18,7 +18,6 @@ function Write-AmigaFilestoInterimDrive {
 #    $CopyRemainingFiles = $true
 #    $wifiprefs = $true
 
-    $Script:Settings.CurrentTaskNumber ++
     $Script:Settings.CurrentTaskName = "Determining list of OS files, local install files, and files from internet to be installed"
 
     Write-StartTaskMessage
@@ -63,7 +62,6 @@ function Write-AmigaFilestoInterimDrive {
 
     if ($DownloadFilesFromInternet){
     
-        $Script:Settings.CurrentTaskNumber ++
         $Script:Settings.CurrentTaskName = "Getting Packages from Internet"
         
         Write-StartTaskMessage
@@ -74,7 +72,6 @@ function Write-AmigaFilestoInterimDrive {
         
         Write-TaskCompleteMessage 
     
-        $Script:Settings.CurrentTaskNumber ++
         $Script:Settings.CurrentTaskName = "Extracting Packages from Internet"
         
         Write-StartTaskMessage
@@ -87,7 +84,6 @@ function Write-AmigaFilestoInterimDrive {
     
     if ($DownloadLocalFiles){
     
-       $Script:Settings.CurrentTaskNumber ++
        $Script:Settings.CurrentTaskName = "Extracting Local Packages"
        
        Write-StartTaskMessage
@@ -102,7 +98,6 @@ function Write-AmigaFilestoInterimDrive {
 
     if ($ExtractADFFilesandIconFiles){
     
-        $Script:Settings.CurrentTaskNumber ++
         $Script:Settings.CurrentTaskName = "Extracting files from ADFs and Icon Files and copying to interim Amiga Drive"
         
         Write-StartTaskMessage
@@ -239,7 +234,6 @@ function Write-AmigaFilestoInterimDrive {
 
     if ($ProcessDownloadedFiles){
         
-        $Script:Settings.CurrentTaskNumber ++
         $Script:Settings.CurrentTaskName = "Processing Downloaded Files"
         
         Write-StartTaskMessage
@@ -312,7 +306,6 @@ function Write-AmigaFilestoInterimDrive {
      }
 
      if ($CopyRemainingFiles) {
-      $Script:Settings.CurrentTaskNumber ++
       $Script:Settings.CurrentTaskName = "Copy Remaining files to Interim Drive"
       
       Write-StartTaskMessage
@@ -480,7 +473,6 @@ function Write-AmigaFilestoInterimDrive {
      }
      
    if ($AdjustingScriptsandInfoFiles){
-    $Script:Settings.CurrentTaskNumber ++
     $Script:Settings.CurrentTaskName = "Adjusting scripts and .info files"
     
     Write-StartTaskMessage

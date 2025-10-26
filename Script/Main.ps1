@@ -56,9 +56,9 @@ Write-Emu68ImagerLog -start
 
 Show-Disclaimer
 
-$Script:Settings.TotalNumberofTasks = 22
+$Script:Settings.TotalNumberofTasks = 2
+$Script:Settings.CurrentTaskNumber = 1
 
-$Script:Settings.CurrentTaskNumber ++
 $Script:Settings.CurrentTaskName = "Checking Prerequisites for Using Emu68 Imager"
 Write-StartTaskMessage
 
@@ -66,7 +66,6 @@ Confirm-Prerequisites
 
 Write-TaskCompleteMessage
 
-$Script:Settings.CurrentTaskNumber ++
 $Script:Settings.CurrentTaskName = "Startup Checks"
 Write-StartTaskMessage
 
@@ -92,6 +91,8 @@ if (-not (Get-StartupFiles)){
 }
 
 Write-TaskCompleteMessage
+
+$Script:Settings.TotalNumberofTasks = 10
 
 if ($Script:GUICurrentStatus.RunMode -eq 'CommandLine'){
     get-process -id $Pid | set-windowstate -State MINIMIZE
@@ -138,7 +139,8 @@ update-ui -MainWindowButtons
 
 $WPF_MainWindow.ShowDialog() | out-null
 
-if ($Script:GUICurrentStatus.ProcessImageConfirmedbyUser -eq $true){
+if ($Script:GUICurrentStatus.ProcessImageConfirmedbyUser -eq $true){    
+    $Script:Settings.CurrentTaskNumber = 1
     Write-ImageCreation
 }
 else {
