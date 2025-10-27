@@ -8,6 +8,10 @@ $WPF_Window_Button_PackageSelection.Add_Click({
             return
         }
     
+        if ($Script:GUICurrentStatus.CurrentWindow -ne 'PackageSelection'){
+            $Script:GUICurrentStatus.PackagesChanged =$false
+        }
+
         $Script:GUICurrentStatus.CurrentWindow = 'PackageSelection' 
     
         if ($Script:GUICurrentStatus.AvailablePackagesNeedingGeneration -eq $true){
@@ -59,96 +63,3 @@ $WPF_Window_Button_PackageSelection.Add_Click({
         update-ui -MainWindowButtons
 
 })
-
-
-    # $DatatoPopulate = Get-InputCSVs -PackagestoInstall | Where-Object {$_.PackageMandatory -eq 'FALSE'} | Select-Object 'PackageNameFriendlyName','PackageNameGroup' -Unique
-    
-    # #$DatatoPopulate | Add-Member -NotePropertyName 'Test' -NotePropertyValue $false
-
-    # $Fields =  ($DatatoPopulate | Get-Member -MemberType NoteProperty).Name
- 
-    # $Datatable = New-Object System.Data.DataTable
-    # [void]$Datatable.Columns.AddRange($Fields)
-    # foreach ($line in $DatatoPopulate)
-    # {
-    #     $Array = @()
-    #     Foreach ($Field in $Fields)
-    #     {
-    #         $array += $line.$Field
-    #     }
-    #     [void]$Datatable.Rows.Add($array)
-    # }
-    
-    # if (-not $DataTable.Columns.Contains("Select Package")) {
-    #     $selectedColumn = New-Object System.Data.DataColumn("Select Package", [bool])
-    #     $selectedColumn.DefaultValue = $false
-    #     $DataTable.Columns.Add($selectedColumn)
-    # }
-  
-    # for ($i = 0; $i -lt $DataTable.Columns.Count; $i++) {
-    #     if (($DataTable.Columns[$i].ColumnName) -eq 'Select Package'){
-    #         #$DataTable.Columns[$i].ReadOnly 
-    #         $DataTable.Columns[$i].ReadOnly = $false
-    #     }
-    #     else {
-    #         #$DataTable.Columns[$i].ReadOnly
-    #         $DataTable.Columns[$i].ReadOnly = $true
-    #     }
-    # }
-
-
-    
-    #| Select-Object 'Select Package for Installation','Name of Package', 'Description', 'Package Type'
-
-    #     for ($i = 0; $i -lt $WPF_PackageSelection_Datagrid.Columns.Count; $i++) {
-    #     if (($WPF_PackageSelection_Datagrid.Columns[$i].Header) -eq 'PackageName'){
-    #         $WPF_PackageSelection_Datagrid.Columns[$i].Visibility 
-    #        # $WPF_PackageSelection_Datagrid.Columns[$i].Visibility = 'Hidden' 
-    #     }
-    # }
-
-
-    
-
-
-    
-  #  $WPF_PackageSelection_Datagrid.Columns[3].ElementStyle=[type]'System.Windows.Controls.CheckBox'
-
-
-    # $checkBoxColumn = New-Object System.Windows.Controls.DataGridCheckBoxColumn
-    # $checkBoxColumn.Header = "Select" 
-    # $checkBoxColumn.Binding = New-Object System.Windows.Data.Binding("Test") # Replace "PropertyName" with the name of the boolean property in your data source
-    # $WPF_PackageSelection_Datagrid.Columns.Add($checkBoxColumn)
-
-
-    # $checkBoxColumn = New-Object System.Windows.Controls.DataGridCheckBoxColumn
-    # $checkBoxColumn.Header = "Select Package"
-    # $checkBoxColumn.IsReadOnly='FALSE'
-    # $checkBoxColumn.Binding = New-Object System.Windows.Data.Binding("Test") # Replace "PropertyName" with the name of the boolean property in your data source
-    # $checkBoxColumn.Binding.Mode = [System.Windows.Data.BindingMode]::TwoWay 
-    # $WPF_PackageSelection_Datagrid.Columns.Add($checkBoxColumn)
-
-# New-Object System.Windows.Data.Binding -Property
-#     $datatable = New-Object System.Data.DataTable
-#     $datatable.Columns.Add("ID", [int].type)
-#     $datatable.Columns.Add("Name", [string].type)
-#     $datatable.Columns.Add("Active", [bool].type)
-#     $datatable.Rows.Add(1, "Item 1", $false)
-#     $datatable.Rows.Add(2, "Item 2", $true)
-#     # Create a DataGrid
-#     $dataGrid = New-Object System.Windows.Controls.DataGrid -Property @{
-#         ItemsSource = $datatable.DefaultView
-#     }
-#     # Add a checkbox column
-#     $dataGrid.Columns.Add(New-Object System.Windows.Controls.DataGridTextColumn -Property @{
-#         Header = "Active";
-#         Binding = New-Object System.Windows.Data.Binding -Property @{
-#             Path = "Active";
-#             Mode = [System.Windows.Data.BindingMode]::TwoWay # For two-way binding
-#         }
-#         # You can customize the style of the CheckBox if needed
-#         }
-#     )
-
-
-

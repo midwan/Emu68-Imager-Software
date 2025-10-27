@@ -7,13 +7,19 @@ function Confirm-RequiredSources {
         $Script:GUICurrentStatus.AvailablePackagesNeedingGeneration = $false
     }
 
-    
+    if ($Script:GUIActions.SelectedIconSet){
+        $IconsettoUse = $Script:GUIActions.SelectedIconSet
 
-    $OSandPackagesSources = Get-InputCSVs -PackagestoInstall | Where-Object { ($_.KickstartVersion -eq $Script:GUIActions.KickstartVersiontoUse) -and  ($_.IconsetName -eq "" -or $_.IconsetName -eq $Script:GUIActions.SelectedIconSet) } | Select-Object 'SourceLocation','Source','PackageNameFriendlyName' -Unique # Unique Source files Required
+    }
+    else {
+        $IconsettoUse = (Get-InputCSVs -IconSets | Where-Object {$_.IconsDefaultInstall -eq $true}).IconsetName
+    }
+
+    $OSandPackagesSources = Get-InputCSVs -PackagestoInstall | Where-Object { ($_.KickstartVersion -eq $Script:GUIActions.KickstartVersiontoUse) -and  ($_.IconsetName -eq "" -or $_.IconsetName -eq $IconsettoUse) } | Select-Object 'SourceLocation','Source','PackageNameFriendlyName' -Unique # Unique Source files Required
     
     $CombinedSources = [System.Collections.Generic.List[PSCustomObject]]::New()
     
-    Get-InputCSVs -IconSets | ForEach-Object {
+    Get-InputCSVs -IconSets | Where-Object {$_.IconSetName -eq $IconsettoUse}  | ForEach-Object {
         $CombinedSources += [PSCustomObject]@{
             SourceLocation = $_.NewFolderIconSource
             Source = $_.NewFolderIconInstallMedia

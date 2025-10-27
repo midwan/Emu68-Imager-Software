@@ -182,6 +182,7 @@ $Script:GUICurrentStatus = [PSCustomObject]@{
     TransferSourceType = $null
     LastCommandTime = $null
     CurrentWindow = $null
+    PackagesChanged = $null
     TextBoxEntryFocus = $null
     MouseStatus = $null
     CurrentMousePositionX = $null
@@ -305,6 +306,7 @@ $Script:GUIActions.AvailablePackages.Columns.Add((New-Object System.Data.DataCol
 $Script:GUIActions.AvailablePackages.Columns.Add((New-Object System.Data.DataColumn "PackageNameFriendlyName",([string])))
 $Script:GUIActions.AvailablePackages.Columns.Add((New-Object System.Data.DataColumn "PackageNameGroup",([string])))
 $Script:GUIActions.AvailablePackages.Columns.Add((New-Object System.Data.DataColumn "PackageNameDescription",([string])))
+$Script:GUIActions.AvailablePackages.Columns.Add((New-Object System.Data.DataColumn "InstallMediaFlag",([bool])))
 for ($i = 0; $i -lt $Script:GUIActions.AvailablePackages.Columns.Count; $i++) {
     if (($Script:GUIActions.AvailablePackages.Columns[$i].ColumnName) -eq 'PackageNameFriendlyName'){
         $Script:GUIActions.AvailablePackages.Columns[$i].ReadOnly = $true
@@ -315,6 +317,9 @@ for ($i = 0; $i -lt $Script:GUIActions.AvailablePackages.Columns.Count; $i++) {
     if (($Script:GUIActions.AvailablePackages.Columns[$i].ColumnName) -eq 'PackageNameDescription'){
         $Script:GUIActions.AvailablePackages.Columns[$i].ReadOnly = $true
     }
+    if (($Script:GUIActions.AvailablePackages.Columns[$i].ColumnName) -eq 'InstallMediaFlag'){
+        $Script:GUIActions.AvailablePackages.Columns[$i].ReadOnly = $true
+    }    
     if (($Script:GUIActions.AvailablePackages.Columns[$i].ColumnName) -eq 'PackageNameUserSelected'){
         $Script:GUIActions.AvailablePackages.Columns[$i].ReadOnly = $false
     }

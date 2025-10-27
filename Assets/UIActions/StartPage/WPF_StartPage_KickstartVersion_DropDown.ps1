@@ -16,6 +16,7 @@ foreach ($Kickstart in $Script:GUIActions.AvailableKickstarts) {
               #   $Script:GUIActions.ROMLocation = $null
               #   $Script:GUIActions.InstallMediaLocation = $null
                  $Script:GUICurrentStatus.AvailablePackagesNeedingGeneration = $true
+                 Write-AvailableIconsets
                  update-ui -Emu68Settings
              }
              break

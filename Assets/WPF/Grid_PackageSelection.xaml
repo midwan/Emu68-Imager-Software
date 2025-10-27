@@ -5,6 +5,7 @@
    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
    xmlns:local="clr-namespace:WpfApp14"
    mc:Ignorable="d">
+         <TextBox x:Name="PackageSelection_Label" HorizontalAlignment="Left" Margin="50,7,0,0" TextWrapping="Wrap" Text="Note: If you make changes on this screen after you have performed checks on the installation media you will need to reperform those checks" VerticalAlignment="Top" Width="940" Height="20"  BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" FontWeight="Bold"/>
             <GroupBox x:Name="IconSet_GroupBox" Header="Icon Set Selection"  Background="Transparent" Margin="0,100,0,0" Width="600" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center">
                <Grid Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top">
                    <TextBlock x:Name="textBlock_iconsets" HorizontalAlignment="Center" Margin="0,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" >

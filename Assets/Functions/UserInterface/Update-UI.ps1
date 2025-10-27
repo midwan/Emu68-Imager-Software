@@ -8,7 +8,8 @@ function Update-UI {
         [Switch]$Buttons,
         [Switch]$PhysicalvsImage,
         [Switch]$CheckforRunningImage,
-        [Switch]$FreeSpaceAlert
+        [Switch]$FreeSpaceAlert,
+        [Switch]$PackageSelectionWindow
     )
 
    
@@ -18,6 +19,16 @@ function Update-UI {
     # if ((($DiskPartitionWindow) -or ($HighlightSelectedPartitions) -or ($UpdateInputBoxes) -or ($Buttons)) -and (-not ($Script:GUICurrentStatus.CurrentWindow -eq 'DiskPartition'))){
     #     return
     # }
+
+    if ($PackageSelectionWindow){
+        if ($Script:GUICurrentStatus.PackagesChanged -eq $false){
+            return
+        }
+        else {
+        }
+
+
+    }
 
     if ($MainWindowButtons){
         $WPF_Window_Button_LoadSettings.Background = '#FFDDDDDD'
@@ -50,22 +61,22 @@ function Update-UI {
        
     }
 
-    if (($CheckforRunningImage) -or ($DiskPartitionWindow)){
+    if (($CheckforRunningImage) -or ($PackageSelectionWindow) -or ($DiskPartitionWindow)){
         $Script:GUICurrentStatus.ProcessImageStatus = $true
         $Script:GUICurrentStatus.IssuesFoundBeforeProcessing.Clear()
 
         
         If (-not ($Script:GUIActions.KickstartVersiontoUse)){
-            $null = $Script:GUICurrentStatus.IssuesFoundBeforeProcessing.Rows.Add("Configure Emu68","No OS selected")
+            $null = $Script:GUICurrentStatus.IssuesFoundBeforeProcessing.Rows.Add("Start","No OS selected")
             $Script:GUICurrentStatus.ProcessImageStatus = $false
         }
         If (-not ($Script:GUIActions.FoundKickstarttoUse)){
-            $null = $Script:GUICurrentStatus.IssuesFoundBeforeProcessing.Rows.Add("Configure Emu68","Kickstart file has not been located")
+            $null = $Script:GUICurrentStatus.IssuesFoundBeforeProcessing.Rows.Add("Start","Kickstart file has not been located")
             $Script:GUICurrentStatus.ProcessImageStatus = $false
         }
         if ($Script:GUIActions.InstallOSFiles -eq $true){
             If (-not ($Script:GUIActions.FoundInstallMediatoUse)){
-                $null = $Script:GUICurrentStatus.IssuesFoundBeforeProcessing.Rows.Add("Configure Emu68","OS file(s) have not been located")
+                $null = $Script:GUICurrentStatus.IssuesFoundBeforeProcessing.Rows.Add("Start","OS file(s) have not been located")
                 $Script:GUICurrentStatus.ProcessImageStatus = $false
             }   
         }
