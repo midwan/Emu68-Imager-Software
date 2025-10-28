@@ -75,8 +75,9 @@ function Get-AmigaFileWeb {
             $URLtoUse = $URL
         }
         if ($MainServerAvailable -eq $false -and ($BackupURL)){
+            Write-host "Trying backup server $BackupServertoTest"
             if (-not(Test-Connection $BackupServertoTest -Count 2 -Quiet)){
-                Write-ErrorMessage -Message "No accessible server! Error downloading $NameofDL!"
+                Write-ErrorMessage -Message "Server does not appeae accessible. Will still attempt download"
                 return $false
 
             }

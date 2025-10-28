@@ -30,6 +30,12 @@ function Get-GithubRelease {
     # $Name =  "_console_windows_x64.zip"
     # $FileNameforDownload = "HSTImager.zip"
 
+    #$GithubRepository = "https://api.github.com/repos/rondoval/emu68-genet-driver/releases"
+    #$GithubReleaseType = "Release-NoArchive"
+    #$Tag_Name = "v1.3"
+    #$Name = "genet.device"
+    #$FileNameforDownload = "genet.device"
+
 
     if (-not(Test-Path (split-path $LocationforDownload))){
         $null = New-Item -Path (split-path $LocationforDownload) -Force -ItemType Directory
