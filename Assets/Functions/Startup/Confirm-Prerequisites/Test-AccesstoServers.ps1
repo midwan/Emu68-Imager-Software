@@ -38,13 +38,16 @@ function Test-AccesstoServers {
     $ErrorCount = 0
     $FatalErrorCount = 0
 
+    Write-InformationMessage -Message "Testing accessability of servers. Note, this is an indication only"
+    Write-InformationMessage -Message ""
+
     foreach ($Server in $ServerList) {
         Write-InformationMessage "Testing connection to $($server.Servername)" 
         if (Test-Connection $server.Servername -count 1 -Quiet){
             Write-InformationMessage "Connection to $($server.Servername) successful"
         }
         else {
-            Write-Error "Connection to $($server.Servername) unsuccessful!"
+            Write-ErrorMessage -Message "Connection to $($server.Servername) unsuccessful! Possible connection issues with site."
             $ErrorCount ++
             $FatalErrorCount += $server.FatalError
         }

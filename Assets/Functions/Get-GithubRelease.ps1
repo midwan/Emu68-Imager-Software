@@ -68,7 +68,7 @@ function Get-GithubRelease {
     )
 
     if ( -not $GithubDetails){
-        Write-ErrorMessage 'Error accessing Github! Quitting Program'
+        Write-ErrorMessage -Message "Error accessing Github! Quitting Program"
         exit
     }  
 
@@ -86,7 +86,7 @@ function Get-GithubRelease {
         $GithubDetails_ForDownload = $GithubDetails_Sorted  | Where-Object { $_.name -match $Name } | Select-Object -First 1
     } 
     else {
-        Write-Error "Error with input! Exiting!"
+        Write-ErrorMessage -Message "Error with input! Exiting!"
         exit
 
     }
