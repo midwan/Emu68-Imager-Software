@@ -27,7 +27,7 @@ function Get-Emu68ImagerDocumentation {
                 $null = New-Item $OutfileLocation -ItemType Directory
         }
     
-        #Write-Debug "Downloading file: $($URLLine.URL)"
+        #Write-debug "Downloading file: $($URLLine.URL) to $OutfileLocation$(Split-Path $URLLine.URL -Leaf)"
         
         if ((Get-DownloadFile -DownloadURL $URLLine.URL -OutputLocation "$OutfileLocation$(Split-Path $URLLine.URL -Leaf)" -NumberofAttempts 2) -eq $true){
             if ($DownloadType -eq "Page"){
@@ -74,3 +74,4 @@ function Get-Emu68ImagerDocumentation {
     }
     
 }
+                             

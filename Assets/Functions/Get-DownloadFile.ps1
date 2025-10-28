@@ -6,9 +6,9 @@ function Get-DownloadFile {
     )
 
 #    $NumberofAttempts = 2
-#    $DownloadURL = "https://mja65.github.io/Emu68-Imager/images/Version2/StartupAdvancedMode.png"
+#    $DownloadURL = "https://mja65.github.io/Emu68-Imager/InstructionsEmu68ImagerV1.html"
 #    $DownloadURL = "http://www.ibrowse-dev.net/resources/IBrowse3.0a-OS31.lha"
-#    $OutputLocation = 'E:\PiStorm\Docs\'
+#    $OutputLocation = 'E:\PiStorm\Docs\Test.html'
    
     $client = [System.Net.Http.HttpClient]::new()
     $client.DefaultRequestHeaders.UserAgent.ParseAdd("PowerShellHttpClient")
