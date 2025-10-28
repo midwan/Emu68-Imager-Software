@@ -7,22 +7,22 @@ function Test-AccesstoServers {
      
     $ServerList += [PSCustomObject]@{
        ServerName = "github.com"
-        FatalError = 1
+        FatalError = 0
     }
     
     $ServerList += [PSCustomObject]@{
         ServerName = "aminet.net"
-        FatalError = 1
+        FatalError = 0
     }
 
     $ServerList += [PSCustomObject]@{
         ServerName = "ftp2.grandis.nu"
-        FatalError = 0.5
+        FatalError = 0
     }
 
     $ServerList += [PSCustomObject]@{
         ServerName = "dropbox.com"
-        FatalError = 0.5
+        FatalError = 0
     }
 
     $ServerList += [PSCustomObject]@{

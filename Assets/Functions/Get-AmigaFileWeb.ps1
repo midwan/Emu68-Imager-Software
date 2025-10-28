@@ -36,21 +36,15 @@ function Get-AmigaFileWeb {
         }
         if ($BackupURL){
             Write-InformationMessage -Message "All Aminet servers attempted. Download failed. Trying alternative server."
-            $BackupServertoTest = ([System.Uri]$BackupURL).host
-            if (-not(Test-Connection $BackupServertoTest -Count 2 -Quiet)){
-                Write-ErrorMessage -Message "No accessible server! Error downloading $NameofDL!"
-                return $false
-            }
-            else {
-                $URLtoUse = $BackupURL
-                Write-InformationMessage -Message "Using alternative server $BackupServertoTest "
-            }
+            $URLtoUse = $BackupURL
+            Write-InformationMessage -Message "Using alternative server $BackupServertoTest "
             if ((Get-DownloadFile -DownloadURL $URLtoUse -OutputLocation "$LocationforDL\$NameofDL" -NumberofAttempts 2) -eq $true){
                 Write-InformationMessage -Message 'Download completed'
                 return $true
             }
             else{
-                Write-ErrorMessage -Message "Error downloading $NameofDL!"
+
+                Write-ErrorMessage -Message "Backup server also failed! Error downloading $NameofDL!"
                 return $false
             }
         }
@@ -60,60 +54,30 @@ function Get-AmigaFileWeb {
         }
     }
     else{
-        
-        $MainServerAvailable = $false
-        $BackupServerAvailable = $false 
-        $ServertoTest = ([System.Uri]$URL).host
-        $BackupServertoTest = ([System.Uri]$BackupURL).host
-        
-        if (-not(Test-Connection $ServertoTest -Count 2 -Quiet)){
-            $MainServerAvailable = $false
-            Write-InformationMessage -Message "Server $ServertoTest not accessible!"
-        }
-        else {
-            $MainServerAvailable = $true
-            $URLtoUse = $URL
-        }
-        if ($MainServerAvailable -eq $false -and ($BackupURL)){
-            Write-host "Trying backup server $BackupServertoTest"
-            if (-not(Test-Connection $BackupServertoTest -Count 2 -Quiet)){
-                Write-ErrorMessage -Message "Server does not appeae accessible. Will still attempt download"
-                return $false
-
-            }
-            else {
-                $URLtoUse = $BackupURL
-                Write-InformationMessage -Message "Using alternative server $BackupServertoTest "
-            }
-        }
-        elseif (($MainServerAvailable -eq $false) -and (-not ($BackupURL))){
-            Write-ErrorMessage -Message "No accessible server! Error downloading $NameofDL!"
-            return $false
-                            
-        }
-
+        $URLtoUse = $URL
         if ((Get-DownloadFile -DownloadURL $URLtoUse -OutputLocation "$LocationforDL\$NameofDL" -NumberofAttempts 2) -eq $true){
             Write-InformationMessage -Message 'Download completed'
-            return $true
+            return $true        
         }
-        else{
-            if ($URLtoUse -eq $URL -and ($BackupURL)){
-                Write-InformationMessage -Message "Download failed on main server. Testing backup server"
-                if (Test-Connection $BackupServertoTest -Count 2 -Quiet){
-                    Write-InformationMessage -Message "Backup server available."
-                    $URLtoUse = $BackupURL
-                    if ((Get-DownloadFile -DownloadURL $URLtoUse -OutputLocation "$LocationforDL\$NameofDL" -NumberofAttempts 2) -eq $true){
-                        Write-InformationMessage -Message 'Download completed'
-                        return $true                        
-                    }
+        else {
+            if  ($BackupURL){
+                Write-InformationMessage -Message "Download failed on main server. Trying backup server"
+                $URLtoUse = $BackupURL
+                if ((Get-DownloadFile -DownloadURL $URLtoUse -OutputLocation "$LocationforDL\$NameofDL" -NumberofAttempts 2) -eq $true){
+                    Write-InformationMessage -Message 'Download completed'
+                    return $true                        
                 }
                 else {
-                    Write-ErrorMessage -Message "Backup server unavailable!"
-                }
+                    Write-ErrorMessage -Message "Backup Server also failed! Error downloading $NameofDL!"
+                    return $false                                             
+                }                
+                     
             }
-            Write-ErrorMessage -Message "Error downloading $NameofDL!"
-            return $false
+            else {
+                Write-ErrorMessage -Message "Error downloading $NameofDL!"
+                return $false                
+            }
         }
-    }
+    }       
 
 }
