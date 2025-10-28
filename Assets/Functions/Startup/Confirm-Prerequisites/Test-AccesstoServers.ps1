@@ -30,24 +30,17 @@ function Test-AccesstoServers {
         FatalError = 0
     }
 
-
     $ServerList += [PSCustomObject]@{
         ServerName = "ibrowse-dev.net"
         FatalError = 0
     }
-
-    $ServerList += [PSCustomObject]@{
-        ServerName = "download.d0.se"
-        FatalError = 0
-    }    
-    
 
     $ErrorCount = 0
     $FatalErrorCount = 0
 
     foreach ($Server in $ServerList) {
         Write-InformationMessage "Testing connection to $($server.Servername)" 
-        if (Test-Connection $server.Servername -count 1){
+        if (Test-Connection $server.Servername -count 1 -Quiet){
             Write-InformationMessage "Connection to $($server.Servername) successful"
         }
         else {
@@ -57,7 +50,7 @@ function Test-AccesstoServers {
         }
     }
 
-    if ($FatalErrorCount -gt 0){
+    if ($FatalErrorCount -ge 1){
         return $false
     }
     else {
@@ -65,4 +58,3 @@ function Test-AccesstoServers {
     }
 
 }
-
