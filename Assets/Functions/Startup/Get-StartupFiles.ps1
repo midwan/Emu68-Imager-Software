@@ -19,7 +19,7 @@ function Get-StartupFiles {
         $null = New-Item -Path $DownloadLocation -ItemType Directory
     }  
 
-    $StartupFiles | Select-Object 'PackageName','FileDownloadName','SourceLocation','GithubRelease','GithubName','Hash','Source' -Unique | ForEach-Object {
+    $StartupFiles | Select-Object 'PackageName','FileDownloadName','SourceLocation','GithubRelease','GithubReleaseType','GithubName','Hash','Source' -Unique | ForEach-Object {
         if ($PackagestoInstall.Contains($_.PackageName)){
             $HashtoCheck = $_.Hash
             $PathtoCheck = "$DownloadLocation\$($_.FileDownloadName)"
@@ -32,7 +32,7 @@ function Get-StartupFiles {
                     }
                 }
                 elseif ($_.Source -eq 'Github'){
-                    if (-not(Get-GithubRelease -GithubRepository $_.SourceLocation -GithubReleaseType $_.GithubReleaseType -Tag_Name $_.GithubRelease -Name $_.GithubName -LocationforDownload "$($Script:Settings.TempFolder)\StartupFiles\"-FileNameforDownload "$($_.FileDownloadName)")){
+                    if (-not(Get-GithubRelease -GithubRepository $_.SourceLocation -GithubReleaseType $_.GithubReleaseType -Tag_Name $_.GithubRelease -Name $_.GithubName -LocationforDownload "$($Script:Settings.TempFolder)\StartupFiles\" -FileNameforDownload "$($_.FileDownloadName)")){
                         Write-ErrorMessage -Message "Error downloading $($_.PackageName)! Cannot continue!"
                         return $false
                     }

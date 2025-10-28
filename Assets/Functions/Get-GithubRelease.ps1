@@ -8,6 +8,8 @@ function Get-GithubRelease {
         $FileNameforDownload
     )
   
+    #Write-host "GithubRepository: $GithubRepository GithubReleaseType: $GithubReleaseType Tag_Name: $Tag_Name Name:$Name LocationforDownload: $LocationforDownload FileNameforDownload: $FileNameforDownload"
+
     # $LocationforDownload = "E:\PiStorm\"
     
     # $GithubRepository = "https://api.github.com/repos/michalsc/Emu68-tools/releases"
@@ -22,7 +24,13 @@ function Get-GithubRelease {
     # $Name = "Emu68-pistorm32lite."
     # $FileNameforDownload = "Emu68PiStorm32lite.zip"
     
-    
+    # $GithubRepository = "https://api.github.com/repos/henrikstengaard/hst-imager/releases"
+    # $GithubReleaseType = 'Release'
+    # $Tag_Name = "1.3.484"
+    # $Name =  "_console_windows_x64.zip"
+    # $FileNameforDownload = "HSTImager.zip"
+
+
     if (-not(Test-Path (split-path $LocationforDownload))){
         $null = New-Item -Path (split-path $LocationforDownload) -Force -ItemType Directory
     }
@@ -79,12 +87,12 @@ function Get-GithubRelease {
 
     $GithubDownloadURL = $GithubDetails_ForDownload[0].browser_download_url 
     Write-InformationMessage -Message ('Downloading Files for URL: '+$GithubDownloadURL)
-    # Write-debug "GithubDownload: $GithubDownloadURL LocationforDownload: $LocationforDownload"
-    if ((Get-DownloadFile -DownloadURL $GithubDownloadURL -OutputLocation $LocationforDownload -NumberofAttempts 3) -eq $true){
+    # Write-debug "GithubDownload: $GithubDownloadURL LocationforDownload: $PathforDownload"
+    if ((Get-DownloadFile -DownloadURL $GithubDownloadURL -OutputLocation $PathforDownload -NumberofAttempts 3) -eq $true){
         Write-InformationMessage -Message 'Download completed'  
     }
     else{
-        Write-ErrorMessage -Message "Error downloading $LocationforDownload!"
+        Write-ErrorMessage -Message "Error downloading $PathforDownload!"
         return $false
     }       
 
