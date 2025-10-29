@@ -38,28 +38,12 @@ $WPF_StartPage_ADFpath_Button_Check.Add_Click({
          if ($MissingFlag -eq $true) {
             $Script:GUIActions.FoundInstallMediatoUse = $null
          }
+         else {
+            $Script:GUICurrentStatus.PackagesChanged = $null
+         }
          Update-UI -Emu68Settings -CheckforRunningImage
     }
     else{
         $null = Show-WarningorError -Msg_Body 'Cannot check ADFs as you have not yet chosen the OS!' -Msg_Header 'Error - No OS Chosen!'  -BoxTypeWarning -ButtonType_OK
     }
 })
-
-#$Script:GUIActions.AvailableKickstarts
-
-
-
-    # if ($Script:KickstartVersiontoUse){
-    #     $Script:AvailableADFs = Compare-ADFHashes -PathtoADFFiles $Script:ADFPath -PathtoADFHashes ($InputFolder+'ADFHashes.csv') -KickstartVersion $Script:KickstartVersiontoUse -PathtoListofInstallFiles ($InputFolder+'ListofInstallFiles.csv')            
-        
-    #     Update-ListofInstallFiles
-
-
-
-    #     Get-GUIADFKickstartReport -Title $Title -Text $Text -DatatoPopulate $DatatoPopulate -WindowWidth 800 -WindowHeight 350 -DataGridWidth 670 -DataGridHeight 200 -GridLinesVisibility 'None' -FieldsSorted $FieldsSorted                    
-    # }
-    
-    # else {
-    #     Write-GUINoOSChosen -Type 'ADFs'
-    # }
-    # $null = Confirm-UIFields 

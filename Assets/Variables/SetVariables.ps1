@@ -142,7 +142,6 @@ $null = $Script:Settings.ProgressBarMarkers.Add([PSCustomObject]@{
 })
 
 
-
 $Script:GUICurrentStatus = [PSCustomObject]@{
     OperationMode = $null
     AmigaPartitionsandBoundaries = $null
@@ -184,6 +183,7 @@ $Script:GUICurrentStatus = [PSCustomObject]@{
     LastCommandTime = $null
     CurrentWindow = $null
     PackagesChanged = $null
+    DefaultPackagesSelected = $null
     TextBoxEntryFocus = $null
     MouseStatus = $null
     CurrentMousePositionX = $null

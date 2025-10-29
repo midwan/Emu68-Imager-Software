@@ -9,7 +9,7 @@ $WPF_Window_Button_PackageSelection.Add_Click({
         }
     
         if ($Script:GUICurrentStatus.CurrentWindow -ne 'PackageSelection'){
-            $Script:GUICurrentStatus.PackagesChanged =$false
+
         }
 
         $Script:GUICurrentStatus.CurrentWindow = 'PackageSelection' 
@@ -60,6 +60,6 @@ $WPF_Window_Button_PackageSelection.Add_Click({
     
          }
         
-        update-ui -MainWindowButtons
+        update-ui -MainWindowButtons -PackageSelectionWindow
 
 })
