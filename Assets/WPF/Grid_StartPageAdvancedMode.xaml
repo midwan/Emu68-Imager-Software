@@ -5,7 +5,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:local="clr-namespace:WpfApp14"
   mc:Ignorable="d">
-          <TextBlock x:Name="StartPage_TextBlock" HorizontalAlignment="Left" Margin="0,430,0,0" TextWrapping="Wrap"  FontSize="14" VerticalAlignment="Top" Width="1000" Height="350">
+          <TextBlock x:Name="StartPage_TextBlock" HorizontalAlignment="Left" Margin="0,410,0,0" TextWrapping="Wrap"  FontSize="13" VerticalAlignment="Top" Width="1000" Height="350">
          <Run FontWeight="Bold" Text="Mode of Operation - Advanced Mode"/>
          <LineBreak/>    
          <Run/><LineBreak/>        
