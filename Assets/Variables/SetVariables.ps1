@@ -204,40 +204,10 @@ $Script:GUICurrentStatus.RunOptionstoReport.Columns.Add((New-Object System.Data.
 $Script:GUICurrentStatus.RunOptionstoReport.Columns.Add((New-Object System.Data.DataColumn "Value",([string])))
 $Script:GUICurrentStatus.IssuesFoundBeforeProcessing.Columns.Add((New-Object System.Data.DataColumn "Area",([string])))
 $Script:GUICurrentStatus.IssuesFoundBeforeProcessing.Columns.Add((New-Object System.Data.DataColumn "Issue",([string])))
-$Script:GUICurrentStatus.MBRPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "PartitionNumber",([string])))
-$Script:GUICurrentStatus.MBRPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "PartitionType",([string])))
-$Script:GUICurrentStatus.MBRPartitionstoImportDataTable.Columns.Add(( New-Object System.Data.DataColumn "Size",([string])))
-$Script:GUICurrentStatus.MBRPartitionstoImportDataTable.Columns.Add(( New-Object System.Data.DataColumn "SizeBytes",([Int64])))
 
 for ($i = 0; $i -lt $Script:GUICurrentStatus.MBRPartitionstoImportDataTable.Columns.Count; $i++) {
     if (($Script:GUICurrentStatus.MBRPartitionstoImportDataTable.Columns[$i].ColumnName) -eq 'SizeBytes'){
         $Script:GUICurrentStatus.MBRPartitionstoImportDataTable.Columns[$i].ColumnMapping= [System.Data.MappingType]::Hidden
-    }
-}
-
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "MBRPartitionNumber",([string])))
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "DeviceName",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "VolumeName",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "LowCylinder",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "HighCylinder",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "Size",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "StartOffset",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "EndOffset",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "Buffers",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "DosType",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "Mask",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "MaxTransfer",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "Bootable",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "NoMount",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "Priority",([string]))) 
-$Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Add((New-Object System.Data.DataColumn "SizeBytes",([int64]))) 
-
-for ($i = 0; $i -lt $Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns.Count; $i++) {
-    if (($Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns[$i].ColumnName) -eq 'MBRPartitionNumber'){
-        $Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns[$i].ColumnMapping= [System.Data.MappingType]::Hidden
-    }
-    if (($Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns[$i].ColumnName) -eq 'SizeBytes'){
-        $Script:GUICurrentStatus.RDBPartitionstoImportDataTable.Columns[$i].ColumnMapping= [System.Data.MappingType]::Hidden
     }
 }
 
