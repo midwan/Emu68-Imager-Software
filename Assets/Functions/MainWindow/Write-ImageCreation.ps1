@@ -137,7 +137,7 @@ function Write-ImageCreation {
        }
 
         $HSTCommandstoRun = $Script:GUICurrentStatus.HSTCommandstoProcess.DiskStructures + $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk
-        Start-HSTCommands -HSTScript $HSTCommandstoRun -Section "DiskStructures;WriteFilestoDisk" -ActivityDescription "Processing commands (this may take a few minutes depending on the size of your disk)" -ReportActualSteps -ReportTime
+        Start-HSTCommands -HSTScript $HSTCommandstoRun -Section "DiskStructures;WriteFilestoDisk" -ActivityDescription "Processing commands (this may take a few minutes depending on the size of your disk)" ReportTime
         #"Processing commands (this may take a few minutes depending on the size of your disk)"
      }
 
@@ -157,7 +157,7 @@ function Write-ImageCreation {
 
         Write-StartSubTaskMessage
         $HSTCommandstoRun = $Script:GUICurrentStatus.HSTCommandstoProcess.DiskStructures + $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk
-        Start-HSTCommands -HSTScript $HSTCommandstoRun -Section "DiskStructures;WriteFilestoDisk" -ActivityDescription 'Processing commands' -ReportActualSteps -ReportTime
+        Start-HSTCommands -HSTScript $HSTCommandstoRun -Section "DiskStructures;WriteFilestoDisk" -ActivityDescription 'Processing commands' -ReportTime
      }
      
      Write-TaskCompleteMessage 
@@ -172,7 +172,7 @@ function Write-ImageCreation {
            
      $HSTCommandstoRun = $Script:GUICurrentStatus.HSTCommandstoProcess.AdjustParametersonImportedRDBPartition
      if ($HSTCommandstoRun){
-        Start-HSTCommands -HSTScript $HSTCommandstoRun -section "AdjustParametersonImportedRDBPartition" -ActivityDescription 'Processing commands' -ReportActualSteps -ReportTime
+        Start-HSTCommands -HSTScript $HSTCommandstoRun -section "AdjustParametersonImportedRDBPartition" -ActivityDescription 'Processing commands' -ReportTime
      }
         
      $FullListofCommands =   $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles +`

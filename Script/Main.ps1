@@ -98,6 +98,8 @@ if ($Script:GUICurrentStatus.RunMode -eq 'CommandLine'){
     get-process -id $Pid | set-windowstate -State MINIMIZE
 }
 
+Write-InformationMessage -Message "Loading Emu68 Imager UI..." -NoLog 
+
 Remove-Variable -Scope Script -Name 'WPF_*'
 If ($Script:GUICurrentStatus.OperationMode -eq "Advanced"){
     $WPF_MainWindow = Get-XAML -WPFPrefix 'WPF_Window_' -XMLFile '.\Assets\WPF\Main_Window.xaml' -ActionsPath '.\Assets\UIActions\MainWindow\' -AddWPFVariables
