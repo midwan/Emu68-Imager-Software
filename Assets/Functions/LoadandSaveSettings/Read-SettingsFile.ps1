@@ -269,7 +269,7 @@ for ($i = 0; $i -lt $Script:GUIActions.AvailablePackages.Columns.Count; $i++) {
    
    # Remove existing Partitions 
 
-    $WPF_DP_MediaSelect_Type_DropDown.SelectedItem = ""
+    $WPF_DP_MediaSelect_Type_DropDown.SelectedItem =$null
 
     Remove-Variable -Scope Script -Name 'WPF_DP_Partition*'
     
