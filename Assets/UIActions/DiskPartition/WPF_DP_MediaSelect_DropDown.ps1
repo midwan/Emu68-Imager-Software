@@ -6,6 +6,7 @@ if (-not $Script:GUIActions.ListofRemovableMedia){
         $WPF_DP_MediaSelect_DropDown.AddChild($Disk.FriendlyName)       
     }
 }
+
 $WPF_DP_MediaSelect_DropDown.add_selectionChanged({
     if ($WPF_DP_MediaSelect_DropDown.SelectedItem){
         $Script:GUIActions.ListofRemovableMedia | ForEach-Object{

@@ -311,30 +311,7 @@ for ($i = 0; $i -lt $Script:GUIActions.AvailablePackages.Columns.Count; $i++) {
         }
     }
 
-    $MissingFiles = $false
-
-    $HashTableforInstallMedia = @{} # Clear Hash
-    Get-InputCSVs -InstallMediaHashes | ForEach-Object {
-        $HashTableforInstallMedia[$_.Hash] = $null
-    }
-
-    $FoundInstallMedia | ForEach-Object {
-        If (Test-Path $_.Path){
-            $HashtoCheck = (Get-FileHash -path $_.path -Algorithm MD5).hash
-            if (-not ($HashTableforInstallMedia.ContainsKey($HashtoCheck))){
-                $MissingFiles = $true  
-                break              
-            }
-        }
-        else {
-            $MissingFiles = $true
-        } 
-    }
-
-    if ($MissingFiles -eq $false){
-        $Script:GUIActions.FoundInstallMediatoUse = $FoundInstallMedia 
-    }
-
+ 
     foreach ($line in $AvailablePackages ){
         $Array = @()
         $array += $line.PackageNameUserSelected
@@ -379,6 +356,31 @@ for ($i = 0; $i -lt $Script:GUIActions.AvailablePackages.Columns.Count; $i++) {
     $WPF_StartPage_Password_Textbox.Text = $Script:GUIActions.Password
     $WPF_StartPage_SSID_Textbox.Text = $Script:GUIActions.SSID
     
+    $MissingFiles = $false
+
+    $HashTableforInstallMedia = @{} # Clear Hash
+    Get-InputCSVs -InstallMediaHashes | ForEach-Object {
+        $HashTableforInstallMedia[$_.Hash] = $null
+    }
+
+    $FoundInstallMedia | ForEach-Object {
+        If (Test-Path $_.Path){
+            $HashtoCheck = (Get-FileHash -path $_.path -Algorithm MD5).hash
+            if (-not ($HashTableforInstallMedia.ContainsKey($HashtoCheck))){
+                $MissingFiles = $true  
+                break              
+            }
+        }
+        else {
+            $MissingFiles = $true
+        } 
+    }
+
+    if ($MissingFiles -eq $false){        
+        $Script:GUICurrentStatus.IconsChanged = $false
+        $Script:GUICurrentStatus.PackagesChanged =$false
+        $Script:GUIActions.FoundInstallMediatoUse = $FoundInstallMedia 
+    }
 
     if ($DiskTypetouse){
         $ImportDisk = $true
@@ -509,6 +511,9 @@ for ($i = 0; $i -lt $Script:GUIActions.AvailablePackages.Columns.Count; $i++) {
     Update-UI -MainWindowButtons -Emu68Settings UpdateInputBoxes -Buttons -PhysicalvsImage -CheckforRunningImage
     }
     
+    if (-not $Script:GUIActions.ListofRemovableMedia){
+        $Script:GUIActions.ListofRemovableMedia = Get-RemovableMedia
+    }
 
     return $true
 
