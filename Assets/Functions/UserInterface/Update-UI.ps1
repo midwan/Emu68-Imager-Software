@@ -60,6 +60,11 @@ function Update-UI {
             $WPF_Window_Button_SetupDisk.Foreground = '#FFFFFFFF'
         }
        
+        if ($Script:GUIActions.InstallOSFiles -eq $false) {
+            $WPF_Window_Button_PackageSelection.Visibility = 'Hidden'
+
+        }
+
     }
 
     if (($CheckforRunningImage) -or ($PackageSelectionWindow) -or ($DiskPartitionWindow)){

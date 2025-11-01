@@ -21,11 +21,17 @@ function Copy-EMU68BootFiles {
             Command = "fs copy $SourcePath $DestinationPath"
             Sequence = 6
         }
-        $SourcePath = "$DiskIconsPath\Emu68BootDrive\disk.info" 
-        $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
-            Command = "fs copy $SourcePath $DestinationPath"
-            Sequence = 6
+        if ($Script:GUIActions.InstallOSFiles -eq $true){
+            $SourcePath = "$DiskIconsPath\Emu68BootDrive\disk.info" 
+            $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
+                Command = "fs copy $SourcePath $DestinationPath"
+                Sequence = 6
+            }
         }
+        else {
+            Write-Warning -Message "Not creating disk.info file for Emu68Boot folder as icons not available (you haven't installed an OS)"
+        }
+
     }
     else {
         if ($OutputLocationType -eq 'VHDImage') {
@@ -52,13 +58,6 @@ function Copy-EMU68BootFiles {
                 $Emu68BootPath = "$((Get-Partition -DiskNumber $PowershellDiskNumber -PartitionNumber 1).DriveLetter):\"            
             }
         }
-
-        # if (($OutputLocationType -eq 'Physical Disk') -or ($OutputLocationType -eq 'VHDImage')){
-        #     Set-Volume -DriveLetter $Emu68BootPath.replace(":\","") -NewFileSystemLabel "EMU68BOOT"
-        # }
-        # elseif ($OutputLocationType -eq "ImgImage"){
-        #     Set-Fat32VolumeLabel -Path $Script:GUIActions.OutputPath
-        # }
 
         $null = Copy-Item "$($Script:Settings.InterimAmigaDrives)\Emu68Boot\*" -Destination $Emu68BootPath -Recurse -force
 

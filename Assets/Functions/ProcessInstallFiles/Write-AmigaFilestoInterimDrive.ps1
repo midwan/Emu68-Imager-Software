@@ -237,12 +237,7 @@ function Write-AmigaFilestoInterimDrive {
         $Script:Settings.CurrentTaskName = "Processing Downloaded Files"
         
         Write-StartTaskMessage
-        
-        $Script:Settings.TotalNumberofSubTasks = 3
-        $Script:Settings.CurrentSubTaskNumber = 1
-        $Script:Settings.CurrentSubTaskName = 'Preparing default icon files for future use'
-        Write-StartSubTaskMessage
-     
+
         if (-not (test-path "$DestinationPath\Emu68BootDrive" -PathType Container)){
             $null = New-Item "$DestinationPath\Emu68BootDrive" -ItemType Directory
         }
@@ -252,6 +247,12 @@ function Write-AmigaFilestoInterimDrive {
         if (-not (test-path "$DestinationPath\WorkDrive" -PathType Container)){
             $null = New-Item "$DestinationPath\WorkDrive" -ItemType Directory           
         }
+        
+        $Script:Settings.TotalNumberofSubTasks = 3
+        $Script:Settings.CurrentSubTaskNumber = 1
+        $Script:Settings.CurrentSubTaskName = 'Preparing default icon files for future use'
+        Write-StartSubTaskMessage
+     
     
         $null = copy-item -path "$DestinationPath\NewFolderIcon\$(Split-Path -Path $IconsPaths.NewFolderIconFilestoInstall -Leaf)" -Destination "$DestinationPath\NewFolder.info" -Force
         $null = copy-item -path "$DestinationPath\Emu68BootDiskIcon\$(Split-Path -Path $IconsPaths.Emu68BootDiskIconFilestoInstall -Leaf)" -Destination "$DestinationPath\Emu68BootDrive\disk.info" -Force
@@ -306,6 +307,17 @@ function Write-AmigaFilestoInterimDrive {
      }
 
      if ($CopyRemainingFiles) {
+
+        if (-not (test-path "$DestinationPath\Emu68BootDrive" -PathType Container)){
+            $null = New-Item "$DestinationPath\Emu68BootDrive" -ItemType Directory
+        }
+        if (-not (test-path "$DestinationPath\SystemDrive" -PathType Container)){
+            $null = New-Item "$DestinationPath\SystemDrive" -ItemType Directory
+        }
+        if (-not (test-path "$DestinationPath\WorkDrive" -PathType Container)){
+            $null = New-Item "$DestinationPath\WorkDrive" -ItemType Directory              
+        }
+
       $Script:Settings.CurrentTaskName = "Copy Remaining files to Interim Drive"
       
       Write-StartTaskMessage
@@ -438,9 +450,11 @@ function Write-AmigaFilestoInterimDrive {
       Write-StartSubTaskMessage
       
       (Get-ChildItem -Path "$($Script:Settings.InterimAmigaDrives)\System" -Recurse | Where-Object {$_.name -eq 'Disk.info'} ).FullName | ForEach-Object {
-          if ((Split-Path -path $_ -Parent) -ne  [System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\System")){
-              $null = remove-item $_ -Force
-          }
+        if ($_){
+            if ((Split-Path -path $_ -Parent) -ne  [System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\System")){
+                $null = remove-item $_ -Force
+            }
+        }
       }
      
       if (test-path "$($Script:Settings.InterimAmigaDrives)\System\libs\68040.libary"){

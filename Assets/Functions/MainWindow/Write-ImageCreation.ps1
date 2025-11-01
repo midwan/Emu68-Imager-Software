@@ -21,6 +21,10 @@ function Write-ImageCreation {
       
      $Script:GUICurrentStatus.StartTimeForRunningInstall = (Get-Date -Format HH:mm:ss)
 
+     If ($Script:GUIActions.InstallOSFiles -eq $false){
+        $Script:Settings.TotalNumberofTasks = 5
+     }
+
      Write-InformationMessage "Started processing at: $($Script:GUICurrentStatus.StartTimeForRunningInstall)"
 
      if ($Script:GUIActions.OutputType -eq 'Image' -and ($Script:GUIActions.OutputPath.Substring($Script:GUIActions.OutputPath.Length-3) -eq 'vhd')){
@@ -34,21 +38,26 @@ function Write-ImageCreation {
      }
      
      if ($Script:GUIActions.InstallOSFiles -eq $false){
-        Write-AmigaFilestoInterimDrive -DownloadFilesFromInternet # 15 tasks
+        Write-AmigaFilestoInterimDrive -DownloadFilesFromInternet -CopyRemainingFiles  # 15 tasks
      }
      elseif ($Script:GUIActions.InstallOSFiles -eq $true){
         Write-AmigaFilestoInterimDrive -DownloadFilesFromInternet -DownloadLocalFiles -ExtractADFFilesandIconFiles -AdjustingScriptsandInfoFiles -ProcessDownloadedFiles -CopyRemainingFiles -wifiprefs
      }
 
-     $Script:Settings.CurrentTaskName = "Downloading and copying Emu68 Documentation to Amiga Disk"
-    
-     Write-StartTaskMessage
-
-     if ((Get-Emu68ImagerDocumentation -LocationtoDownload ([System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\System\PiStorm\Docs\"))) -eq $false){
-        Write-ErrorMessage -Message 'Documentation could not be created! You will not be able to access on the Amiga'
+     if ($Script:GUIActions.InstallOSFiles -eq $true){
+        
+        $Script:Settings.CurrentTaskName = "Downloading and copying Emu68 Documentation to Amiga Disk"
+       
+        Write-StartTaskMessage
+   
+        if ((Get-Emu68ImagerDocumentation -LocationtoDownload ([System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\System\PiStorm\Docs\"))) -eq $false){
+           Write-ErrorMessage -Message 'Documentation could not be created! You will not be able to access on the Amiga'
+        }
+       
+        Write-TaskCompleteMessage 
+        
      }
-    
-     Write-TaskCompleteMessage 
+
 
      $Script:Settings.CurrentTaskName = "Preparing Commands for setting up image or disk and running"
     
@@ -102,26 +111,11 @@ function Write-ImageCreation {
      $Script:Settings.CurrentSubTaskNumber = 0
 
      Get-DiskStructurestoMBRGPTDiskorImageCommands #Commands not run yet
+   
+     if ($Script:GUIActions.InstallOSFiles -eq $true){
+        Get-CopyFilestoAmigaDiskCommands -OutputLocationType $OutputTypetoUse #Commands not run yet
+     }
 
-     # if ($Script:GUIActions.InstallOSFiles -eq $true){
-     #    $Script:Settings.CurrentTaskNumber ++
-     #    $Script:Settings.CurrentTaskName = "Setting Icon Positions"
-     #    Write-StartTaskMessage
-
-     #    Write-IconPositions
-
-     #    Write-TaskCompleteMessage 
-     # }         
-
-     Get-CopyFilestoAmigaDiskCommands -OutputLocationType $OutputTypetoUse #Commands not run yet
-
-   #   $Script:Settings.CurrentSubTaskNumber ++
-   #   $Script:Settings.CurrentSubTaskName = "Adjusting icon positions"
-   #   Write-StartSubTaskMessage
-     
-   #   Write-IconPositions
-     
-     
      if (($OutputTypetoUse -eq "Physical Disk") -or ($OutputTypetoUse -eq "VHDImage")){
         $Script:Settings.CurrentSubTaskNumber ++
         $Script:Settings.CurrentSubTaskName = "Processing Commands on Disk (this may take a few minutes depending on the size of your disk)"
