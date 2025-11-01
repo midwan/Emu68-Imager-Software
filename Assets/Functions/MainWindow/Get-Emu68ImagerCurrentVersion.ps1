@@ -4,7 +4,7 @@ function Get-Emu68ImagerCurrentVersion {
 
     )
     
-    # $GithubRelease = "https://api.github.com/repos/mja65/Emu68Imager2/releases"
+    # $GithubRelease = "https://api.github.com/repos/mja65/Emu68-Imager-Software/releases"
     
     $client = [System.Net.Http.HttpClient]::new()
     $client.DefaultRequestHeaders.UserAgent.ParseAdd("PowerShellHttpClient")

@@ -3,7 +3,8 @@ function Get-AmigaFileWeb {
         $URL,
         $BackupURL,
         $NameofDL,
-        $LocationforDL
+        $LocationforDL,
+        $UseBackupServerImmediately
     )
   
     # $URL = "https://aminet.net/comm/net/AmiSpeedTest.lha"
@@ -55,29 +56,29 @@ function Get-AmigaFileWeb {
     }
     else{
         $URLtoUse = $URL
-        if ((Get-DownloadFile -DownloadURL $URLtoUse -OutputLocation "$LocationforDL\$NameofDL" -NumberofAttempts 2) -eq $true){
-            Write-InformationMessage -Message 'Download completed'
-            return $true        
+        if ($UseBackupServerImmediately -eq $false){
+            if ((Get-DownloadFile -DownloadURL $URLtoUse -OutputLocation "$LocationforDL\$NameofDL" -NumberofAttempts 2) -eq $true){
+                Write-InformationMessage -Message 'Download completed'
+                return $true        
+            }
         }
-        else {
-            if  ($BackupURL){
-                Write-InformationMessage -Message "Download failed on main server. Trying backup server"
-                $URLtoUse = $BackupURL
-                if ((Get-DownloadFile -DownloadURL $URLtoUse -OutputLocation "$LocationforDL\$NameofDL" -NumberofAttempts 2) -eq $true){
-                    Write-InformationMessage -Message 'Download completed'
-                    return $true                        
-                }
-                else {
-                    Write-ErrorMessage -Message "Backup Server also failed! Error downloading $NameofDL!"
-                    return $false                                             
-                }                
-                     
+        if  ($BackupURL){
+            Write-InformationMessage -Message "Download failed on main server. Trying backup server"
+            $URLtoUse = $BackupURL
+            if ((Get-DownloadFile -DownloadURL $URLtoUse -OutputLocation "$LocationforDL\$NameofDL" -NumberofAttempts 2) -eq $true){
+                Write-InformationMessage -Message 'Download completed'
+                return $true                        
             }
             else {
-                Write-ErrorMessage -Message "Error downloading $NameofDL!"
-                return $false                
-            }
+                Write-ErrorMessage -Message "Backup Server also failed! Error downloading $NameofDL!"
+                return $false                                             
+            }                
+                 
         }
+        else {
+            Write-ErrorMessage -Message "Error downloading $NameofDL!"
+            return $false                
+        }
+           
     }       
-
 }

@@ -18,6 +18,7 @@ function Get-PackagesfromInternet {
     
     foreach ($Line in $ListofPackagestoDownload){
         $Script:Settings.CurrentSubTaskName = "Processing $($line.FileDownloadName)"
+        $UseBackupServerImmediately =$false
         Write-StartSubTaskMessage 
         if ($Line.Source -eq "Github"){
             $GithubDownloadLocation = $Settings.WebPackagesDownloadLocation
@@ -43,8 +44,7 @@ function Get-PackagesfromInternet {
                 $SourceLocation = (Find-WHDLoadWrapperURL -SearchCriteria 'WHDLoadWrapper' -ResultLimit '10') 
             }
             if (-not ($SourceLocation)){
-                #Error reported through function
-                exit
+                $UseBackupServerImmediately = $true
             }
             if (test-path "$($Settings.WebPackagesDownloadLocation)\$($line.FileDownloadName)"){
                 Write-InformationMessage -Message "Download of $($line.FileDownloadName) already completed"
@@ -62,7 +62,7 @@ function Get-PackagesfromInternet {
                 }
             }
             if ($DownloadFileFlag -eq $true){
-                if (-not (Get-AmigaFileWeb -URL $SourceLocation -BackupURL $line.BackupSourceLocation -NameofDL $line.FileDownloadName -LocationforDL $Script:Settings.WebPackagesDownloadLocation)){
+                if (-not (Get-AmigaFileWeb -URL $SourceLocation -BackupURL $line.BackupSourceLocation -NameofDL $line.FileDownloadName -LocationforDL $Script:Settings.WebPackagesDownloadLocation -UseBackupServerImmediately $UseBackupServerImmediately)){
                     Write-ErrorMessage -Message 'Unrecoverable error with download(s)!'
                     exit
                 }
