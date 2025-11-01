@@ -3,7 +3,7 @@ function Find-WHDLoadWrapperURL{
         $SearchCriteria,
         $ResultLimit
         )        
-        $SiteLink='https://ftp2.grandis.nu'
+        $SiteLink='http://ftp2.grandis.nu'
         $ListofURLs = New-Object System.Collections.Generic.List[System.Object]
         
         $Counter = 0
@@ -11,7 +11,9 @@ function Find-WHDLoadWrapperURL{
         
         do {
             try {
-                $SearchResults=Invoke-WebRequest "https://ftp2.grandis.nu/turransearch/search.php?_search_=1&search=$SearchCriteria&category_id=Misc&exclude=&limit=$ResultLimit&httplinks=on"
+                $SearchResults=Invoke-WebRequest "http://ftp2.grandis.nu/turransearch/search.php?_search_=1&search=$SearchCriteria&category_id=Misc&exclude=&limit=$ResultLimit&httplinks=on&username=ftp%2Cany&filesonly=on"
+                                               
+
                 $IsSuccess = $true  
             }
             catch {
