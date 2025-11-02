@@ -144,7 +144,9 @@ function Write-AmigaFilestoInterimDrive {
                 $DestinationPath = [System.IO.Path]::GetFullPath($DestinationPath)            
             }
             $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{ 
-                Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata None"
+                Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata UAEMetaFile"
+                # Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata None"
+                                
                 Sequence = $_.InstallSequence
             }
         
@@ -237,7 +239,15 @@ function Write-AmigaFilestoInterimDrive {
         $Script:Settings.CurrentTaskName = "Processing Downloaded Files"
         
         Write-StartTaskMessage
-
+        
+        $Script:Settings.TotalNumberofSubTasks = 3
+        $Script:Settings.CurrentSubTaskNumber = 1
+        $Script:Settings.CurrentSubTaskName = 'Preparing default icon files for future use'
+        Write-StartSubTaskMessage
+     
+    
+        $DestinationPath = [System.IO.Path]::GetFullPath("$($Script:Settings.TempFolder)\IconFiles")
+        
         if (-not (test-path "$DestinationPath\Emu68BootDrive" -PathType Container)){
             $null = New-Item "$DestinationPath\Emu68BootDrive" -ItemType Directory
         }
@@ -247,13 +257,7 @@ function Write-AmigaFilestoInterimDrive {
         if (-not (test-path "$DestinationPath\WorkDrive" -PathType Container)){
             $null = New-Item "$DestinationPath\WorkDrive" -ItemType Directory           
         }
-        
-        $Script:Settings.TotalNumberofSubTasks = 3
-        $Script:Settings.CurrentSubTaskNumber = 1
-        $Script:Settings.CurrentSubTaskName = 'Preparing default icon files for future use'
-        Write-StartSubTaskMessage
-     
-    
+
         $null = copy-item -path "$DestinationPath\NewFolderIcon\$(Split-Path -Path $IconsPaths.NewFolderIconFilestoInstall -Leaf)" -Destination "$DestinationPath\NewFolder.info" -Force
         $null = copy-item -path "$DestinationPath\Emu68BootDiskIcon\$(Split-Path -Path $IconsPaths.Emu68BootDiskIconFilestoInstall -Leaf)" -Destination "$DestinationPath\Emu68BootDrive\disk.info" -Force
         $null = copy-item -path "$DestinationPath\SystemDiskIcon\$(Split-Path -Path $IconsPaths.SystemDiskIconFilestoInstall -Leaf)" -Destination "$DestinationPath\SystemDrive\disk.info" -Force
@@ -271,6 +275,15 @@ function Write-AmigaFilestoInterimDrive {
         Write-StartSubTaskMessage
         
         $PathtoExtractedFilesFilestoRename = [System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\ADFRenameFiles")
+
+        if (Test-Path -Path $PathtoExtractedFilesFilestoRename){
+            Get-ChildItem $PathtoExtractedFilesFilestoRename -Recurse | ForEach-Object {       
+               if  ([System.IO.Path]::GetExtension("$(Split-Path $_.Name -Leaf)") -eq ".uaem"){
+                    $null = Remove-Item -Path $_.FullName -Force
+               }
+            }
+        } 
+
      
         if (test-path $PathtoExtractedFilesFilestoRename){
             (Get-ChildItem $PathtoExtractedFilesFilestoRename  -Recurse -File).FullName |ForEach-Object {
@@ -308,14 +321,14 @@ function Write-AmigaFilestoInterimDrive {
 
      if ($CopyRemainingFiles) {
 
-        if (-not (test-path "$DestinationPath\Emu68BootDrive" -PathType Container)){
-            $null = New-Item "$DestinationPath\Emu68BootDrive" -ItemType Directory
+        if (-not (test-path "$($Script:Settings.InterimAmigaDrives)\Emu68Boot" -PathType Container)){
+            $null = New-Item "$($Script:Settings.InterimAmigaDrives)\Emu68Boot" -ItemType Directory
         }
-        if (-not (test-path "$DestinationPath\SystemDrive" -PathType Container)){
-            $null = New-Item "$DestinationPath\SystemDrive" -ItemType Directory
+        if (-not (test-path "$($Script:Settings.InterimAmigaDrives)\System" -PathType Container)){
+            $null = New-Item "$($Script:Settings.InterimAmigaDrives)\System" -ItemType Directory
         }
-        if (-not (test-path "$DestinationPath\WorkDrive" -PathType Container)){
-            $null = New-Item "$DestinationPath\WorkDrive" -ItemType Directory              
+        if (-not (test-path "$($Script:Settings.InterimAmigaDrives)\Work" -PathType Container)){
+            $null = New-Item "$($Script:Settings.InterimAmigaDrives)\Work" -ItemType Directory              
         }
 
       $Script:Settings.CurrentTaskName = "Copy Remaining files to Interim Drive"
@@ -531,15 +544,20 @@ function Write-AmigaFilestoInterimDrive {
     $Script:Settings.CurrentSubTaskNumber ++
     $Script:Settings.CurrentSubTaskName = "Modifying tooltypes"
     Write-StartSubTaskMessage
-           
-    $ListofPackagestoInstall| Where-Object {$_.ModifyInfoFileType -ne 'False' -or $_.ModifyInfoFileTooltype -ne 'False'} | ForEach-Object {
+    
+   # $ListofPackagestoInstall_temp = $ListofPackagestoInstall | Where-Object {$_.PackageName -eq "SD0 Device - info file"}
+    
+  #  $ListofPackagestoInstall_temp | Where-Object {$_.ModifyInfoFileType -ne 'False' -or $_.ModifyInfoFileTooltype -ne 'False'} | ForEach-Object {
+    $ListofPackagestoInstall | Where-Object {$_.ModifyInfoFileType -ne 'False' -or $_.ModifyInfoFileTooltype -ne 'False'} | ForEach-Object {
+  
         if ($_.NewFileName){
             $PathtoIcon = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationToInstall)\$($_.NewFileName)"
             $IconName = $_.NewFileName
         }
         else {
             $PathtoIcon = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationToInstall)\$(Split-Path -path $_.FilestoInstall -Leaf)"
-            $IconName = "$(Split-Path -path $_.FilestoInstall -Leaf)"        
+            $IconName = "$(Split-Path -path $_.FilestoInstall -Leaf)"    
+
         }
         if ($_.ModifyInfoFileType -ne 'False'){
             if (-not (Write-AmigaInfoType -IconPath $PathtoIcon -TypetoSet $_.ModifyInfoFileType)){
@@ -548,6 +566,7 @@ function Write-AmigaFilestoInterimDrive {
             }
             
         }
+    
         if ($_.ModifyInfoFileTooltype -ne 'False'){
             $TooltypestoModifyPath = "$($Script:Settings.LocationofAmigaFiles)\System\$($_.PathtoRevisedToolTypeInfo)"
             Write-InformationMessage -Message "Importing tooltype data from  `"$TooltypestoModifyPath`""
@@ -568,6 +587,7 @@ function Write-AmigaFilestoInterimDrive {
                 Write-InformationMessage -Message "Replacing Tooltype(s) in: `"$PathtoIcon`""
                 $NewToolTypes.NewValue | Out-File "$($Script:Settings.TempFolder)\ChangedInfoFiles\$($IconName)amendedtoimport.txt"            
             }
+            #Write-debug "Path to Icon: $PathtoIcon  IconName $IconName ToolTypesPath: $($Script:Settings.TempFolder)\ChangedInfoFiles\$($IconName)amendedtoimport.txt"
             if (-not (Write-AmigaTooltypes -IconPath $PathtoIcon -ToolTypesPath "$($Script:Settings.TempFolder)\ChangedInfoFiles\$($IconName)amendedtoimport.txt")){
                 exit
             }     
