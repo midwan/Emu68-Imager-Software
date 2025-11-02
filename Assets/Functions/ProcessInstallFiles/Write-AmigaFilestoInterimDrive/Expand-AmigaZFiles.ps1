@@ -6,9 +6,12 @@ function Expand-AmigaZFiles {
     )
     
     # $LocationofZFiles = "C:\Users\Matt\OneDrive\Documents\EmuImager2\Temp\InterimAmigaDrives\System\Locale"
-    #$LocationofZFiles =  "$($Script:Settings.InterimAmigaDrives)\System"
+    # $LocationofZFiles =  "$($Script:Settings.InterimAmigaDrives)\System"
 
     $CurrentLocation = Get-Location
+
+    #Write-host $CurrentLocation 
+
     $SevenzipPathtouse  = [System.IO.Path]::GetFullPath($Script:ExternalProgramSettings.SevenZipFilePath)
     $LogLocation = [System.IO.Path]::GetFullPath($Script:Settings.LogLocation)
 
@@ -48,13 +51,9 @@ function Expand-AmigaZFiles {
     
     Write-InformationMessage -Message "Deleting .Z files in location: $LocationofZFilestouse"
 
-    $LocationofZFilestousefordelete = "$LocationofZFilestouse\*.Z"
-
     Show-SpinnerWhileDeleting -ScriptBlock {
-        Remove-Item $using:LocationofZFilestousefordelete -Recurse -Force -ErrorAction SilentlyContinue
+        Get-ChildItem -Path $using:LocationofZFilestouse -Filter "*.Z" -Recurse | Remove-Item -Force -ErrorAction SilentlyContinue
     }
     
-    #Remove-Item "$LocationofZFiles\*.Z" -Recurse -Force -ErrorAction SilentlyContinue
-
-
 }
+
