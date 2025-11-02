@@ -15,7 +15,11 @@ function Copy-EMU68BootFiles {
     $DiskIconsPath = [System.IO.Path]::GetFullPath("$($Script:Settings.TempFolder)\IconFiles")
 
     if ($OutputLocationType -eq 'ImgImage'){
-        $SourcePath = [System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\Emu68Boot\`*")
+        
+        $NoBOM_UTF8 = New-Object System.Text.UTF8Encoding($false)
+        [System.IO.File]::WriteAllText("$($Script:Settings.InterimAmigaDrives)\Emu68Boot\cmdline.txt", ("$(Get-Emu68BootCmdline -SDLowSpeed)`n"), $NoBOM_UTF8)
+
+        $SourcePath = "$([System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\Emu68Boot\"))*"  
         $DestinationPath = [System.IO.Path]::GetFullPath("$($Script:GUIActions.OutputPath)\MBR\1")
         $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
             Command = "fs copy $SourcePath $DestinationPath"
