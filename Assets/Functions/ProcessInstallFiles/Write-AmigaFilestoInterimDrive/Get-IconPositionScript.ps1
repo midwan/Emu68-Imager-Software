@@ -54,7 +54,7 @@ function Get-IconPositionScript {
                 }
         
             }
-            $IconPosScript += "iconpos >NIL: `"$($Disk.Partition.DeviceName):disk.info`" type=DISK $IconX $IconY"
+            $IconPosScript += "iconpos >NIL: $($Disk.Partition.DeviceName):disk.info type=DISK $IconX $IconY"
             
         }
     }
@@ -63,7 +63,7 @@ function Get-IconPositionScript {
         foreach ($Disk in $DefaultDisks) {
             if ($Disk.Disk -eq 'EMU68BOOT'){
                 $IconPosScript += "Mount SD0: >NIL:"
-                $IconPosScript += "iconpos >NIL: `"$($Disk.DeviceName):disk.info`" type=DISK $($Disk.IconX) $($Disk.IconY)"
+                $IconPosScript += "iconpos >NIL: $($Disk.DeviceName):disk.info type=DISK $($Disk.IconX) $($Disk.IconY)"
                 $IconPosScript += "Assign SD0: DISMOUNT >NIL:"
                 $IconPosScript += "Assign EMU68BOOT: DISMOUNT >NIL:"
             }
