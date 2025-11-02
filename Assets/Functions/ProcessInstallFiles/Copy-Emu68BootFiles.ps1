@@ -59,7 +59,10 @@ function Copy-EMU68BootFiles {
             }
         }
 
+        Get-Emu68BootCmdline -SDLowSpeed | Out-File -FilePath "$($Script:Settings.InterimAmigaDrives)\Emu68Boot\cmdline.txt"
+
         $null = Copy-Item "$($Script:Settings.InterimAmigaDrives)\Emu68Boot\*" -Destination $Emu68BootPath -Recurse -force
+        
 
         $null = Copy-Item -LiteralPath $Script:GUIActions.FoundKickstarttoUse.KickstartPath -Destination "$Emu68BootPath\$($Script:GUIActions.FoundKickstarttoUse.Fat32Name)"
 
