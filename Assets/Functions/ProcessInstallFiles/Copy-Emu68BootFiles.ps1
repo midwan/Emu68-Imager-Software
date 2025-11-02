@@ -58,12 +58,13 @@ function Copy-EMU68BootFiles {
                 $Emu68BootPath = "$((Get-Partition -DiskNumber $PowershellDiskNumber -PartitionNumber 1).DriveLetter):\"            
             }
         }
+    
+        $NoBOM_UTF8 = New-Object System.Text.UTF8Encoding($false)
 
-        Get-Emu68BootCmdline -SDLowSpeed | Out-File -FilePath "$($Script:Settings.InterimAmigaDrives)\Emu68Boot\cmdline.txt"
-
+        [System.IO.File]::WriteAllText("$($Script:Settings.InterimAmigaDrives)\Emu68Boot\cmdline.txt", ("$(Get-Emu68BootCmdline -SDLowSpeed)`n"), $NoBOM_UTF8)
+       
         $null = Copy-Item "$($Script:Settings.InterimAmigaDrives)\Emu68Boot\*" -Destination $Emu68BootPath -Recurse -force
         
-
         $null = Copy-Item -LiteralPath $Script:GUIActions.FoundKickstarttoUse.KickstartPath -Destination "$Emu68BootPath\$($Script:GUIActions.FoundKickstarttoUse.Fat32Name)"
 
         if ($Script:GUIActions.InstallOSFiles -eq $true){
