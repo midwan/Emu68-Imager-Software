@@ -144,7 +144,7 @@ function Write-AmigaFilestoInterimDrive {
                 $DestinationPath = [System.IO.Path]::GetFullPath($DestinationPath)            
             }
             $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{ 
-                Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata UAEMetaFile"
+                Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata UaeFsDb"
                 # Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata None"
                                 
                 Sequence = $_.InstallSequence
@@ -278,7 +278,7 @@ function Write-AmigaFilestoInterimDrive {
 
         if (Test-Path -Path $PathtoExtractedFilesFilestoRename){
             Get-ChildItem $PathtoExtractedFilesFilestoRename -Recurse | ForEach-Object {       
-               if  ([System.IO.Path]::GetExtension("$(Split-Path $_.Name -Leaf)") -eq ".uaem"){
+               if  (($_.Name -eq "_UAEFSDB.___") -or ([System.IO.Path]::GetExtension("$(Split-Path $_.Name -Leaf)") -eq ".uaem") -or ([System.IO.Path]::GetExtension("$(Split-Path $_.Name -Leaf)") -eq ".uaefsdb")){
                     $null = Remove-Item -Path $_.FullName -Force
                }
             }
