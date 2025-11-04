@@ -15,7 +15,7 @@ $WPF_DP_Amiga_Buffers_Input.add_LostFocus({
     
     if ($WPF_DP_Amiga_Buffers_Input.ValueWhenEnterorButtonPushed -ne $WPF_DP_Amiga_Buffers_Input.Text -and $WPF_DP_Amiga_Buffers_Input.InputEntryChanged){
         # Write-debug 'Lost Focus - Performing action for WPF_DP_Amiga_Buffers_Input'   
-        if ($Script:GUICurrentStatus.SelectedAmigaPartition){{
+        if ($Script:GUICurrentStatus.SelectedAmigaPartition){
             $Script:GUICurrentStatus.SelectedAmigaPartition.Buffers = $WPF_DP_Amiga_Buffers_Input.Text
             Update-UITextbox -Partition $script:GUICurrentStatus.SelectedAmigaPartition-TextBoxControl $WPF_DP_Amiga_Buffers_Input -Value 'Buffers' -CanChangeParameter 'CanChangeBuffers'
         }

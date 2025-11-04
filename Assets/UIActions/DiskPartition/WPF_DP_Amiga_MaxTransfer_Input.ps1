@@ -15,7 +15,7 @@ $WPF_DP_Amiga_MaxTransfer_Input.add_LostFocus({
     
     if ($WPF_DP_Amiga_MaxTransfer_Input.ValueWhenEnterorButtonPushed -ne $WPF_DP_Amiga_MaxTransfer_Input.Text -and $WPF_DP_Amiga_MaxTransfer_Input.InputEntryChanged){
         # Write-debug 'Lost Focus - Performing action for WPF_DP_Amiga_MaxTransfer_Input'
-        if ($Script:GUICurrentStatus.SelectedAmigaPartition){{
+        if ($Script:GUICurrentStatus.SelectedAmigaPartition){
             $Script:GUICurrentStatus.SelectedAmigaPartition.MaxTransfer = $WPF_DP_Amiga_MaxTransfer_Input.Text
             Update-UITextbox -Partition $script:GUICurrentStatus.SelectedAmigaPartition -TextBoxControl $WPF_DP_Amiga_MaxTransfer_Input -Value 'MaxTransfer' -CanChangeParameter 'CanChangeMaxTransfer'
         }
