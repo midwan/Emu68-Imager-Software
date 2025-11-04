@@ -14,25 +14,25 @@ $WPF_Window_Button_SetupDisk.Add_Click({
 
     $Script:GUICurrentStatus.CurrentWindow = 'DiskPartition'
 
-    If ($Script:GUIActions.InstallOSFiles -eq $true){
-        if ($Script:GUICurrentStatus.InstallMediaRequiredFromUserSelectablePackages){
+    # If ($Script:GUIActions.InstallOSFiles -eq $true){
+    #     if ($Script:GUICurrentStatus.InstallMediaRequiredFromUserSelectablePackages){
            
-            If ($Script:GUIActions.FoundInstallMediatoUse){
-                $HashTableforInstallMedia = @{} # Clear Hash
-                $Script:GUIActions.FoundInstallMediatoUse | ForEach-Object {
-                    $HashTableforInstallMedia[$_.ADF_Name] = @($_.FriendlyName) 
-                }
+    #         If ($Script:GUIActions.FoundInstallMediatoUse){
+    #             $HashTableforInstallMedia = @{} # Clear Hash
+    #             $Script:GUIActions.FoundInstallMediatoUse | ForEach-Object {
+    #                 $HashTableforInstallMedia[$_.ADF_Name] = @($_.FriendlyName) 
+    #             }
                 
-                $Script:GUICurrentStatus.InstallMediaRequiredFromUserSelectablePackages | ForEach-Object {
-                    if  (-not ($HashTableforInstallMedia.ContainsKey($_.SourceLocation) -and $_.Source -eq 'ADF')){
-                        # Write-debug "Install Media requirements changed"
-                        $Script:GUIActions.FoundInstallMediatoUse = $null
-                    } 
-                 }
-            }
+    #             $Script:GUICurrentStatus.InstallMediaRequiredFromUserSelectablePackages | ForEach-Object {
+    #                 if  (-not ($HashTableforInstallMedia.ContainsKey($_.SourceLocation) -and $_.Source -eq 'ADF')){
+    #                     # Write-debug "Install Media requirements changed"
+    #                     $Script:GUIActions.FoundInstallMediatoUse = $null
+    #                 } 
+    #              }
+    #         }
                
-        }
-    }
+    #     }
+    # }
         for ($i = 0; $i -lt $WPF_Window_Main.Children.Count; $i++) {        
             if ($WPF_Window_Main.Children[$i].Name -eq $WPF_PackageSelection.Name){
                 $WPF_Window_Main.Children.Remove($WPF_PackageSelection)
