@@ -1,5 +1,7 @@
 function Copy-CDFiles {
     param (
+        [Switch]$SevenZip,
+        [Switch]$HSTImager,
         $InputFile,
         $OutputDirectory,
         $FiletoExtract,
@@ -13,6 +15,12 @@ function Copy-CDFiles {
     #  $OutputDirectory = 'E:\Emu68Imager\Working Folder\AmigaImageFiles\Workbench\Tools\'
     #  $NewFileName = 'HDToolBoxPi3.info'
 
+    # $InputFile = "C:\Users\Matt\OneDrive\Documents\DiskPartitioner\UserFiles\InstallMedia\AmigaOS39-p00h.iso"
+    # $OutputDirectory = "C:\Users\Matt\OneDrive\Documents\DiskPartitioner\Temp\IconFiles\NewFolderIcon"
+    # $FiletoExtract = "OS-Version3.9\Icons\drawer.info"
+
+    # Write-debug "Input file is: [$InputFile] Output Directory is: [$OutputDirectory] File to Extract is: [$FiletoExtract] New File Name is: [$NewFileName]"
+    
     $TempFoldertoExtract = "$($Script:Settings.TempFolder)\CDFiles\"
 
     # Write-debug "Temporary folder to extract to is: $TempFoldertoExtract"
@@ -26,11 +34,22 @@ function Copy-CDFiles {
 
     if (-not (Test-path $ExtractedFilesPath)){
         Write-InformationMessage -Message "No existing extracted files. Extracting $ParentFolder"
-        & $Script:ExternalProgramSettings.SevenZipFilePath x ('-o'+$TempFoldertoExtract) $InputFile $ParentFolder -y >($TempFoldertouse+'LogOutputTemp.txt')
-
-        if ($LASTEXITCODE -ne 0) {
-            Write-ErrorMessage -Message ('Error extracting '+$InputFile+'! Cannot continue!')
-            return $false    
+        if ($SevenZip){
+            $TempFoldertoUse = [System.IO.Path]::GetFullPath($Script:Settings.TempFolder)
+            & $Script:ExternalProgramSettings.SevenZipFilePath x ('-o'+$TempFoldertoExtract) $InputFile $ParentFolder -y >($TempFoldertouse+'LogOutputTemp.txt')
+    
+            if ($LASTEXITCODE -ne 0) {
+                Write-ErrorMessage -Message ('Error extracting '+$InputFile+'! Cannot continue!')
+                return $false    
+            }
+        }
+        if ($HSTImager){
+            $TempFoldertoExtract = [System.IO.Path]::GetFullPath($TempFoldertoExtract)
+            $Commandtouse = [PSCustomObject]@{
+                Command = "fs extract `"$InputFile\*`" `"$TempFoldertoExtract`" --uaemetadata UaeFsDb --recursive"
+            }
+                
+            Start-HSTCommands -HSTScript $Commandtouse -TotalSteps 7609 -ActivityDescription "Running HST Imager to extract OS files"            
         }
     } 
     else {

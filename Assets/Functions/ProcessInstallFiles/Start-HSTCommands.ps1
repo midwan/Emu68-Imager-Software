@@ -19,7 +19,7 @@ function Start-HSTCommands {
 # [System.IO.File]::Open($Script:Settings.HSTDetailedLogLocation, 'Open', 'Read', 'ReadWrite'))
 
 
-    if (-not ($TotalSteps)){
+    if (-not ($TotalSteps) -and ($Section)){
         
         $TotalStepstoUse = 0        
         $Section -split (";") | ForEach-Object {

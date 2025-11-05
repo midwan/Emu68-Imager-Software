@@ -182,7 +182,7 @@ function Write-AmigaFilestoInterimDrive {
     
         }
         elseIf ($IconsPaths.NewFolderIconInstallMedia -eq 'CD'){
-            if (-not (Copy-CDFiles -InputFile $IconsPaths.InstallMediaPathNewFolderIcon -FiletoExtract $IconsPaths.NewFolderIconFilestoInstall -OutputDirectory "$DestinationPath\NewFolderIcon")){
+            if (-not (Copy-CDFiles -HSTImager -InputFile $IconsPaths.InstallMediaPathNewFolderIcon -FiletoExtract $IconsPaths.NewFolderIconFilestoInstall -OutputDirectory "$DestinationPath\NewFolderIcon")){
                 Write-ErrorMessage -Message 'Error extracting file(s) from CD! Quitting'
                 exit      
             } 
@@ -195,7 +195,7 @@ function Write-AmigaFilestoInterimDrive {
             }
         }
         elseif ($IconsPaths.Emu68BootDiskIconInstallMedia -eq 'CD'){
-            if (-not (Copy-CDFiles -InputFile $IconsPaths.InstallMediaPathEmu68BootDiskIcon -FiletoExtract $IconsPaths.Emu68BootDiskIconFilestoInstall -OutputDirectory "$DestinationPath\Emu68BootDiskIcon")){
+            if (-not (Copy-CDFiles -HSTImager -InputFile $IconsPaths.InstallMediaPathEmu68BootDiskIcon -FiletoExtract $IconsPaths.Emu68BootDiskIconFilestoInstall -OutputDirectory "$DestinationPath\Emu68BootDiskIcon")){
                 Write-ErrorMessage -Message 'Error extracting file(s) from CD! Quitting'
                 exit      
             }  
@@ -208,7 +208,6 @@ function Write-AmigaFilestoInterimDrive {
             }
        }
         elseif ($IconsPaths.SystemDiskIconInstallMedia -eq 'CD'){
-            if (-not (Copy-CDFiles -InputFile $IconsPaths.InstallMediaPathSystemDiskIcon -FiletoExtract $IconsPaths.SystemDiskIconFilestoInstall -OutputDirectory "$DestinationPath\SystemDiskIcon")){
                 Write-ErrorMessage -Message 'Error extracting file(s) from CD! Quitting'
                 exit      
             }  
@@ -221,7 +220,7 @@ function Write-AmigaFilestoInterimDrive {
             }
         }
         elseif ($IconsPaths.WorkDiskIconInstallMedia -eq 'CD'){
-            if (-not (Copy-CDFiles -InputFile $IconsPaths.InstallMediaPathWorkDiskIcon -FiletoExtract $IconsPaths.WorkDiskIconFilestoInstall -OutputDirectory "$DestinationPath\WorkDiskIcon")){
+            if (-not (Copy-CDFiles -HSTImager -InputFile $IconsPaths.InstallMediaPathWorkDiskIcon -FiletoExtract $IconsPaths.WorkDiskIconFilestoInstall -OutputDirectory "$DestinationPath\WorkDiskIcon")){
                 Write-ErrorMessage -Message 'Error extracting file(s) from CD! Quitting'
                 exit      
             } 
@@ -409,7 +408,7 @@ function Write-AmigaFilestoInterimDrive {
           elseif ($_.Source -eq "CD") {
               $DestinationPath = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)"
               $DestinationPath = $DestinationPath.TrimEnd("\")
-              if (-not (Copy-CDFiles -InputFile $($_.InstallMediaPath) -OutputDirectory $DestinationPath -FiletoExtract $($_.FilestoInstall) -NewFileName $($_.NewFileName))){
+              if (-not (Copy-CDFiles -HSTImager -InputFile $($_.InstallMediaPath) -OutputDirectory $DestinationPath -FiletoExtract $($_.FilestoInstall) -NewFileName $($_.NewFileName))){
                   Write-ErrorMessage -Message 'Error extracting file(s) from CD! Quitting'
                   exit        
               }
