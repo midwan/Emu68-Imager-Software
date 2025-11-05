@@ -479,18 +479,18 @@ function Write-AmigaFilestoInterimDrive {
           $null = remove-item "$($Script:Settings.InterimAmigaDrives)\System\libs\68040.libary" -Force 
       }
       
-      $PFSOutputScript = $null 
-      $Script:GUICurrentStatus.AmigaPartitionsandBoundaries | ForEach-Object {
-          if (($_.Partition.ImportedPartition -eq $false) -and ($_.Partition.dostype -eq "PFS\3")){
-              $PFSOutputScript += "setfnsize $($_.Partition.DeviceName): 107 >NIL:`n" 
-          }
-      }
+    #   $PFSOutputScript = $null 
+    #   $Script:GUICurrentStatus.AmigaPartitionsandBoundaries | ForEach-Object {
+    #       if (($_.Partition.ImportedPartition -eq $false) -and ($_.Partition.dostype -eq "PFS\3")){
+    #           $PFSOutputScript += "setfnsize $($_.Partition.DeviceName): 107 >NIL:`n" 
+    #       }
+    #   }
      
-      if (-not (Test-Path "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRun" -PathType Container)){
-          $null = New-Item "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRun" -ItemType Directory
-      }
+    #   if (-not (Test-Path "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRun" -PathType Container)){
+    #       $null = New-Item "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRun" -ItemType Directory
+    #   }
      
-      Export-TextFileforAmiga -DatatoExport $PFSOutputScript -AddLineFeeds 'TRUE' -ExportFile "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRun\PFS"
+    #   Export-TextFileforAmiga -DatatoExport $PFSOutputScript -AddLineFeeds 'TRUE' -ExportFile "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRun\PFS"
      
       $IconPosScript_AmigaDrives = (Get-IconPositionScript -AmigaDrives)
       $IconPosScript_Emu68Boot = (Get-IconPositionScript -Emu68Boot)
