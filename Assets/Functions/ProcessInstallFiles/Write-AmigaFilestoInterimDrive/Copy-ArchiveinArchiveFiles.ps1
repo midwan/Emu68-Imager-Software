@@ -45,7 +45,7 @@ function Copy-ArchiveinArchiveFiles {
         
         Write-InformationMessage "Extracting all files within $ArchiveinArchiveName"
         
-       & $Script:ExternalProgramSettings.SevenZipFilePath x ('-o'+$ArchiveinArchiveExtractedFilesPath) ('-p'+$ArchiveinArchivePassword) $ArchiveinArchiveFullPath '*' y >($TempFoldertouse+'LogOutputTemp.txt')
+       & $Script:ExternalProgramSettings.SevenZipFilePath x ('-o'+$ArchiveinArchiveExtractedFilesPath) ('-p'+$ArchiveinArchivePassword) $ArchiveinArchiveFullPath '*' y > "$($Script:Settings.TempFolder)\LogOutputTemp.txt"
     
         if ($LASTEXITCODE -ne 0) {
             Write-ErrorMessage -Message "Error extracting $ArchiveinArchiveFullPath in $InputFile! Cannot continue!"
