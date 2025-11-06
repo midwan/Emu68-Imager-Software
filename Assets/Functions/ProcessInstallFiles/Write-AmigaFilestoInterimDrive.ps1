@@ -270,7 +270,7 @@ function Write-AmigaFilestoInterimDrive {
         $null = copy-item -path "$DestinationPath\WorkDiskIcon\$(Split-Path -Path $IconsPaths.WorkDiskIconFilestoInstall -Leaf)" -Destination "$DestinationPath\WorkDrive\disk.info" -Force
         
         if ($Script:GUIActions.KickstartVersiontoUse -eq '3.9'){
-            Write-AmigaInfoType -IconPath "$DestinationPath\NewFolder.info" -TypetoSet 'Drawer'
+            $null = Write-AmigaInfoType -IconPath "$DestinationPath\NewFolder.info" -TypetoSet 'Drawer'
          #   Write-AmigaInfoType -IconPath "$DestinationPath\SystemDrive\disk.info"-TypetoSet 'Disk'
          #   Write-AmigaInfoType -IconPath "$DestinationPath\WorkDrive\disk.info" -TypetoSet 'Disk'
          #   Write-AmigaInfoType -IconPath "$DestinationPath\Emu68BootDrive\disk.info" -TypetoSet 'Disk'       
