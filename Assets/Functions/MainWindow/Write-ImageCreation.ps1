@@ -113,6 +113,7 @@ function Write-ImageCreation {
      Get-DiskStructurestoMBRGPTDiskorImageCommands #Commands not run yet
    
      if ($Script:GUIActions.InstallOSFiles -eq $true){
+        Write-DiskIconsandPositions     
         Get-CopyFilestoAmigaDiskCommands -OutputLocationType $OutputTypetoUse #Commands not run yet
      }
 

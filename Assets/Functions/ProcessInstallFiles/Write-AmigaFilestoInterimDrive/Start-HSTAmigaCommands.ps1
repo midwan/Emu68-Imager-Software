@@ -3,13 +3,10 @@ function Start-HSTAmigaCommands {
         $HSTScript
 
     )
-     
-    $HSTScript = Get-IconPositionScriptHSTAmiga
-    
+         
     $TotalSteps = $HSTScript.Count
     $ActivityDescription = "Running HST Amiga"
     
-
     $HSTAmigaCommandScriptPath = "$($Script:Settings.TempFolder)\HSTAmigaCommandstoRun.txt"
     $Arguments = "script `"$HSTAmigaCommandScriptPath`""
     
