@@ -6,7 +6,8 @@ function Get-IconPositionScriptHSTAmiga {
     $HSTAmigaScript = [System.Collections.Generic.List[PSCustomObject]]::New()
 
     Get-InputCSVs -IconPositions | ForEach-Object {
-        $FilePath = $([System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\$($_.Drive)\$($_.file)"))
+         #write-debug "$($_.Drive)\$($_.file)"
+         $FilePath = $([System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\$($_.Drive)\$($_.file)"))
         if (Test-path -Path $FilePath){
            $FilePathtoUse = "`"$FilePath`""
            if ($_.IconX -ne "FREEX"){
