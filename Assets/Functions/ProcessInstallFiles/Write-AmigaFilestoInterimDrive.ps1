@@ -395,7 +395,12 @@ function Write-AmigaFilestoInterimDrive {
                 Write-InformationMessage -message "Copying file(s) for $PackageNametoUseforReporting"
               }                  
               #Write-InformationMessage -message "Copying file(s) from $SourcePath to $DestinationPath" 
-              $null = Copy-Item -path $SourcePath  -Destination $DestinationPath -Force -Recurse
+              if ((Split-Path $SourcePath -leaf) -eq "_UAEFSDB.___"){
+                Copy-UAEFSDB -SourcePath $SourcePath -DestinationPath $DestinationPath
+              }
+              else {
+                  $null = Copy-Item -path $SourcePath  -Destination $DestinationPath -Force -Recurse
+              }
           }
      
           elseif ($_.Source -eq "Local - ConfigTXT") {
