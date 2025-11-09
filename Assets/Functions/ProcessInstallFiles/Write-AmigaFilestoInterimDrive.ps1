@@ -108,7 +108,7 @@ function Write-AmigaFilestoInterimDrive {
         
         Write-StartTaskMessage
         
-        $Script:Settings.TotalNumberofSubTasks = 3
+        $Script:Settings.TotalNumberofSubTasks = 4
         
         $Script:Settings.CurrentSubTaskNumber = 1
         $Script:Settings.CurrentSubTaskName = "Removing Existing Files"
@@ -236,34 +236,28 @@ function Write-AmigaFilestoInterimDrive {
             Write-InformationMessage -Message 'No ADF files to process!'
         }
     
-        Write-TaskCompleteMessage 
-    
-    }
-
-    if ($ProcessDownloadedFiles){
-        
-        $Script:Settings.CurrentTaskName = "Processing Downloaded Files"
-        
-        Write-StartTaskMessage
-        
-        $Script:Settings.TotalNumberofSubTasks = 3
-        $Script:Settings.CurrentSubTaskNumber = 1
+        $Script:Settings.CurrentSubTaskNumber ++
         $Script:Settings.CurrentSubTaskName = 'Preparing default icon files for future use'
+
         Write-StartSubTaskMessage
-     
-    
-        $DestinationPath = [System.IO.Path]::GetFullPath("$($Script:Settings.TempFolder)\IconFiles")
-        
-        if (-not (test-path "$DestinationPath\Emu68BootDrive" -PathType Container)){
-            $null = New-Item "$DestinationPath\Emu68BootDrive" -ItemType Directory
+            
+        if (Test-Path "$DestinationPath\NewFolder.info"){
+            $null = Remove-Item -Path "$DestinationPath\NewFolder.info"
         }
-        if (-not (test-path "$DestinationPath\SystemDrive" -PathType Container)){
-            $null = New-Item "$DestinationPath\SystemDrive" -ItemType Directory
+        if (Test-Path "$DestinationPath\Emu68BootDrive"){
+            $null = Remove-Item -Path "$DestinationPath\Emu68BootDrive" -Recurse -Force
         }
-        if (-not (test-path "$DestinationPath\WorkDrive" -PathType Container)){
-            $null = New-Item "$DestinationPath\WorkDrive" -ItemType Directory           
+        if (Test-Path "$DestinationPath\SystemDrive"){
+            $null = Remove-Item -Path "$DestinationPath\SystemDrive" -Recurse -Force
+        }
+        if (Test-Path "$DestinationPath\WorkDrive"){
+            $null = Remove-Item -Path "$DestinationPath\WorkDrive" -Recurse -Force
         }
 
+        $null = New-Item "$DestinationPath\Emu68BootDrive" -ItemType Directory
+        $null = New-Item "$DestinationPath\SystemDrive" -ItemType Directory
+        $null = New-Item "$DestinationPath\WorkDrive" -ItemType Directory           
+            
         $null = copy-item -path "$DestinationPath\NewFolderIcon\$(Split-Path -Path $IconsPaths.NewFolderIconFilestoInstall -Leaf)" -Destination "$DestinationPath\NewFolder.info" -Force
         $null = copy-item -path "$DestinationPath\Emu68BootDiskIcon\$(Split-Path -Path $IconsPaths.Emu68BootDiskIconFilestoInstall -Leaf)" -Destination "$DestinationPath\Emu68BootDrive\disk.info" -Force
         $null = copy-item -path "$DestinationPath\SystemDiskIcon\$(Split-Path -Path $IconsPaths.SystemDiskIconFilestoInstall -Leaf)" -Destination "$DestinationPath\SystemDrive\disk.info" -Force
@@ -274,9 +268,21 @@ function Write-AmigaFilestoInterimDrive {
          #   Write-AmigaInfoType -IconPath "$DestinationPath\SystemDrive\disk.info"-TypetoSet 'Disk'
          #   Write-AmigaInfoType -IconPath "$DestinationPath\WorkDrive\disk.info" -TypetoSet 'Disk'
          #   Write-AmigaInfoType -IconPath "$DestinationPath\Emu68BootDrive\disk.info" -TypetoSet 'Disk'       
-        }
+        }        
+
+        Write-TaskCompleteMessage 
+    
+    }
+
+    if ($ProcessDownloadedFiles){
         
-        $Script:Settings.CurrentSubTaskNumber ++
+        $Script:Settings.CurrentTaskName = "Processing Downloaded Files"
+        
+        Write-StartTaskMessage
+        
+        $Script:Settings.TotalNumberofSubTasks = 2
+        $Script:Settings.CurrentSubTaskNumber = 1
+      
         $Script:Settings.CurrentSubTaskName = 'Renaming extracted files where needed'
         Write-StartSubTaskMessage
         
