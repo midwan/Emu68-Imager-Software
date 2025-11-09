@@ -2,8 +2,17 @@ function Get-StartupFiles {
     param (
         
     )
+
+    $StartupFiles = @()
+    
+    Import-Csv -Path $Script:Settings.StartupFilesCSV.Path -Delimiter ';' | ForEach-Object {
+        if ($_.MinimumInstallerVersion -ne "" -and $_.InstallerVersionLessThan -ne ""){
+            if (($Script:Settings.Version -ge [system.version]$_.MinimumInstallerVersion) -and ($Script:Settings.Version -lt [system.version]$_.InstallerVersionLessThan)){
+                $StartupFiles += $_
+            }
+        }
+    }
       
-    $StartupFiles = Import-Csv -Path $Script:Settings.StartupFilesCSV.Path -Delimiter ';'
     $PackagestoInstall = Get-PackagestoInstall -ListofFilestoCheck $StartupFiles
     $PackageName = $null
 

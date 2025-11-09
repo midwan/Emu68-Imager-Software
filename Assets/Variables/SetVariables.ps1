@@ -48,7 +48,7 @@ $Script:Settings = [PSCustomObject]@{
     }
     StartupFilesCSV = [PSCustomObject]@{
         Path = '.\InputFiles\StartupFiles.CSV'
-        GID = '704643152'
+        GID = '970627624'
     }
     OSVersionstoInstallCSV = [PSCustomObject]@{
         Path = '.\InputFiles\OSVersionstoInstall.CSV'
