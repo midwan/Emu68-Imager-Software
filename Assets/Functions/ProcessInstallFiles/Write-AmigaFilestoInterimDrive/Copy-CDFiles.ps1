@@ -46,7 +46,7 @@ function Copy-CDFiles {
         if ($HSTImager){
             $TempFoldertoExtract = [System.IO.Path]::GetFullPath($TempFoldertoExtract)
             $Commandtouse = [PSCustomObject]@{
-                Command = "fs extract `"$InputFile\*`" `"$TempFoldertoExtract`" --uaemetadata UaeFsDb --recursive"
+                Command = "fs extract `"$InputFile\*`" `"$TempFoldertoExtract`" --uaemetadata UaeFsDb --recursive --makedir"
             }
                 
             Start-HSTCommands -HSTScript $Commandtouse -TotalSteps 7609 -ActivityDescription "Running HST Imager to extract OS files"            

@@ -160,7 +160,7 @@ function Get-DiskStructurestoMBRGPTDiskorImageCommands {
                                    if ($Script:GUIActions.InstallOSFiles -eq $true){
                                        Write-InformationMessage -Message "Adding command to create .info file for imported files folder"
                                        $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
-                                           Command = "fs copy `"$([System.IO.Path]::GetFullPath("$($Script:Settings.TempFolder)\ImportedFiles.info"))`" `"$($Script:GUIActions.OutputPath)\mbr\$MBRPartitionCounter\rdb\$($RDBPartition.Partition.DeviceName)`" --recursive"
+                                           Command = "fs copy `"$([System.IO.Path]::GetFullPath("$($Script:Settings.TempFolder)\ImportedFiles.info"))`" `"$($Script:GUIActions.OutputPath)\mbr\$MBRPartitionCounter\rdb\$($RDBPartition.Partition.DeviceName)`" --makedir --recursive"
                                            Sequence = 5      
                                        }                                     
                                    }

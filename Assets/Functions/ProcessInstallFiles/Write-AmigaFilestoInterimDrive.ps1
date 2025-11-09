@@ -150,7 +150,7 @@ function Write-AmigaFilestoInterimDrive {
                 $DestinationPath = [System.IO.Path]::GetFullPath($DestinationPath)            
             }
             $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{ 
-                Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata UaeFsDb --recursive"
+                Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata UaeFsDb --recursive --makedir"
                 # Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata None --recursive"
                                 
                 Sequence = $_.InstallSequence
@@ -176,7 +176,7 @@ function Write-AmigaFilestoInterimDrive {
     
         If ($IconsPaths.NewFolderIconInstallMedia -eq 'ADF'){
             $Script:GUICurrentStatus.HSTCommandstoProcess.CopyIconFiles += [PSCustomObject]@{
-                Command = "fs extract `"$($IconsPaths.InstallMediaPathNewFolderIcon)\$($IconsPaths.NewFolderIconFilestoInstall)`" `"$DestinationPath\NewFolderIcon`" --uaemetadata None --recursive" 
+                Command = "fs extract `"$($IconsPaths.InstallMediaPathNewFolderIcon)\$($IconsPaths.NewFolderIconFilestoInstall)`" `"$DestinationPath\NewFolderIcon`" --uaemetadata None --recursive --makedir" 
                 Sequence = 3           
              }
     
@@ -190,7 +190,7 @@ function Write-AmigaFilestoInterimDrive {
     
         if ($IconsPaths.Emu68BootDiskIconInstallMedia -eq 'ADF'){
             $Script:GUICurrentStatus.HSTCommandstoProcess.CopyIconFiles += [PSCustomObject]@{
-                Command = "fs extract `"$($IconsPaths.InstallMediaPathEmu68BootDiskIcon)\$($IconsPaths.Emu68BootDiskIconFilestoInstall)`" `"$DestinationPath\Emu68BootDiskIcon`" --uaemetadata None --recursive" 
+                Command = "fs extract `"$($IconsPaths.InstallMediaPathEmu68BootDiskIcon)\$($IconsPaths.Emu68BootDiskIconFilestoInstall)`" `"$DestinationPath\Emu68BootDiskIcon`" --uaemetadata None --recursive --makedir" 
                 Sequence = 3
             }
         }
@@ -203,7 +203,7 @@ function Write-AmigaFilestoInterimDrive {
     
         if ($IconsPaths.SystemDiskIconInstallMedia -eq 'ADF'){
             $Script:GUICurrentStatus.HSTCommandstoProcess.CopyIconFiles += [PSCustomObject]@{
-                Command = "fs extract `"$($IconsPaths.InstallMediaPathSystemDiskIcon)\$($IconsPaths.SystemDiskIconFilestoInstall)`" `"$DestinationPath\SystemDiskIcon`" --uaemetadata None --recursive"
+                Command = "fs extract `"$($IconsPaths.InstallMediaPathSystemDiskIcon)\$($IconsPaths.SystemDiskIconFilestoInstall)`" `"$DestinationPath\SystemDiskIcon`" --uaemetadata None --recursive --makedir"
                 Sequence = 3
             }
        }
@@ -216,7 +216,7 @@ function Write-AmigaFilestoInterimDrive {
     
         if ($IconsPaths.WorkDiskIconInstallMedia -eq 'ADF'){
             $Script:GUICurrentStatus.HSTCommandstoProcess.CopyIconFiles += [PSCustomObject]@{
-                Command = "fs extract `"$($IconsPaths.InstallMediaPathWorkDiskIcon)\$($IconsPaths.WorkDiskIconFilestoInstall)`" `"$DestinationPath\WorkDiskIcon`" --uaemetadata None --recursive"
+                Command = "fs extract `"$($IconsPaths.InstallMediaPathWorkDiskIcon)\$($IconsPaths.WorkDiskIconFilestoInstall)`" `"$DestinationPath\WorkDiskIcon`" --uaemetadata None --recursive --makedir"
                 Sequence = 3
             }
         }
