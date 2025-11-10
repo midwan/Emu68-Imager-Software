@@ -27,7 +27,7 @@ function Get-CopyFilestoAmigaDiskCommands {
         if (Test-path (Split-Path -Path $SourcePath -Parent)){
             Write-InformationMessage -Message "Adding commands for copying file(s) to $RDBDeviceName for Drive $($_.Disk)"
             $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
-                Command = "fs copy `"$SourcePath`" `"$DestinationPath`" --makedir --recursive --uaemetadata UaeFsDb"                
+                Command = "fs copy `"$SourcePath`" `"$DestinationPath`" --makedir --recursive --uaemetadata UaeFsDb --makedir"                
                 Sequence = 5
             }
         }
