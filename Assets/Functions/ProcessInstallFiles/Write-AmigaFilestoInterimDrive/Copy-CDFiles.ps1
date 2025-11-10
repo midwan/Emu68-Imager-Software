@@ -21,7 +21,14 @@ function Copy-CDFiles {
 
     # Write-debug "Input file is: [$InputFile] Output Directory is: [$OutputDirectory] File to Extract is: [$FiletoExtract] New File Name is: [$NewFileName]"
     
-    $TempFoldertoExtract = "$($Script:Settings.TempFolder)\CDFiles\"
+    if ($SevenZip){
+        $TempFoldertoExtract = "$($Script:Settings.TempFolder)\CDFilesSevenZip\"
+    }
+
+    if ($HSTImager){
+        $TempFoldertoExtract = "$($Script:Settings.TempFolder)\CDFilesHSTImager\"
+    }
+
 
     # Write-debug "Temporary folder to extract to is: $TempFoldertoExtract"
 
@@ -60,6 +67,10 @@ function Copy-CDFiles {
         $null = New-Item -Path $OutputDirectory -ItemType Directory
     }
     
+    if ($SevenZip){
+        $FiletoExtract = "$(Split-Path $FiletoExtract -Parent)\_$(Split-Path $FiletoExtract -Leaf)"
+    }
+
     if ($NewFileName){
         Write-InformationMessage -Message "Copying file $TempFoldertoExtract$FiletoExtract to $OutputDirectory with new name of $NewFileName"
         Copy-Item -Path "$TempFoldertoExtract$FiletoExtract" -Destination "$OutputDirectory\$NewFileName" -Force -Recurse 
@@ -68,6 +79,6 @@ function Copy-CDFiles {
         Write-InformationMessage -Message "Copying file $TempFoldertoExtract$FiletoExtract to $OutputDirectory"
         Copy-Item -Path "$TempFoldertoExtract$FiletoExtract" -Destination $OutputDirectory -Force -Recurse 
     }
+    return $true
 
-            return $true
 }
