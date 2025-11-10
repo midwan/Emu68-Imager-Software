@@ -16,7 +16,7 @@ function Write-DiskIconsandPositions {
         $DeviceNameVolumeName = "$($_.DeviceName)$($_.VolumeName)"
         $HashTableforDefaultDisks[$DeviceNameVolumeName] = @($_.Disk,$_.IconX,$_.IconY) 
         if ($_.Disk -eq "EMU68BOOT"){
-            $SourcePath = "$SourceIconsPath\Emu68BootDrive\disk.info" 
+            $SourcePath = "$SourceIconsPath\Emu68BootDisk\disk.info" 
             $DestinationPath = "$DiskIconsPath\$($_.DeviceName)\disk.info"
             if (-not (test-path (Split-Path -Path $DestinationPath -Parent))){
                 $null = new-item (Split-Path -Path $DestinationPath -Parent) -ItemType Directory
@@ -50,14 +50,14 @@ function Write-DiskIconsandPositions {
             $_.IconX = [int]($HashTableforDefaultDisks.($_.DeviceNameVolumeName)[1])
             $_.IconY = [int]($HashTableforDefaultDisks.($_.DeviceNameVolumeName)[2])     
             if (($HashTableforDefaultDisks.($_.DeviceNameVolumeName)[0]) -eq "System"){
-                $SourcePath = "$SourceIconsPath\SystemDrive\disk.info" 
+                $SourcePath = "$SourceIconsPath\SystemDisk\disk.info" 
             }
             elseif (($HashTableforDefaultDisks.($_.DeviceNameVolumeName)[0]) -eq "Work"){
-                $SourcePath = "$SourceIconsPath\WorkDrive\disk.info" 
+                $SourcePath = "$SourceIconsPath\WorkDisk\disk.info" 
             }    
         }
         else {
-            $SourcePath = "$SourceIconsPath\WorkDrive\disk.info"         
+            $SourcePath = "$SourceIconsPath\WorkDisk\disk.info"         
             $_.IconX = [int]$Script:Settings.AmigaWorkDiskIconXPosition
             $_.IconY =  $IconYtoUseWork
             $IconYtoUseWork += [int]$Script:Settings.AmigaWorkDiskIconYPositionSpacing
