@@ -119,7 +119,8 @@ function Write-ImageCreation {
      if (($OutputTypetoUse -eq "Physical Disk") -or ($OutputTypetoUse -eq "VHDImage")){
         $Script:Settings.CurrentSubTaskNumber ++
         $Script:Settings.CurrentSubTaskName = "Processing Commands on Disk (this may take a few minutes depending on the size of your disk)"
-
+        Write-InformationMessage -Message "Disk size (Bytes) is: $($WPF_DP_Disk_GPTMBR.DiskSizeBytes)"
+        
         Write-StartSubTaskMessage
 
         if ($OutputTypetoUse -eq 'VHDImage'){
@@ -149,7 +150,7 @@ function Write-ImageCreation {
         $Script:Settings.CurrentSubTaskNumber ++
         $Script:Settings.CurrentTaskName = 'Processing Commands on Disk'
 
-        Write-InformationMessage -Message "Disk size (Bytes) is: $($WPF_DP_Disk_GPTMBR.DiskSizeBytes)"
+       
 
         Write-StartSubTaskMessage
         $HSTCommandstoRun = $Script:GUICurrentStatus.HSTCommandstoProcess.DiskStructures + $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk
@@ -159,9 +160,7 @@ function Write-ImageCreation {
      Write-TaskCompleteMessage 
      
      if ($OutputTypetoUse -eq 'VHDImage'){
-
-        Write-InformationMessage -Message "Disk size (Bytes) is: $($WPF_DP_Disk_GPTMBR.DiskSizeBytes)"
-        
+       
         $IsMounted = (Get-DiskImage -ImagePath $Script:GUIActions.OutputPath -ErrorAction Ignore).Attached
         if ($IsMounted -eq $true){
            Write-InformationMessage -Message "Dismounting existing image: $($Script:GUIActions.OutputPath)"
@@ -173,15 +172,7 @@ function Write-ImageCreation {
      if ($HSTCommandstoRun){
         Start-HSTCommands -HSTScript $HSTCommandstoRun -section "AdjustParametersonImportedRDBPartition" -ActivityDescription 'Processing commands' -ReportTime
      }
-        
-     $FullListofCommands =   $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles +`
-                             $Script:GUICurrentStatus.HSTCommandstoProcess.CopyIconFiles + `
-                             $Script:GUICurrentStatus.HSTCommandstoProcess.NewDiskorImage +`
-                             $Script:GUICurrentStatus.HSTCommandstoProcess.DiskStructures + `
-#                                $Script:GUICurrentStatus.HSTCommandstoProcess.CopyImportedFiles +`
-                             $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk +`
-                             $Script:GUICurrentStatus.HSTCommandstoProcess.AdjustParametersonImportedRDBPartitions                           
-                                                  
+                                                          
      $Script:GUICurrentStatus.EndTimeForRunningInstall = (Get-Date -Format HH:mm:ss)
      $ElapsedTime = (New-TimeSpan -Start $Script:GUICurrentStatus.StartTimeForRunningInstall -end $Script:GUICurrentStatus.EndTimeForRunningInstall).TotalSeconds
    
@@ -191,6 +182,6 @@ function Write-ImageCreation {
 
      Write-InformationMessage -message "The full path to the file is: $([System.IO.Path]::GetFullPath($Script:Settings.LogLocation))"
 
-    "HST imager commands ran:" |Out-File $Script:Settings.LogLocation -Append -Encoding utf8
-     $FullListofCommands.Command | Out-File $Script:Settings.LogLocation -Append -Encoding utf8 -Width 2000
+     Write-HSTCommandstoLog
+
 }
