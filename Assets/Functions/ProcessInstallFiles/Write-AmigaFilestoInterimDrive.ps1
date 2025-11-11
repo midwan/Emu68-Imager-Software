@@ -146,21 +146,28 @@ function Write-AmigaFilestoInterimDrive {
                 $HSTCommandtoUse = $null
                 $SourcePath  = "$($_.InstallMediaPath)\$($_.FilestoInstall)"
                 If ($_.NewFileName -ne ""){
-                    # $FileName = Split-Path $SourcePath -Leaf
-                    # $LocationtoInstalltoUse = ($($_.LocationtoInstall)).replace('\','_XXX_')      
-                    # if ($FileName.Substring($FileName.Length-2) -eq ".Z"){
-                    #     $NewFileNametoUse = "$($_.NewFileName).Z"
-                    # }
-                    # else{
-                    #     $NewFileNametoUse = $_.NewFileName 
-                    # }
-                    $DestinationPath = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)\$($_.NewFileName)"
-                    $DestinationPath = [System.IO.Path]::GetFullPath($DestinationPath)
+                    $DestinationPathFolder = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)"
+                    $DestinationPathFolder = [System.IO.Path]::GetFullPath($DestinationPathFolder)
+                    $DestinationPathFull = "$DestinationPathFolder\$($_.NewFileName)"
+                    $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{
+                        Command = "fs mkdir $DestinationPathFolder"
+                        Sequence = $_.InstallSequence                                                    
+                    }
+                    
+                    $HSTCommandtoUse = 
                     if ($_.UseUAEFSDB -eq $true){
-                        $HSTCommandtoUse = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata UaeFsDb --makedir"
+
+                         $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{
+                            Command = "fs extract `"$SourcePath`" `"$DestinationPathFull`" --uaemetadata UaeFsDb --recursive FALSE" 
+                            Sequence = $_.InstallSequence
+                         }
+
                     }
                     elseif ($_.UseUAEFSDB -eq $false){
-                        $HSTCommandtoUse = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata None --makedir"
+                        $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{
+                            Command = "fs extract `"$SourcePath`" `"$DestinationPathFull`" --uaemetadata None --recursive FALSE"
+                            Sequence = $_.InstallSequence
+                        }
                     }
             
                 }
@@ -168,17 +175,21 @@ function Write-AmigaFilestoInterimDrive {
                     $DestinationPath = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)"
                     $DestinationPath = [System.IO.Path]::GetFullPath($DestinationPath)   
                     if ($_.UseUAEFSDB -eq $true){
-                        $HSTCommandtoUse = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata UaeFsDb --recursive --makedir"        
+                         $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{
+                            Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata UaeFsDb --recursive TRUE --makedir TRUE"    
+                            Sequence = $_.InstallSequence
+                         }
+
                     } 
                     elseif ($_.UseUAEFSDB -eq $false){
-                        $HSTCommandtoUse = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata None --recursive --makedir"  
+                        $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{
+                            Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata None --recursive TRUE --makedir TRUE"  
+                            Sequence = $_.InstallSequence
+                         }
+
                     }
                 }
-                $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{ 
-                    Command = $HSTCommandtoUse                 
-                    Sequence = $_.InstallSequence
-                }
-            
+           
             }
 
         }
@@ -247,53 +258,10 @@ function Write-AmigaFilestoInterimDrive {
 
     if ($ProcessDownloadedFiles){
         
-        $Script:Settings.CurrentTaskName = "Processing Downloaded Files"
-        
+        $Script:Settings.CurrentTaskName = "Processing Downloaded Files - Uncompressing .Z Files"
         Write-StartTaskMessage
-        
-        $Script:Settings.TotalNumberofSubTasks = 2
-        $Script:Settings.CurrentSubTaskNumber = 1
-      
-        $Script:Settings.CurrentSubTaskName = 'Renaming extracted files where needed'
-        Write-StartSubTaskMessage
-        
-        $PathtoExtractedFilesFilestoRename = [System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\ADFRenameFiles")
-
-        if (Test-Path -Path $PathtoExtractedFilesFilestoRename){
-            Get-ChildItem $PathtoExtractedFilesFilestoRename -Recurse | ForEach-Object {       
-               if  (($_.Name -eq "_UAEFSDB.___") -or ([System.IO.Path]::GetExtension("$(Split-Path $_.Name -Leaf)") -eq ".uaem") -or ([System.IO.Path]::GetExtension("$(Split-Path $_.Name -Leaf)") -eq ".uaefsdb")){
-                    $null = Remove-Item -Path $_.FullName -Force
-               }
-            }
-        } 
-
-     
-        if (test-path $PathtoExtractedFilesFilestoRename){
-            (Get-ChildItem $PathtoExtractedFilesFilestoRename  -Recurse -File).FullName |ForEach-Object {
-                $SourcePath = $_
-                $ParentPathtoRemove = "$PathtoExtractedFilesFilestoRename\"
-                $DestinationPath = ($_).replace('_XXX_','\').Replace($ParentPathtoRemove,'') 
-                $DestinationPath = "$($Script:Settings.InterimAmigaDrives)\$DestinationPath" 
-                $DestinationPath = Split-Path $DestinationPath -Parent
-                $ParentFolder = Split-Path $DestinationPath -Parent
-                if (-not (Test-Path -Path $ParentFolder -PathType Container)){
-                    $null = New-Item -Path $ParentFolder -ItemType Directory
-                }
-#                Write-InformationMessage -Message "Copying file `"$SourcePath`" to `"$DestinationPath`""
-                $null = copy-item $SourcePath $DestinationPath
-                if ($DestinationPath.Substring($DestinationPath.Length-2) -eq ".Z"){
-                    $DestinationPathtoRemove = $DestinationPath.Substring(0,$DestinationPath.Length-2)
-                    if (Test-Path $DestinationPathtoRemove){
-                        $null = Remove-Item $DestinationPathtoRemove -Force
-                    } 
-                }          
-            }
-        }
-     
+             
         if (($Script:GUIActions.OSInstallMediaType -eq 'Disk') -and ([system.version]$Script:GUIActions.KickstartVersiontoUse -ge [system.version]3.2) -and ([system.version]$Script:GUIActions.KickstartVersiontoUse -lt [system.version]3.3)){
-            $Script:Settings.CurrentSubTaskNumber ++
-            $Script:Settings.CurrentSubTaskName = "Uncompressing .Z Files"
-            Write-StartSubTaskMessage
             
            Expand-AmigaZFiles -LocationofZFiles "$($Script:Settings.InterimAmigaDrives)\System" -MultipleDirectoryFlag
         }
@@ -323,12 +291,66 @@ function Write-AmigaFilestoInterimDrive {
       $Script:Settings.CurrentSubTaskName = 'Copying files'
       Write-StartSubTaskMessage
      
-      $ListofPackagestoInstall | Where-Object {$_.Source -eq 'Local - ConfigTXT' -or $_.Source -eq 'Local - LHA File' -or $_.Source -eq 'Github' -or  $_.Source -eq 'Local' -or $_.Source -eq 'ArchiveinArchive' -or $_.Source -eq 'CD' `
-                                                -or $_.Source -eq 'Web' -or $_.Source -eq 'Web - SearchforPackageAminet' -or $_.Source -eq 'Web - SearchforPackageWHDLoadWrapper'}  | ForEach-Object {
-     
-     
-          if ($_.Source -eq 'Local - LHA File'){
-              Write-InformationMessage -Message "Processing Local Packages"
+      $PackageNametoUseforReporting = $null
+
+      $ListofPackagestoInstall  | Where-Object {( ($_.Source -eq 'Local - ConfigTXT' `
+                                                 -or $_.Source -eq 'Local - LHA File' `
+                                                 -or $_.Source -eq 'Github' `
+                                                 -or  $_.Source -eq 'Local' `
+                                                 -or $_.Source -eq 'ArchiveinArchive' `
+                                                 -or $_.Source -eq 'CD' `
+                                                 -or $_.Source -eq 'Web' `
+                                                 -or $_.Source -eq 'Web - SearchforPackageAminet' `
+                                                 -or $_.Source -eq 'Web - SearchforPackageWHDLoadWrapper') `
+                                                #-and ($_.PackageName -eq "Roadshow")
+                                                )} `
+       | Sort-Object {$_.PackageName} | ForEach-Object {      
+           
+           if ($_.PackageName -ne $PackageNametoUseforReporting){
+               $PackageNametoUseforReporting = $_.PackageName 
+               Write-InformationMessage -message "Processing file(s) for $PackageNametoUseforReporting"
+            }   
+            # Peform Copying
+            if ($_.Source -eq 'Github' -or $_.Source -eq 'Web' -or $_.Source -eq 'Web - SearchforPackageAminet' -or $_.Source -eq 'Web - SearchforPackageWHDLoadWrapper' ){
+               if ($_.GithubReleaseType -eq "Release-NoArchive") {
+                   $ArchiveNameExtractedFilePath = $null             
+                   $SourcePath = "$($Script:Settings.WebPackagesDownloadLocation)\$($_.FilestoInstall)"     
+                }
+              else {
+                  $ArchiveNameExtractedFilePath = Split-Path -Path $_.FileDownloadName -Leaf
+                  if (($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".lha") -or ($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".lzx") -or ($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".zip")){
+                      $ArchiveNameExtractedFilePath = $ArchiveNameExtractedFilePath.Substring(0,$ArchiveNameExtractedFilePath.Length-4)
+                  }
+                  $SourcePath = "$($Script:Settings.WebPackagesDownloadLocation)\$ArchiveNameExtractedFilePath\$($_.FilestoInstall)"   
+              }          
+              $DestinationFolder = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)"
+              $DestinationFolder = $DestinationFolder.TrimEnd('\')     
+
+              if (-not (test-path $DestinationFolder -PathType Container)){
+                  $null = New-Item -Path $DestinationFolder -ItemType Directory   
+              }              
+              if ($_.NewFileName -ne ""){
+                  $DestinationPath = "$DestinationFolder\$($_.NewFileName)"
+              }
+              else {
+                  $DestinationPath = $DestinationFolder
+              }
+
+              if ($SourcePath -match "\*"){
+                  (Resolve-Path -Path $SourcePath).path | ForEach-Object {
+                    $SourcePath = $_
+                      #Write-debug "Source Path is: $SourcePath Destination Path is: $DestinationPath" 
+                      $null = Copy-Item $SourcePath  $DestinationPath -Force -Recurse
+                    }    
+              }
+              else {
+                #Write-debug "Source Path is: $SourcePath Destination Path is: $DestinationPath" 
+                $null = Copy-Item $SourcePath  $DestinationPath -Force -Recurse
+              }
+
+           }                  
+
+          elseif ($_.Source -eq 'Local - LHA File'){
                $ArchiveNameExtractedFilePath = Split-Path -Path $_.SourceLocation -Leaf
                if ($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".lha"){
                    $ArchiveNameExtractedFilePath = $ArchiveNameExtractedFilePath.Substring(0,$ArchiveNameExtractedFilePath.Length-4)
@@ -345,41 +367,43 @@ function Write-AmigaFilestoInterimDrive {
                else {
                    $DestinationPath = $DestinationFolder
                }  
-              if ($_.PackageName -ne $PackageNametoUseforReporting){
-                $PackageNametoUseforReporting = $_.PackageName 
-                Write-InformationMessage -message "Copying file(s) for $PackageNametoUseforReporting"
-              }                     
-               (Resolve-Path -Path $SourcePath).path | ForEach-Object {
-                   $SourcePath = $_
-               #    Write-InformationMessage -message "Copying file(s) from $SourcePath to $DestinationPath" 
-                   $null = Copy-Item $SourcePath  $DestinationPath -Force -Recurse
-               } 
-     
-          }
-     
-           elseif ($_.Source -eq "Local"){
-              $SourcePath = "$($Script:Settings.LocationofAmigaFiles)\$($_.SourceLocation)"       
-              $DestinationPath = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)"
-              $DestinationPath = $DestinationPath.TrimEnd("\")
-              if (-not (Test-Path $DestinationPath -PathType Container)){
-                  $null = New-Item -Path $DestinationPath -ItemType Directory
-              }
-              if  ($_.NewFileName){
-                  $DestinationPath = "$DestinationPath\$($_.NewFileName)" 
-              }
-              if ($_.PackageName -ne $PackageNametoUseforReporting){
-                $PackageNametoUseforReporting = $_.PackageName 
-                Write-InformationMessage -message "Copying file(s) for $PackageNametoUseforReporting"
-              }                  
-              #Write-InformationMessage -message "Copying file(s) from $SourcePath to $DestinationPath" 
-              if ((Split-Path $SourcePath -leaf) -eq "_UAEFSDB.___"){
-                Copy-UAEFSDB -SourcePath $SourcePath -DestinationPath $DestinationPath
-              }
+              if ($SourcePath -match "\*"){
+                  (Resolve-Path -Path $SourcePath).path | ForEach-Object {
+                    $SourcePath = $_
+                      #Write-debug "Source Path is: $SourcePath Destination Path is: $DestinationPath" 
+                      $null = Copy-Item $SourcePath  $DestinationPath -Force -Recurse
+                    }    
+              }                
               else {
-                  $null = Copy-Item -path $SourcePath  -Destination $DestinationPath -Force -Recurse
+                #Write-debug "Source Path is: $SourcePath Destination Path is: $DestinationPath" 
+                $null = Copy-Item $SourcePath  $DestinationPath -Force -Recurse
               }
-          }
      
+          }
+
+           elseif ($_.Source -eq "Local"){
+                 $SourcePath = "$($Script:Settings.LocationofAmigaFiles)\$($_.SourceLocation)"       
+                 $DestinationPath = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)"
+                 $DestinationPath = $DestinationPath.TrimEnd("\")
+                 if (-not (Test-Path $DestinationPath -PathType Container)){
+                     $null = New-Item -Path $DestinationPath -ItemType Directory
+                 }
+                 if  ($_.NewFileName){
+                     $DestinationPath = "$DestinationPath\$($_.NewFileName)" 
+                 }
+                 if ($_.PackageName -ne $PackageNametoUseforReporting){
+                   $PackageNametoUseforReporting = $_.PackageName 
+                   Write-InformationMessage -message "Copying file(s) for $PackageNametoUseforReporting"
+                 }                  
+                 #Write-InformationMessage -message "Copying file(s) from $SourcePath to $DestinationPath" 
+                 if ((Split-Path $SourcePath -leaf) -eq "_UAEFSDB.___"){
+                   Copy-UAEFSDB -SourcePath $SourcePath -DestinationPath $DestinationPath
+                 }
+                 else {
+                     $null = Copy-Item -path $SourcePath  -Destination $DestinationPath -Force -Recurse
+                 }
+             }
+
           elseif ($_.Source -eq "Local - ConfigTXT") {
               $SourcePath = "$($Script:Settings.LocationofAmigaFiles)\$($_.SourceLocation)"
               $FileName = Split-Path -Path $SourcePath -Leaf
@@ -408,6 +432,7 @@ function Write-AmigaFilestoInterimDrive {
               Write-ErrorMessage -Message "Not built!"
               exit
           }
+
           elseif ($_.Source -eq "ArchiveinArchive"){
               $DestinationPath = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)"
               $DestinationPath = $DestinationPath.TrimEnd("\")
@@ -415,44 +440,10 @@ function Write-AmigaFilestoInterimDrive {
                   Write-ErrorMessage -Message 'Error extracting file(s) from Archive! Quitting'
                   exit
               } 
-          }  
-     
-          elseif ($_.Source -eq 'Github' -or $_.Source -eq 'Web' -or $_.Source -eq 'Web - SearchforPackageAminet' -or $_.Source -eq 'Web - SearchforPackageWHDLoadWrapper'){
-              if ($_.GithubReleaseType -eq "Release-NoArchive") {
-                  $ArchiveNameExtractedFilePath = $null             
-                  $SourcePath = "$($Script:Settings.WebPackagesDownloadLocation)\$($_.FilestoInstall)"     
-              }
-              else {
-                  $ArchiveNameExtractedFilePath = Split-Path -Path $_.FileDownloadName -Leaf
-                  if (($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".lha") -or ($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".lzx") -or ($ArchiveNameExtractedFilePath.Substring($ArchiveNameExtractedFilePath.Length-4) -eq ".zip")){
-                      $ArchiveNameExtractedFilePath = $ArchiveNameExtractedFilePath.Substring(0,$ArchiveNameExtractedFilePath.Length-4)
-                  }
-                  $SourcePath = "$($Script:Settings.WebPackagesDownloadLocation)\$ArchiveNameExtractedFilePath\$($_.FilestoInstall)"   
-              }                            
-              $DestinationFolder = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)"
-              $DestinationFolder = $DestinationFolder.TrimEnd('\')   
-              if (-not (test-path $DestinationFolder -PathType Container)){
-             #     Write-InformationMessage -Message "Creating destination folder $DestinationFolder"    
-                  $null = New-Item -Path $DestinationFolder -ItemType Directory   
-              }
-              if ($_.NewFileName -ne ""){
-                  $DestinationPath = "$DestinationFolder\$($_.NewFileName)"
-              }
-              else {
-                  $DestinationPath = $DestinationFolder
-              }
-              if ($_.PackageName -ne $PackageNametoUseforReporting){
-                $PackageNametoUseforReporting = $_.PackageName 
-                Write-InformationMessage -message "Copying file(s) for $PackageNametoUseforReporting"
-              }    
-              (Resolve-Path -Path $SourcePath).path | ForEach-Object {                                   
-                 Write-host "Copying file(s) from $SourcePath to $DestinationPath"
-                  $null = Copy-Item $SourcePath  $DestinationPath -Force -Recurse
-              } 
-          }
-     
-      }
-      
+          }            
+
+    }                               
+       
       $Script:Settings.CurrentSubTaskNumber ++
       $Script:Settings.CurrentSubTaskName = "Cleaning up files"
       Write-StartSubTaskMessage
@@ -469,18 +460,6 @@ function Write-AmigaFilestoInterimDrive {
           $null = remove-item "$($Script:Settings.InterimAmigaDrives)\System\libs\68040.libary" -Force 
       }
       
-    #   $PFSOutputScript = $null 
-    #   $Script:GUICurrentStatus.AmigaPartitionsandBoundaries | ForEach-Object {
-    #       if (($_.Partition.ImportedPartition -eq $false) -and ($_.Partition.dostype -eq "PFS\3")){
-    #           $PFSOutputScript += "setfnsize $($_.Partition.DeviceName): 107 >NIL:`n" 
-    #       }
-    #   }
-     
-    #   if (-not (Test-Path "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRun" -PathType Container)){
-    #       $null = New-Item "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRun" -ItemType Directory
-    #   }
-     
-    #   Export-TextFileforAmiga -DatatoExport $PFSOutputScript -AddLineFeeds 'TRUE' -ExportFile "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRun\PFS"
      
       $IconPosScript_AmigaDrives = (Get-IconPositionScript -AmigaDrives)
       $IconPosScript_Emu68Boot = (Get-IconPositionScript -Emu68Boot)
