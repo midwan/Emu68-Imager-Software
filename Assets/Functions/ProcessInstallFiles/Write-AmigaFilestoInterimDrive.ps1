@@ -140,31 +140,32 @@ function Write-AmigaFilestoInterimDrive {
         
             Write-StartSubTaskMessage
         
+
             $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles = [System.Collections.Generic.List[PSCustomObject]]::New()
-                
+            $Script:GUICurrentStatus.HSTCommandstoProcess.WriteDirectFilestoDisk = [System.Collections.Generic.List[PSCustomObject]]::New()
+            
             $ListofPackagestoInstall | Where-Object {$_.Source -eq "ADF"} | ForEach-Object{
-                $HSTCommandtoUse = $null
                 $SourcePath  = "$($_.InstallMediaPath)\$($_.FilestoInstall)"
+                $DestinationPropertyName = if ($_.CopytoAmigaDriveDirect -eq $false)  { "ExtractOSFiles" } elseif ($_.CopytoAmigaDriveDirect -eq $true) { "WriteDirectFilestoDisk" }                                                
                 If ($_.NewFileName -ne ""){
                     $DestinationPathFolder = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)"
                     $DestinationPathFolder = [System.IO.Path]::GetFullPath($DestinationPathFolder)
                     $DestinationPathFull = "$DestinationPathFolder\$($_.NewFileName)"
-                    $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{
+                    $Script:GUICurrentStatus.HSTCommandstoProcess.$DestinationPropertyName += [PSCustomObject]@{
                         Command = "fs mkdir $DestinationPathFolder"
                         Sequence = 0                                                  
                     }
                     
-                    $HSTCommandtoUse = 
                     if ($_.UseUAEFSDB -eq $true){
 
-                         $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{
+                         $Script:GUICurrentStatus.HSTCommandstoProcess.$DestinationPropertyName += [PSCustomObject]@{
                             Command = "fs extract `"$SourcePath`" `"$DestinationPathFull`" --uaemetadata UaeFsDb --recursive FALSE" 
                             Sequence = $_.InstallSequence
                          }
 
                     }
                     elseif ($_.UseUAEFSDB -eq $false){
-                        $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{
+                        $Script:GUICurrentStatus.HSTCommandstoProcess.$DestinationPropertyName += [PSCustomObject]@{
                             Command = "fs extract `"$SourcePath`" `"$DestinationPathFull`" --uaemetadata None --recursive FALSE"
                             Sequence = $_.InstallSequence
                         }
@@ -175,14 +176,14 @@ function Write-AmigaFilestoInterimDrive {
                     $DestinationPath = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)"
                     $DestinationPath = [System.IO.Path]::GetFullPath($DestinationPath)   
                     if ($_.UseUAEFSDB -eq $true){
-                         $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{
+                         $Script:GUICurrentStatus.HSTCommandstoProcess.$DestinationPropertyName += [PSCustomObject]@{
                             Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata UaeFsDb --recursive TRUE --makedir TRUE"    
                             Sequence = $_.InstallSequence
                          }
 
                     } 
-                    elseif ($_.UseUAEFSDB -eq $false){
-                        $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles += [PSCustomObject]@{
+                    elseif ($_.UseUAEFSDB -eq $false){ 
+                        $Script:GUICurrentStatus.HSTCommandstoProcess.$DestinationPropertyName += [PSCustomObject]@{
                             Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata None --recursive TRUE --makedir TRUE"  
                             Sequence = $_.InstallSequence
                          }
@@ -193,7 +194,6 @@ function Write-AmigaFilestoInterimDrive {
             }
 
         }
-
     
         $Script:Settings.CurrentSubTaskNumber ++
         $Script:Settings.CurrentSubTaskName = 'Preparing extraction commands for files from Install Media for Icons to interim drives and processing copy commands'

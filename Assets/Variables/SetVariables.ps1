@@ -158,6 +158,7 @@ $Script:GUICurrentStatus = [PSCustomObject]@{
         NewDiskorImage = [System.Collections.Generic.List[PSCustomObject]]::New()
         DiskStructures = [System.Collections.Generic.List[PSCustomObject]]::New()
         CopyImportedFiles = [System.Collections.Generic.List[PSCustomObject]]::New()
+        WriteDirectFilestoDisk = [System.Collections.Generic.List[PSCustomObject]]::New()
         WriteFilestoDisk = [System.Collections.Generic.List[PSCustomObject]]::New() 
         AdjustParametersonImportedRDBPartitions = [System.Collections.Generic.List[PSCustomObject]]::New()      
     }

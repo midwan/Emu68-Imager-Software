@@ -132,7 +132,8 @@ function Write-ImageCreation {
            }
        }
 
-        $HSTCommandstoRun = $Script:GUICurrentStatus.HSTCommandstoProcess.DiskStructures + $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk
+        $HSTCommandstoRun = $Script:GUICurrentStatus.HSTCommandstoProcess.DiskStructures + $Script:GUICurrentStatus.HSTCommandstoProcess.WriteDirectFilestoDisk + $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk
+
         Start-HSTCommands -HSTScript $HSTCommandstoRun -Section "DiskStructures;WriteFilestoDisk" -ActivityDescription "Processing commands (this may take a few minutes depending on the size of your disk)" -ReportTime
         #"Processing commands (this may take a few minutes depending on the size of your disk)"
      }
@@ -154,7 +155,7 @@ function Write-ImageCreation {
         Write-InformationMessage -Message "Disk size (Bytes) is: $($WPF_DP_Disk_GPTMBR.DiskSizeBytes)"
 
         Write-StartSubTaskMessage
-        $HSTCommandstoRun = $Script:GUICurrentStatus.HSTCommandstoProcess.DiskStructures + $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk
+        $HSTCommandstoRun = $Script:GUICurrentStatus.HSTCommandstoProcess.DiskStructures + + $Script:GUICurrentStatus.HSTCommandstoProcess.WriteDirectFilestoDisk + $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk
         Start-HSTCommands -HSTScript $HSTCommandstoRun -Section "DiskStructures;WriteFilestoDisk" -ActivityDescription 'Processing commands' -ReportTime
      }
      
