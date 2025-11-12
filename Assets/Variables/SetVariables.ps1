@@ -160,7 +160,8 @@ $Script:GUICurrentStatus = [PSCustomObject]@{
         CopyImportedFiles = [System.Collections.Generic.List[PSCustomObject]]::New()
         WriteDirectFilestoDisk = [System.Collections.Generic.List[PSCustomObject]]::New()
         WriteFilestoDisk = [System.Collections.Generic.List[PSCustomObject]]::New() 
-        AdjustParametersonImportedRDBPartitions = [System.Collections.Generic.List[PSCustomObject]]::New()      
+        AdjustParametersonImportedRDBPartitions = [System.Collections.Generic.List[PSCustomObject]]::New() 
+        CDExtractionCommands = [System.Collections.Generic.List[PSCustomObject]]::New() 
     }
     NewPartitionDefaultScale = $null
     NewPartitionMinimumSizeBytes = $null

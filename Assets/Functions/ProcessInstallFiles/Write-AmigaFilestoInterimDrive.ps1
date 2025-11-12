@@ -291,17 +291,20 @@ function Write-AmigaFilestoInterimDrive {
       Write-StartSubTaskMessage
      
       $PackageNametoUseforReporting = $null
-
-      $ListofPackagestoInstall  | Where-Object {( ($_.Source -eq 'Local - ConfigTXT' `
-                                                 -or $_.Source -eq 'Local - LHA File' `
-                                                 -or $_.Source -eq 'Github' `
-                                                 -or  $_.Source -eq 'Local' `
-                                                 -or $_.Source -eq 'ArchiveinArchive' `
-                                                 -or $_.Source -eq 'CD' `
-                                                 -or $_.Source -eq 'Web' `
-                                                 -or $_.Source -eq 'Web - SearchforPackageAminet' `
-                                                 -or $_.Source -eq 'Web - SearchforPackageWHDLoadWrapper') `
-                                                #-and ($_.PackageName -eq "Roadshow")
+      
+      $Script:GUICurrentStatus.HSTCommandstoProcess.CDExtractionCommands = [System.Collections.Generic.List[PSCustomObject]]::New() 
+      
+      $ListofPackagestoInstall  | Where-Object {( `
+                                                 ($_.Source -eq 'Local - ConfigTXT' -or `
+                                                 $_.Source -eq 'Local - LHA File' -or `
+                                                 $_.Source -eq 'Github' -or `
+                                                 $_.Source -eq 'Local' -or `
+                                                 $_.Source -eq 'ArchiveinArchive' -or `
+                                                 $_.Source -eq 'CD' -or `
+                                                 $_.Source -eq 'Web' -or `
+                                                 $_.Source -eq 'Web - SearchforPackageAminet' -or `
+                                                 $_.Source -eq 'Web - SearchforPackageWHDLoadWrapper') `
+                                                #-and ($_.PackageName -eq "Roadshow")                                                
                                                 )} `
        | Sort-Object {$_.PackageName} | ForEach-Object {      
            
@@ -442,7 +445,11 @@ function Write-AmigaFilestoInterimDrive {
           }            
 
     }                               
-       
+    
+    if ( $Script:GUICurrentStatus.HSTCommandstoProcess.CDExtractionCommands ){
+        Start-HSTCommands -HSTScript ($Script:GUICurrentStatus.HSTCommandstoProcess.CDExtractionCommands | Sort-Object -property 'Sequence' | select-object 'Command', 'Sequence' -unique)  -TotalSteps 2 -ActivityDescription "Extracting additional CD files"
+    }
+
       $Script:Settings.CurrentSubTaskNumber ++
       $Script:Settings.CurrentSubTaskName = "Cleaning up files"
       Write-StartSubTaskMessage
