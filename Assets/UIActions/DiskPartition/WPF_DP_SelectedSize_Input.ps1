@@ -24,6 +24,7 @@ $WPF_DP_SelectedSize_Input.add_LostFocus({
     else {
         # Write-debug 'Lost Focus - Not performing action for WPF_DP_SelectedSize_Input'
     }
+    update-ui -UpdateInputBoxes
     $WPF_DP_SelectedSize_Input.ValueWhenEnterorButtonPushed = $null
     $Script:GUICurrentStatus.TextBoxEntryFocus = $null 
 
@@ -43,6 +44,7 @@ $WPF_DP_SelectedSize_Input.Add_KeyDown({
 
             $WPF_DP_SelectedSize_Input.InputEntry = $true
             Update-GUIInputBox -InputBox $WPF_DP_SelectedSize_Input -DropDownBox $WPF_DP_SelectedSize_Input_SizeScale_Dropdown -MBRResize
+            update-ui -UpdateInputBoxes
         }
         else {
             $WPF_DP_SelectedSize_Input.ValueWhenEnterorButtonPushed = $WPF_DP_SelectedSize_Input.Text

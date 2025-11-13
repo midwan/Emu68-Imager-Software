@@ -87,18 +87,18 @@ function Update-GUIInputBox {
                 $InputBox.Background = 'White'
             }
         }
-        if (($MBRMove_SpaceatBeginning) -or ($MBRMove_SpaceatEnd) -or ($AmigaMove_SpaceatBeginning) -or ($AmigaMove_SpaceatEnd)){
+        if (($MBRMove_SpaceatBeginning) -or ($MBRMove_SpaceatEnd) -or ($AmigaMove_SpaceatBeginning) -or ($AmigaMove_SpaceatEnd)){       
             if (($MBRMove_SpaceatBeginning) -or ($MBRMove_SpaceatEnd)){
-                $PartitiontoCheck = $Script:GUICurrentStatus.GPTMBRPartitionsandBoundaries | Where-Object {$_.PartitionName -eq $Script:GUICurrentStatus.SelectedGPTMBRPartition}
+                $PartitiontoCheck = $Script:GUICurrentStatus.GPTMBRPartitionsandBoundaries | Where-Object {$_.PartitionName -eq $Script:GUICurrentStatus.SelectedGPTMBRPartition.PartitionName}
             }
             elseif (($AmigaMove_SpaceatBeginning) -or ($AmigaMove_SpaceatEnd)){
-                $PartitiontoCheck = $Script:GUICurrentStatus.AmigaPartitionsandBoundaries | Where-Object {$_.PartitionName -eq $Script:GUICurrentStatus.SelectedAmigaPartition}
+                $PartitiontoCheck = $Script:GUICurrentStatus.AmigaPartitionsandBoundaries | Where-Object {$_.PartitionName -eq $Script:GUICurrentStatus.SelectedAmigaPartition.PartitionName}
             }
             if (($MBRMove_SpaceatBeginning) -or ($AmigaMove_SpaceatBeginning)){
-                $AmounttoMove = (Get-ConvertedSize -Size $InputBox.Text -ScaleFrom $DropDownBox.SelectedItem -Scaleto 'B').size-$PartitiontoCheck.BytesAvailableLeft
+                $AmounttoMove = (Get-ConvertedSize -Size $InputBox.Text -ScaleFrom $DropDownBox.SelectedItem -Scaleto 'B').size - $PartitiontoCheck.BytesAvailableLeft
             }
             elseif (($MBRMove_SpaceatEnd) -or ($AmigaMove_SpaceatEnd)){
-                $AmounttoMove = (Get-ConvertedSize -Size $InputBox.Text -ScaleFrom $DropDownBox.SelectedItem -Scaleto 'B').size-$PartitiontoCheck.BytesAvailableRight
+                $AmounttoMove = $PartitiontoCheck.BytesAvailableRight - (Get-ConvertedSize -Size $InputBox.Text -ScaleFrom $DropDownBox.SelectedItem -Scaleto 'B').size
                 
             }
             # Write-debug 'Moving partition based on input'
