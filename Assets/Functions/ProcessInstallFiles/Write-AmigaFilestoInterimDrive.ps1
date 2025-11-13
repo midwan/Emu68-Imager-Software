@@ -183,7 +183,7 @@ function Write-AmigaFilestoInterimDrive {
                 }
            
             }
-            
+        }
     
         $Script:Settings.CurrentSubTaskNumber ++
         $Script:Settings.CurrentSubTaskName = 'Preparing extraction commands for files from Install Media for Icons to interim drives and processing copy commands'
@@ -242,9 +242,9 @@ function Write-AmigaFilestoInterimDrive {
                 Write-InformationMessage -Message 'No ADF files to process!'
             }
         }
-    }
     
     }
+
     if ($ProcessDownloadedFiles){
         
         $Script:Settings.CurrentTaskName = "Processing Downloaded Files - Uncompressing .Z Files"
