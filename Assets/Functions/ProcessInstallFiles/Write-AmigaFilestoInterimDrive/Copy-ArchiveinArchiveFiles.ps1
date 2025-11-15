@@ -55,7 +55,7 @@ function Copy-ArchiveinArchiveFiles {
     }
     
     else {
-        Write-InformationMessage "Archive in Archive $ArchiveinArchiveName exists."
+      #  Write-InformationMessage "Archive in Archive $ArchiveinArchiveName exists."
     }
     
     if (-not (test-path $OutputDirectory)){
