@@ -59,14 +59,16 @@ function Update-UI {
             $WPF_Window_Button_SetupDisk.Background = '#FF017998' 
             $WPF_Window_Button_SetupDisk.Foreground = '#FFFFFFFF'
         }
-       
-        if ($Script:GUIActions.InstallOSFiles -eq $false) {
-            $WPF_Window_Button_PackageSelection.Visibility = 'Hidden'
-
-        }
-        if ($Script:GUIActions.InstallOSFiles -eq $true) {
-            $WPF_Window_Button_PackageSelection.Visibility = 'Visible'
-
+        if ($Script:GUICurrentStatus.OperationMode -eq "Advanced") {
+            if ($Script:GUIActions.InstallOSFiles -eq $false) {
+                $WPF_Window_Button_PackageSelection.Visibility = 'Hidden'
+    
+            }
+            if ($Script:GUIActions.InstallOSFiles -eq $true) {
+                $WPF_Window_Button_PackageSelection.Visibility = 'Visible'
+    
+            }
+            
         }
 
     }

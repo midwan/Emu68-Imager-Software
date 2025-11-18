@@ -2,34 +2,60 @@ Function Get-IconPaths {
     param (
 
     )
+   
+    $IconLocationDetailsCSV = Get-InputCSVs -IconSets | Where-Object {$_.IconsetName -eq $Script:GUIActions.SelectedIconSet} 
     
-    $IconLocationDetails = Get-InputCSVs -IconSets | Where-Object {$_.IconsetName -eq $Script:GUIActions.SelectedIconSet}
-    $IconLocationDetails | Add-Member -NotePropertyName 'InstallMediaPathNewFolderIcon' -NotePropertyValue $null
-    $IconLocationDetails | Add-Member -NotePropertyName 'InstallMediaPathSystemDiskIcon' -NotePropertyValue $null
-    $IconLocationDetails | Add-Member -NotePropertyName 'InstallMediaPathWorkDiskIcon' -NotePropertyValue $null
-    $IconLocationDetails | Add-Member -NotePropertyName 'InstallMediaPathEmu68BootDiskIcon' -NotePropertyValue $null
+    $IconTypes = @(
+        "NewFolder", 
+        "SystemDisk", 
+        "WorkDisk", 
+        "Emu68BootDisk"
+    )
+    
+    $IconLocationDetailsToReturn = $null
 
+    $IconLocationDetailsToReturn = $IconTypes | ForEach-Object {
+        $IconType = $_
+        
+        # Define the custom properties dynamically
+        [PSCustomObject]@{
+            IconType       = $IconType
+            Source         = $IconLocationDetailsCSV."$($IconType)IconSource"
+            SourceLocation = $IconLocationDetailsCSV."$($IconType)IconSourceLocation"
+            InstallMedia   = $IconLocationDetailsCSV."$($IconType)IconInstallMedia"
+            FilestoInstall = $IconLocationDetailsCSV."$($IconType)IconFilestoInstall"
+            ModifyInfoFileTooltype = ($IconLocationDetailsCSV."$($IconType)IconModifyInfoFileToolType")
+            NewFileNameFlag = [bool]$null
+            InstallMediaPath = $null
+            NewFileName = $null
+        }
+    }
+    
     $HashTableforInstallMedia = @{} # Clear Hash
     $Script:GUIActions.FoundInstallMediatoUse | ForEach-Object {
         $HashTableforInstallMedia[$_.ADF_Name] = @($_.Path) 
     }
 
-    $IconLocationDetails  | ForEach-Object {
-        if ($HashTableforInstallMedia.ContainsKey($_.NewFolderIconSource)){
-            $_.InstallMediaPathNewFolderIcon = $HashTableforInstallMedia.($_.NewFolderIconSource)[0]
-        } 
-        if ($HashTableforInstallMedia.ContainsKey($_.SystemDiskIconSource)){
-            $_.InstallMediaPathSystemDiskIcon = $HashTableforInstallMedia.($_.SystemDiskIconSource)[0]
-        } 
-        if ($HashTableforInstallMedia.ContainsKey($_.WorkDiskIconSource)){
-            $_.InstallMediaPathWorkDiskIcon = $HashTableforInstallMedia.($_.WorkDiskIconSource)[0]
-        } 
-        if ($HashTableforInstallMedia.ContainsKey($_.Emu68BootDiskIconSource)){
-            $_.InstallMediaPathEmu68BootDiskIcon = $HashTableforInstallMedia.($_.Emu68BootDiskIconSource)[0]
-        } 
+    $IconLocationDetailsToReturn | ForEach-Object {
+         if ($HashTableforInstallMedia.ContainsKey($_.Source)){
+            $_.InstallMediaPath = $HashTableforInstallMedia.($_.Source)[0]
+         }
+        if ($_.IconType -match 'Disk'){
+            if ((Split-Path -Path $_.FilestoInstall -Leaf) -ne 'disk.info'){
+                $_.NewFileNameFlag = $true 
+                $_.NewFileName = "disk.info"
+            }
+            else {
+                $_.NewFileNameFlag = $false
+            }
+        }
+        elseif ($_.IconType -match 'NewFolder'){
+            $_.NewFileNameFlag = $true
+            $_.NewFileName = "Newfolder.info"
+        }
     }
-
-    return $IconLocationDetails 
+    
+    return $IconLocationDetailsToReturn
 
 
 }

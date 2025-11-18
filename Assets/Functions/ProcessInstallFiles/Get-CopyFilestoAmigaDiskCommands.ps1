@@ -23,11 +23,17 @@ function Get-CopyFilestoAmigaDiskCommands {
             $RDBDeviceName = $HashTableforPathstoRDBPartitions.($_.VolumeName)[1]
             $DestinationPath = "$($Script:GUIActions.OutputPath)\MBR\$MBRNumber\rdb\$RDBDeviceName"
         }
+        if ($_.Disk -eq "System"){
+            $ReplacementString = [System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\System")
+            $Script:GUICurrentStatus.HSTCommandstoProcess.WriteDirectFilestoDisk | ForEach-Object {
+                $_.Command = $($_.Command.Replace($ReplacementString,$DestinationPath)) 
+            }
+        }
         $SourcePath = "$([System.IO.Path]::GetFullPath($Script:Settings.InterimAmigaDrives))\$($_.Disk)\`*"
         if (Test-path (Split-Path -Path $SourcePath -Parent)){
             Write-InformationMessage -Message "Adding commands for copying file(s) to $RDBDeviceName for Drive $($_.Disk)"
             $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
-                Command = "fs copy `"$SourcePath`" `"$DestinationPath`" --uaemetadata UaeFsDb"                
+                Command = "fs copy `"$SourcePath`" `"$DestinationPath`" --makedir TRUE --recursive TRUE --uaemetadata UaeFsDb"                
                 Sequence = 5
             }
         }
@@ -38,21 +44,16 @@ function Get-CopyFilestoAmigaDiskCommands {
         $HashTableforAmigaDiskstoWrite[$_.VolumeName] = @($_.Disk) 
     }
 
-    $DiskIconsPath = [System.IO.Path]::GetFullPath("$($Script:Settings.TempFolder)\IconFiles")
+    $DiskIconsPath = [System.IO.Path]::GetFullPath("$($Script:Settings.TempFolder)\IconFiles\DiskIconstoUse")
     
     if ($Script:GUIActions.InstallOSFiles -eq $true){
 
         $Script:GUICurrentStatus.PathstoRDBPartitions | ForEach-Object {
-            if ($HashTableforAmigaDiskstoWrite.ContainsKey($_.VolumeName)){
-                $SourcePath = "$DiskIconsPath\$($HashTableforAmigaDiskstoWrite.($_.VolumeName)[0])Drive\disk.info"
-            }
-            else {
-                $SourcePath = "$DiskIconsPath\WorkDrive\disk.info"
-            }
-            $DestinationPath = "$($Script:GUIActions.OutputPath)\MBR\$($_.MBRPartitionNumber)\rdb\$($_.DeviceName)"
+            $SourcePath = "$DiskIconsPath\$($_.DeviceName)\disk.info"
+            $DestinationPath = "$($Script:GUIActions.OutputPath)\MBR\$($_.MBRPartitionNumber)\rdb\$($_.DeviceName)"           
             Write-InformationMessage -Message "Adding commands for copying icon file(s) to $($_.DeviceName)"
             $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
-                Command = "fs copy $SourcePath $DestinationPath"
+                Command = "fs copy $SourcePath $DestinationPath --makedir TRUE --recursive TRUE"
                 Sequence = 6
             }
            
@@ -63,7 +64,6 @@ function Get-CopyFilestoAmigaDiskCommands {
         Write-WarningMessage -Message "Not creating disk.info files for Amiga disks as icons not available (you haven't installed an OS)"
         
     }
-
-    
+   
    
 }

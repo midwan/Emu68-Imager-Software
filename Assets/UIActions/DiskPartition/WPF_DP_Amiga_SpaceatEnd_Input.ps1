@@ -22,8 +22,11 @@ $WPF_DP_Amiga_SpaceatEnd_Input.add_LostFocus({
         Update-GUIInputBox -InputBox $WPF_DP_Amiga_SpaceatEnd_Input -DropDownBox $WPF_DP_Amiga_SpaceatEnd_Input_SizeScale_Dropdown -AmigaMove_SpaceatEnd
     }
     else {
+
         # Write-debug 'Lost Focus - Not performing action for WPF_DP_Amiga_SpaceatEnd_Input'
     }
+            
+    update-ui -UpdateInputBoxes
     $WPF_DP_Amiga_SpaceatEnd_Input.ValueWhenEnterorButtonPushed = $null
     $Script:GUICurrentStatus.TextBoxEntryFocus = $null 
 
@@ -43,6 +46,7 @@ $WPF_DP_Amiga_SpaceatEnd_Input.Add_KeyDown({
 
             $WPF_DP_Amiga_SpaceatEnd_Input.InputEntry = $true
             Update-GUIInputBox -InputBox $WPF_DP_Amiga_SpaceatEnd_Input -DropDownBox $WPF_DP_Amiga_SpaceatEnd_Input_SizeScale_Dropdown -AmigaMove_SpaceatEnd
+            update-ui -UpdateInputBoxes
         }
         else {
             $WPF_DP_Amiga_SpaceatEnd_Input.ValueWhenEnterorButtonPushed = $WPF_DP_Amiga_SpaceatEnd_Input.Text

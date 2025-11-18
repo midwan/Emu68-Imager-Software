@@ -19,6 +19,10 @@ $Script:Settings = [PSCustomObject]@{
     AmigaWorkDiskIconXPosition = 15
     AmigaWorkDiskIconYPosition = 4
     AmigaWorkDiskIconYPositionSpacing = 56 
+    AmigaWorkDiskDrawerX = 50
+    AmigaWorkDiskDrawerY = 50
+    AmigaWorkDiskDwidth = 500
+    AmigaWorkDiskDHeight = 160
     Version = $null
     PowershellVersion = "$($PSVersionTable.PSVersion.Major).$($PSVersionTable.PSVersion.Minor)"           
     NetFrameworkrelease = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full' -Name Release).Release
@@ -48,7 +52,7 @@ $Script:Settings = [PSCustomObject]@{
     }
     StartupFilesCSV = [PSCustomObject]@{
         Path = '.\InputFiles\StartupFiles.CSV'
-        GID = '704643152'
+        GID = '970627624'
     }
     OSVersionstoInstallCSV = [PSCustomObject]@{
         Path = '.\InputFiles\OSVersionstoInstall.CSV'
@@ -68,7 +72,7 @@ $Script:Settings = [PSCustomObject]@{
     }
     ListofPackagestoInstallCSV = [PSCustomObject]@{
         Path = '.\InputFiles\ListofPackagestoInstall.CSV'
-        GID = '322661130'
+        GID = '1229567025'
     }
     ScreenModesCSV = [PSCustomObject]@{
         Path = '.\InputFiles\ScreenModes.CSV'
@@ -158,8 +162,10 @@ $Script:GUICurrentStatus = [PSCustomObject]@{
         NewDiskorImage = [System.Collections.Generic.List[PSCustomObject]]::New()
         DiskStructures = [System.Collections.Generic.List[PSCustomObject]]::New()
         CopyImportedFiles = [System.Collections.Generic.List[PSCustomObject]]::New()
+        WriteDirectFilestoDisk = [System.Collections.Generic.List[PSCustomObject]]::New()
         WriteFilestoDisk = [System.Collections.Generic.List[PSCustomObject]]::New() 
-        AdjustParametersonImportedRDBPartitions = [System.Collections.Generic.List[PSCustomObject]]::New()      
+        AdjustParametersonImportedRDBPartitions = [System.Collections.Generic.List[PSCustomObject]]::New() 
+        CDExtractionCommands = [System.Collections.Generic.List[PSCustomObject]]::New() 
     }
     NewPartitionDefaultScale = $null
     NewPartitionMinimumSizeBytes = $null

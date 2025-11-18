@@ -2,8 +2,17 @@ function Get-StartupFiles {
     param (
         
     )
+
+    $StartupFiles = @()
+    
+    Import-Csv -Path $Script:Settings.StartupFilesCSV.Path -Delimiter ';' | ForEach-Object {
+        if ($_.MinimumInstallerVersion -ne "" -and $_.InstallerVersionLessThan -ne ""){
+            if (($Script:Settings.Version -ge [system.version]$_.MinimumInstallerVersion) -and ($Script:Settings.Version -lt [system.version]$_.InstallerVersionLessThan)){
+                $StartupFiles += $_
+            }
+        }
+    }
       
-    $StartupFiles = Import-Csv -Path $Script:Settings.StartupFilesCSV.Path -Delimiter ';'
     $PackagestoInstall = Get-PackagestoInstall -ListofFilestoCheck $StartupFiles
     $PackageName = $null
 
@@ -56,7 +65,7 @@ function Get-StartupFiles {
                 Write-InformationMessage "Folder $LocationtoInstall does not exist. Creating folder"
                 $null = New-Item -Path $LocationtoInstall -ItemType Directory
             }
-            Write-InformationMessage "Extracting file $($_.FilestoInstall)"
+            # Write-InformationMessage "Extracting file $($_.FilestoInstall)"
             if (-not (Expand-Archive -InputFile $InputFile -FiletoExtract $_.FilestoInstall -OutputDirectory $LocationtoInstall)){
                 Write-ErrorMessage "Error extracting $($_.FilestoInstall)! Exiting"
                 return $false

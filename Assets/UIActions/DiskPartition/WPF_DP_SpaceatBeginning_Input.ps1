@@ -24,6 +24,8 @@ $WPF_DP_SpaceatBeginning_Input.add_LostFocus({
     else {
         # Write-debug 'Lost Focus - Not performing action for WPF_DP_SpaceatBeginning_Input'
     }
+    
+    update-ui -UpdateInputBoxes
     $WPF_DP_SpaceatBeginning_Input.ValueWhenEnterorButtonPushed = $null
     $Script:GUICurrentStatus.TextBoxEntryFocus = $null 
 
@@ -43,6 +45,8 @@ $WPF_DP_SpaceatBeginning_Input.Add_KeyDown({
 
             $WPF_DP_SpaceatBeginning_Input.InputEntry = $true
             Update-GUIInputBox -InputBox $WPF_DP_SpaceatBeginning_Input -DropDownBox $WPF_DP_SpaceatBeginning_Input_SizeScale_Dropdown -MBRMove_SpaceatBeginning
+            update-ui -UpdateInputBoxes
+            
         }
         else {
             $WPF_DP_SpaceatBeginning_Input.ValueWhenEnterorButtonPushed = $WPF_DP_SpaceatBeginning_Input.Text

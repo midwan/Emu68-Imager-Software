@@ -195,8 +195,11 @@ function Get-InputCSVs {
                         PerformHashCheck = $_.PerformHashCheck
                         Hash = $_.Hash
                         FilestoInstall = $_.FilestoInstall
+                        UseUAEFSDB = $_.UseUAEFSDB
                         DrivetoInstall = $_.DrivetoInstall
                         LocationtoInstall = $_.LocationtoInstall
+                        CopytoAmigaDriveDirect = $_.CopytoAmigaDriveDirect
+                        CopyRecursive = $_.CopyRecursive
                         UncompressZFiles = $_.UncompressZFiles
                         CreateFolderInfoFile = $_.CreateFolderInfoFile
                         NewFileName = $_.NewFileName
@@ -247,8 +250,11 @@ function Get-InputCSVs {
                     PerformHashCheck = $_.PerformHashCheck
                     Hash = $_.Hash
                     FilestoInstall = $_.FilestoInstall
+                    UseUAEFSDB = $_.UseUAEFSDB
                     DrivetoInstall = $_.DrivetoInstall
                     LocationtoInstall = $_.LocationtoInstall
+                    CopytoAmigaDriveDirect = $_.CopytoAmigaDriveDirect
+                    CopyRecursive = $_.CopyRecursive
                     UncompressZFiles = $_.UncompressZFiles
                     CreateFolderInfoFile = $_.CreateFolderInfoFile
                     NewFileName = $_.NewFileName

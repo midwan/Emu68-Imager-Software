@@ -27,6 +27,12 @@ function Write-HSTCommandstoLog {
     "Write Files to Disk" |Out-File $Script:Settings.LogLocation -Append -Encoding utf8     
     "" |Out-File $Script:Settings.LogLocation -Append -Encoding utf8      
     $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk.Command | Out-File $Script:Settings.LogLocation -Append -Encoding utf8 -Width 2000
+    "Write Direct Files to Disk" |Out-File $Script:Settings.LogLocation -Append -Encoding utf8     
+    "" |Out-File $Script:Settings.LogLocation -Append -Encoding utf8      
+    $Script:GUICurrentStatus.HSTCommandstoProcess.WriteDirectFilestoDisk.Command | Out-File $Script:Settings.LogLocation -Append -Encoding utf8 -Width 2000
+    "CD Extraction Commands" |Out-File $Script:Settings.LogLocation -Append -Encoding utf8     
+    "" |Out-File $Script:Settings.LogLocation -Append -Encoding utf8      
+    $Script:GUICurrentStatus.HSTCommandstoProcess.CDExtractionCommands.Command | Out-File $Script:Settings.LogLocation -Append -Encoding utf8 -Width 2000
     "" |Out-File $Script:Settings.LogLocation -Append -Encoding utf8
     "Adjust Parameters on Imported RDB Partitions" |Out-File $Script:Settings.LogLocation -Append -Encoding utf8     
     "" |Out-File $Script:Settings.LogLocation -Append -Encoding utf8

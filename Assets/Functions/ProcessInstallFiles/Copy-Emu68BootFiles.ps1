@@ -12,7 +12,7 @@ function Copy-EMU68BootFiles {
     
     Write-StartTaskMessage
 
-    $DiskIconsPath = [System.IO.Path]::GetFullPath("$($Script:Settings.TempFolder)\IconFiles")
+    $DiskIconsPath = [System.IO.Path]::GetFullPath("$($Script:Settings.TempFolder)\IconFiles\DiskIconsToUse")
 
     if ($OutputLocationType -eq 'ImgImage'){
         
@@ -22,13 +22,13 @@ function Copy-EMU68BootFiles {
         $SourcePath = "$([System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\Emu68Boot\"))*"  
         $DestinationPath = [System.IO.Path]::GetFullPath("$($Script:GUIActions.OutputPath)\MBR\1")
         $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
-            Command = "fs copy $SourcePath $DestinationPath"
+            Command = "fs copy $SourcePath $DestinationPath --makedir TRUE --recursive TRUE"
             Sequence = 6
         }
         if ($Script:GUIActions.InstallOSFiles -eq $true){
-            $SourcePath = "$DiskIconsPath\Emu68BootDrive\disk.info" 
+            $SourcePath = "$DiskIconsPath\SD0\disk.info" 
             $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
-                Command = "fs copy $SourcePath $DestinationPath"
+                Command = "fs copy $SourcePath $DestinationPath --makedir TRUE --recursive TRUE"
                 Sequence = 6
             }
         }
@@ -72,7 +72,7 @@ function Copy-EMU68BootFiles {
         $null = Copy-Item -LiteralPath $Script:GUIActions.FoundKickstarttoUse.KickstartPath -Destination "$Emu68BootPath\$($Script:GUIActions.FoundKickstarttoUse.Fat32Name)"
 
         if ($Script:GUIActions.InstallOSFiles -eq $true){
-            $null = Copy-Item "$DiskIconsPath\Emu68BootDrive\disk.info" -Destination "$Emu68BootPath"
+            $null = Copy-Item "$DiskIconsPath\SD0\disk.info" -Destination "$Emu68BootPath"
         }
         else {
             Write-WarningMessage -Message "Not creating disk.info file for Emu68Boot folder as icons not available (you haven't installed an OS)"

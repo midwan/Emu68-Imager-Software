@@ -1,3 +1,0 @@
-If exists Libs/68040.library
-	Delete Libs/68040.library ALL QUIET FORCE
-endif

@@ -2,7 +2,8 @@ function Get-IconPositionScript {
     param (
 
     [Switch]$Emu68Boot,
-    [Switch]$AmigaDrives
+    [Switch]$AmigaDrives,
+    [Switch]$AmigaPositioning
 
     )
 
@@ -12,21 +13,41 @@ function Get-IconPositionScript {
     $DefaultDisks = Get-InputCSVs -Diskdefaults
     
     if ($AmigaDrives){
-        Get-InputCSVs -IconPositions | ForEach-Object {
-            if ($_.DrawerX){
-               $DrawerXtoUse = "DXPOS $($_.DrawerX) "
-           }
-           if ($_.DrawerY){
-               $DrawerYtoUse = "DYPOS $($_.DrawerY) "
-           }
-           if ($_.DrawerWidth){
-               $DrawerWidthToUse = "DWIDTH $($_.DrawerWidth) "
-           }
-           if ($_.DrawerHeight){
-               $DrawerHeightToUse = "DHEIGHT $($_.DrawerHeight)"
-           }
-           $Remainder = "$DrawerXtoUse$DrawerYtoUse$DrawerWidthToUse$DrawerHeightToUse"
-           $IconPosScript += "iconpos >NIL: `"SYS:$($_.File)`" type=$($_.Type) $($_.IconX) $($_.IconY) $Remainder"
+
+        if ($AmigaPositioning){
+            Get-InputCSVs -IconPositions | ForEach-Object {
+                $TypetoUse = $null
+                $IconXtoUse = $null
+                $IconytoUse = $null
+                $DrawerXtoUse = $null
+                $DrawerYtoUse = $null
+                $DrawerWidthToUse = $null
+                $DrawerHeightToUse = $null
+                if ($_.Type){
+                    $TypetoUse = "type=$($_.Type) "
+                }
+                if ($_.IconX){
+                    $IconXtoUse = "XPOS=$($_.IconX) "                
+                }
+                if ($_.Icony){
+                    $IconYtoUse = "YPOS=$($_.IconY) "    
+                }
+                if ($_.DrawerX){
+                   $DrawerXtoUse = "DXPOS=$($_.DrawerX) "
+               }
+               if ($_.DrawerY){
+                   $DrawerYtoUse = "DYPOS=$($_.DrawerY) "
+               }
+               if ($_.DrawerWidth){
+                   $DrawerWidthToUse = "DWIDTH=$($_.DrawerWidth) "
+               }
+               if ($_.DrawerHeight){
+                   $DrawerHeightToUse = "DHEIGHT=$($_.DrawerHeight)"
+               }
+               $Remainder = "$TypetoUse$IconXtoUse$IconytoUse$DrawerXtoUse$DrawerYtoUse$DrawerWidthToUse$DrawerHeightToUse"
+               $IconPosScript += "iconpos >NIL: `"SYS:$($_.File)`" $Remainder"
+               
+            }
         }
        
         if  ($Script:GUICurrentStatus.AmigaPartitionsandBoundaries){
@@ -38,29 +59,39 @@ function Get-IconPositionScript {
 
         $HashTableforDefaultDisks = @{} # Clear Hash
         Get-InputCSVs -Diskdefaults | ForEach-Object {
-            $HashTableforDefaultDisks[$_.DeviceName] = @($_.IconX,$_.IconY) 
+            $HashTableforDefaultDisks[$_.DeviceName] = @($_.IconX,$_.IconY,$_.DrawerX,$_.DrawerY,$_.DWidth,$_.DHeight) 
         }
         
-        $IconX = 0
-        $IconY = 0
+        $LastIconY = $null
          
         foreach ($Disk in $ListofDisks) {
             if ($HashTableforDefaultDisks.ContainsKey($Disk.Partition.DeviceName)){
                 $IconX = [int]($HashTableforDefaultDisks.($Disk.Partition.DeviceName)[0])
                 $IconY = [int]($HashTableforDefaultDisks.($Disk.Partition.DeviceName)[1])
+                $DrawerX = [int]($HashTableforDefaultDisks.($Disk.Partition.DeviceName)[2])
+                $DrawerY = [int]($HashTableforDefaultDisks.($Disk.Partition.DeviceName)[3])
+                $DWidth = [int]($HashTableforDefaultDisks.($Disk.Partition.DeviceName)[4])
+                $DHeight = [int]($HashTableforDefaultDisks.($Disk.Partition.DeviceName)[5])
             }
             else {
                 $IconX = [int]$Script:Settings.AmigaWorkDiskIconXPosition
-                if ($IconY) {
-                    $IconY += [int]$Script:Settings.AmigaWorkDiskIconYPositionSpacing
+                $DrawerX = [int]$Script:Settings.AmigaWorkDiskDrawerX
+                $DrawerY = [int]$Script:Settings.AmigaWorkDiskDrawerX
+                $DWidth = [int]$Script:Settings.AmigaWorkDiskDWidth
+                $DHeight = [int]$Script:Settings.AmigaWorkDiskDHeight
+
+                if ($LastIconY) {
+                    $IconY = $LastIconY + [int]$Script:Settings.AmigaWorkDiskIconYPositionSpacing
                 }
                 else {
                     $IconY =  [int]$Script:Settings.AmigaWorkDiskIconYPosition
                 }
         
             }
-            $IconPosScript += "iconpos >NIL: $($Disk.Partition.DeviceName):disk.info type=DISK $IconX $IconY"
+            $IconPosScript += "iconpos >NIL: $($Disk.Partition.DeviceName):disk.info type=DISK"
+            $IconPosScript += "iconpos >NIL: $($Disk.Partition.DeviceName):disk.info type=DISK XPOS=$IconX YPOS=$IconY DXPOS=$DrawerX DYPOS=$DrawerY DWIDTH=$DWidth DHEIGHT=$DHeight"
             
+            $LastIconY = $IconY
         }
     }
      
@@ -68,7 +99,8 @@ function Get-IconPositionScript {
         foreach ($Disk in $DefaultDisks) {
             if ($Disk.Disk -eq 'EMU68BOOT'){
                 $IconPosScript += "Mount SD0: >NIL:"
-                $IconPosScript += "iconpos >NIL: $($Disk.DeviceName):disk.info type=DISK $($Disk.IconX) $($Disk.IconY)"
+                $IconPosScript += "iconpos >NIL: $($Disk.DeviceName):disk.info type=DISK"
+                $IconPosScript += "iconpos >NIL: $($Disk.DeviceName):disk.info type=DISK XPOS=$($Disk.IconX) YPOS=$($Disk.IconY) DRAWERX=$($Disk.DrawerX) DRAWERY=$($DIsk.DrawerY) DWIDTH=$($Disk.DWidth) DHEIGHT=$($Disk.DHeight)"
                 $IconPosScript += "Assign SD0: DISMOUNT >NIL:"
                 $IconPosScript += "Assign EMU68BOOT: DISMOUNT >NIL:"
             }
