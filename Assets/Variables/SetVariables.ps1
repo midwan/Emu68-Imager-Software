@@ -5,13 +5,13 @@ $osInfo = Get-WmiObject -Class Win32_OperatingSystem
 
 $Script:Settings = [PSCustomObject]@{
     Emu68BootCmdline = "sd.unit0=rw emmc.unit0=rw"
-    MBRSectorSizeBytes = 512
-    MBRPartitionsMaximum = 4
-    AmigaPartitionsperDiskMaximum = 10
-    AmigaRDBHeads = 16
-    AmigaRDBSectors = 63
-    AmigaRDBBlockSize = 512
-    AmigaRDBSides = 2
+    MBRSectorSizeBytes = [int]512
+    MBRPartitionsMaximum = [int]4
+    AmigaPartitionsperDiskMaximum = [int]10
+    AmigaRDBHeads = [int]16
+    AmigaRDBSectors = [int]63
+    AmigaRDBBlockSize = [int]512
+    AmigaRDBSides = [int]2
     DiskWidthPixels = 1000
     MBROverheadBytes = 1048576+50688 # Allowing for partition to start at sector 2048 and leave space HST Imager appears to require
     MBRFirstPartitionStartSector = 2048

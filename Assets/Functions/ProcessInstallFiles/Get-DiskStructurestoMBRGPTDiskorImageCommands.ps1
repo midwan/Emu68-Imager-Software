@@ -47,7 +47,7 @@ function Get-DiskStructurestoMBRGPTDiskorImageCommands {
         $MBRPartitionStartSector = $MBRPartition.Partition.StartingPositionSector + $StartingSector
      
         $Script:GUICurrentStatus.HSTCommandstoProcess.DiskStructures += [PSCustomObject]@{
-            Command = "mbr part add $($Script:GUIActions.OutputPath) $PartitionTypetoUse $($MBRPartition.Partition.partitionsizebytes) --start-sector $MBRPartitionStartSector"
+            Command = "mbr part add $($Script:GUIActions.OutputPath) $PartitionTypetoUse $([int64]($MBRPartition.Partition.partitionsizebytes)) --start-sector $([int64]$MBRPartitionStartSector)"
             Sequence = 1      
         }  
         if ($MBRPartition.Partition.PartitionSubType -eq 'FAT32'){

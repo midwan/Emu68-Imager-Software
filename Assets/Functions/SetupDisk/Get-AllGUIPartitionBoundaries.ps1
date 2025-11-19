@@ -39,10 +39,10 @@ function Get-AllGUIPartitionBoundaries {
                 BytesAvailableRight = $null
                 PixelsAvailableLeft = $null
                 PixelsAvailableRight = $null
-                StartingPositionBytes = $_.Value.StartingPositionBytes
-                StartingPositionSector = $_.Value.StartingPositionSector
-                PartitionSizeBytes = $_.Value.PartitionSizeBytes
-                EndingPositionBytes = $_.Value.StartingPositionBytes + $_.Value.PartitionSizeBytes
+                StartingPositionBytes = [int64]$_.Value.StartingPositionBytes
+                StartingPositionSector = [int64]$_.Value.StartingPositionSector
+                PartitionSizeBytes = [int64]$_.Value.PartitionSizeBytes
+                EndingPositionBytes = [int64]($_.Value.StartingPositionBytes + $_.Value.PartitionSizeBytes)
                 LeftMargin = $_.Value.Margin.Left
                 LeftMarginWindow = $LeftMarginWindow
                 Width = Get-GUIPartitionWidth -Partition $_.Value 

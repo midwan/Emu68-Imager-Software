@@ -90,7 +90,7 @@ function Add-GUIPartitiontoAmigaDisk {
     }
 
     (Get-Variable -Name $NewPartitionName).Value.Margin = [System.Windows.Thickness]"$LeftMargin,0,0,0"
-    (Get-Variable -Name $NewPartitionName).Value.PartitionSizeBytes = $SizeBytes
+    (Get-Variable -Name $NewPartitionName).Value.PartitionSizeBytes = [int64]$SizeBytes
     (Get-Variable -Name $NewPartitionName).Value.StartingPositionBytes = $StartingPositionBytes
     
     (Get-Variable -Name $NewPartitionName).Value.DeviceName = $DeviceName

@@ -166,7 +166,7 @@ function Set-GUIPartitionNewSize {
     
     # Write-debug "New Size of Partition is $SizeBytes"
 
-    $Partition.PartitionSizeBytes = $SizeBytes
+    $Partition.PartitionSizeBytes = [int64]$SizeBytes
     
    # $WPF_DP_Partition_MBR_2.PartitionSizeBytes
    # $WPF_DP_Partition_MBR_2_AmigaDisk.DiskSizeBytes

@@ -87,12 +87,12 @@ function Add-GUIPartitiontoGPTMBRDisk {
         $NewPartition = New-GUIPartition -PartitionName $NewPartitionName -PartitionType $PartitionType -PartitionSubType $PartitionSubType
     }
     
-    $NewPartition.PartitionSizeBytes = $SizeBytes
+    $NewPartition.PartitionSizeBytes = [int64]$SizeBytes
     if ($VolumeName){
         $NewPartition.VolumeName = $VolumeName
     }
-    $NewPartition.StartingPositionBytes = $StartingPositionBytes
-    $NewPartition.StartingPositionSector = $StartingPositionBytes/$Script:Settings.MBRSectorSizeBytes
+    $NewPartition.StartingPositionBytes = [int64]$StartingPositionBytes
+    $NewPartition.StartingPositionSector = [int64]($StartingPositionBytes/$Script:Settings.MBRSectorSizeBytes)
 
     if ($ImportedPartition){
         $NewPartition.ImportedPartition = $true

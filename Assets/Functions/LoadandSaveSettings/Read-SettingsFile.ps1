@@ -285,15 +285,15 @@ for ($i = 0; $i -lt $Script:GUIActions.AvailablePackages.Columns.Count; $i++) {
     }
 
     $MBRPartitions | ForEach-Object {
-        $_.StartingPositionBytes  = [decimal]$_.StartingPositionBytes  
-        $_.PartitionSizeBytes = [decimal]$_.PartitionSizeBytes
-        $_.ImportedFilesSpaceBytes = [decimal]$_.ImportedFilesSpaceBytes
+        $_.StartingPositionBytes  = [int64]$_.StartingPositionBytes  
+        $_.PartitionSizeBytes = [int64]$_.PartitionSizeBytes
+        $_.ImportedFilesSpaceBytes = [int64]$_.ImportedFilesSpaceBytes
     }
 
     $RDBPartitions | ForEach-Object {
-        $_.StartingPositionBytes  = [decimal]$_.StartingPositionBytes  
-        $_.PartitionSizeBytes = [decimal]$_.PartitionSizeBytes
-        $_.ImportedFilesSpaceBytes = [decimal]$_.ImportedFilesSpaceBytes
+        $_.StartingPositionBytes  = [int64]$_.StartingPositionBytes  
+        $_.PartitionSizeBytes = [int64]$_.PartitionSizeBytes
+        $_.ImportedFilesSpaceBytes = [int64]$_.ImportedFilesSpaceBytes
     }
 
     $LoadedSettings | ForEach-Object {
