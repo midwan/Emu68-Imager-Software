@@ -22,6 +22,10 @@ function Get-CopyFilestoAmigaDiskCommands {
            # $RDBNumber = $HashTableforPathstoRDBPartitions.($_.VolumeName)[0]
             $RDBDeviceName = $HashTableforPathstoRDBPartitions.($_.VolumeName)[1]
             $DestinationPath = "$($Script:GUIActions.OutputPath)\MBR\$MBRNumber\rdb\$RDBDeviceName"
+            $CopyFilestoDevice =$true
+        }
+        else {
+            $CopyFilestoDevice =$false
         }
         if ($_.Disk -eq "System"){
             $ReplacementString = [System.IO.Path]::GetFullPath("$($Script:Settings.InterimAmigaDrives)\System")
@@ -29,12 +33,14 @@ function Get-CopyFilestoAmigaDiskCommands {
                 $_.Command = $($_.Command.Replace($ReplacementString,$DestinationPath)) 
             }
         }
-        $SourcePath = "$([System.IO.Path]::GetFullPath($Script:Settings.InterimAmigaDrives))\$($_.Disk)\`*"
-        if (Test-path (Split-Path -Path $SourcePath -Parent)){
-            Write-InformationMessage -Message "Adding commands for copying file(s) to $RDBDeviceName for Drive $($_.Disk)"
-            $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
-                Command = "fs copy `"$SourcePath`" `"$DestinationPath`" --makedir TRUE --recursive TRUE --uaemetadata UaeFsDb"                
-                Sequence = 5
+        if ($CopyFilestoDevice -eq $true){
+            $SourcePath = "$([System.IO.Path]::GetFullPath($Script:Settings.InterimAmigaDrives))\$($_.Disk)\`*"
+            if (Test-path (Split-Path -Path $SourcePath -Parent)){
+                Write-InformationMessage -Message "Adding commands for copying file(s) to $RDBDeviceName for Drive $($_.Disk)"
+                $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
+                    Command = "fs copy `"$SourcePath`" `"$DestinationPath`" --makedir TRUE --recursive TRUE --uaemetadata UaeFsDb"                
+                    Sequence = 5
+                }
             }
         }
     }
