@@ -154,6 +154,10 @@ function Get-DiskStructurestoMBRGPTDiskorImageCommands {
                                    }                                   
                                    Write-InformationMessage -Message "Adding command to import files from $($RDBPartition.Partition.ImportedFilesPath) to RDB Partition $($RDBPartition.Partition.DeviceName)"
                                    $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
+                                       Command = "fs mkdir `"$($Script:GUIActions.OutputPath)\mbr\$MBRPartitionCounter\rdb\$($RDBPartition.Partition.DeviceName)\ImportedFiles`""
+                                       Sequence = 5                                            
+                                   }  
+                                   $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
                                        Command = "fs copy `"$($RDBPartition.Partition.ImportedFilesPath)\`*`" `"$($Script:GUIActions.OutputPath)\mbr\$MBRPartitionCounter\rdb\$($RDBPartition.Partition.DeviceName)\ImportedFiles`" --recursive TRUE"
                                        Sequence = 5      
                                    }  
