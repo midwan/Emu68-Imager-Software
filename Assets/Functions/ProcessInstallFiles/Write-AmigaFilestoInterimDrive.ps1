@@ -169,7 +169,7 @@ function Write-AmigaFilestoInterimDrive {
                         Sequence = 0                                                  
                     }                                        
                     $Script:GUICurrentStatus.HSTCommandstoProcess.$DestinationPropertyName += [PSCustomObject]@{
-                       Command = "fs extract `"$SourcePath`" `"$DestinationPathFull`" --uaemetadata $UAEmetadataFlag --recursive $RecursiveFlag" 
+                       Command = "fs extract `"$SourcePath`" `"$DestinationPathFull`" --uaemetadata $UAEmetadataFlag --recursive $RecursiveFlag --force TRUE" 
                        Sequence = $_.InstallSequence
                     }
                 }
@@ -177,7 +177,7 @@ function Write-AmigaFilestoInterimDrive {
                     $DestinationPath = "$($Script:Settings.InterimAmigaDrives)\$($_.DrivetoInstall)\$($_.LocationtoInstall)"
                     $DestinationPath = [System.IO.Path]::GetFullPath($DestinationPath)   
                     $Script:GUICurrentStatus.HSTCommandstoProcess.$DestinationPropertyName += [PSCustomObject]@{
-                       Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata $UAEmetadataFlag --recursive $RecursiveFlag --makedir TRUE"    
+                       Command = "fs extract `"$SourcePath`" `"$DestinationPath`" --uaemetadata $UAEmetadataFlag --recursive $RecursiveFlag --makedir TRUE --force TRUE"    
                        Sequence = $_.InstallSequence
                     }
                 }
@@ -215,7 +215,7 @@ function Write-AmigaFilestoInterimDrive {
                     $DestinationPathToUse = "$DestinationPath\$($_.IconType)"                        
                 }
                 $Script:GUICurrentStatus.HSTCommandstoProcess.CopyIconFiles += [PSCustomObject]@{
-                    Command = "fs extract `"$SourcePathtoUse`" `"$DestinationPathToUse`" --uaemetadata None"
+                    Command = "fs extract `"$SourcePathtoUse`" `"$DestinationPathToUse`" --uaemetadata None --force TRUE"
                     Sequence = 3   
                 }
                 

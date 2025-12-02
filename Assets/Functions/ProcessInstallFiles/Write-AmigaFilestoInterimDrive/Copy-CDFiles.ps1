@@ -47,7 +47,7 @@ function Copy-CDFiles {
         #         Sequence = 0
         #     }
         #     $Script:GUICurrentStatus.HSTCommandstoProcess.CDExtractionCommands += [PSCustomObject]@{
-        #         Command = "fs copy `"$TempFoldertoExtract$FiletoExtracttoUse`" `"$OutputDirectory`" --uaemetadata None --recursive FALSE --makedir FALSE"
+        #         Command = "fs copy `"$TempFoldertoExtract$FiletoExtracttoUse`" `"$OutputDirectory`" --uaemetadata None --recursive FALSE --makedir FALSE --force TRUE"
         #         Sequence = 1
         #     }
     
