@@ -238,6 +238,7 @@ $Script:GUIActions = [PSCustomObject]@{
     UnicamScalingType = $null
     UnicamBParameter = $null
     UnicamCParameter = $null
+    UnicamPhase = $null
     UnicamSizeXPosition = $null
     UnicamSizeYPosition = $null
     UnicamOffsetXPosition = $null
