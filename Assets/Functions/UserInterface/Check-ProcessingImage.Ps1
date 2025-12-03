@@ -120,6 +120,14 @@ function Check-ProcessingImage {
                }
                
            }
+
+           if ($Script:GUIActions.ScreenModetoUseFriendlyName -eq "Custom ScreenMode"){
+               $CompletenessCheck = Confirm-CustomScreenModeComplete 
+               if ($CompletenessCheck -ne "Complete"){
+                $null = $Script:GUICurrentStatus.IssuesFoundBeforeProcessing.Rows.Add("ScreenMode","You are using a custom screenmode but have not configured it")
+                $Script:GUICurrentStatus.ProcessImageStatus = $false
+             }
+           }
                      
            if ($Script:GUICurrentStatus.ProcessImageStatus -eq $false){
                $WPF_Window_Button_Run.Background = '#FFFF0000'

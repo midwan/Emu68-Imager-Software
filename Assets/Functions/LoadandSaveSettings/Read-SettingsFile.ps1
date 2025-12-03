@@ -110,6 +110,13 @@ function Read-SettingsFile {
    $Script:GUIActions.UnicamSizeYPosition = $null
    $Script:GUIActions.UnicamOffsetXPosition = $null
    $Script:GUIActions.UnicamOffsetYPosition = $null
+   $Script:GUIActions.CustomScreenMode_Width = $null
+   $Script:GUIActions.CustomScreenMode_Height = $null
+   $Script:GUIActions.CustomScreenMode_Framerate = $null
+   $Script:GUIActions.CustomScreenMode_Aspect = $null
+   $Script:GUIActions.CustomScreenMode_Margins = $null
+   $Script:GUIActions.CustomScreenMode_Interlace = $null
+   $Script:GUIActions.CustomScreenMode_RB = $null
 
    $Script:GUIActions.AvailableIconSets.Columns.Add((New-Object System.Data.DataColumn "IconSet",([String])))
    $Script:GUIActions.AvailableIconSets.Columns.Add((New-Object System.Data.DataColumn "IconSetDescription",([String])))
@@ -517,14 +524,14 @@ for ($i = 0; $i -lt $Script:GUIActions.AvailablePackages.Columns.Count; $i++) {
     $Script:GUICurrentStatus.ForceRecheckAmigaPartitionsandBoundaries = $true
     
     if ($ImportDisk -eq $true){
-        Update-UI -MainWindowButtons -Emu68Settings -DiskPartitionWindow -UpdateInputBoxes -Buttons -PhysicalvsImage -CheckforRunningImage -freespacealert
+        Update-UI -MainWindowButtons -Emu68Settings -DiskPartitionWindow -UpdateInputBoxes -Buttons -PhysicalvsImage -CheckforRunningImage -freespacealert -WBScreenModeUpdate
 
     }
     elseif ($Script:GUIActions.OutputPath) {
-        Update-UI -MainWindowButtons -Emu68Settings -DiskPartitionWindow -UpdateInputBoxes -Buttons -PhysicalvsImage -CheckforRunningImage 
+        Update-UI -MainWindowButtons -Emu68Settings -DiskPartitionWindow -UpdateInputBoxes -Buttons -PhysicalvsImage -CheckforRunningImage -WBScreenModeUpdate  
     }
     else{
-    Update-UI -MainWindowButtons -Emu68Settings UpdateInputBoxes -Buttons -PhysicalvsImage -CheckforRunningImage
+    Update-UI -MainWindowButtons -Emu68Settings UpdateInputBoxes -Buttons -PhysicalvsImage -CheckforRunningImage -WBScreenModeUpdate
     }
     
     if (-not $Script:GUIActions.ListofRemovableMedia){

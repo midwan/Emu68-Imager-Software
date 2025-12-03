@@ -6,6 +6,14 @@ function Get-OptionsBeforeRunningImage {
     Remove-Variable -Name 'WPF_RunWindow_*'
 
     $WPF_RunWindow = Get-XAML -WPFPrefix 'WPF_RunWindow_' -XMLFile '.\Assets\WPF\Window_RunOptions.xaml' -ActionsPath '.\Assets\UIActions\RunWindow\' -AddWPFVariables
+    
+    If ($Script:GUIActions.ScreenModetoUse -eq "Custom"){
+        $CVTAspectRatio = (Get-CVTAspectRatio -AspectRatio $Script:GUIActions.CustomScreenMode_Aspect)
+        $CVTMargins = (get-cvtMargins -Margins $Script:GUIActions.CustomScreenMode_Margins)
+        $CVTInterlace = (get-cvtInterlace -Interlace $Script:GUIActions.CustomScreenMode_Interlace)
+        $CVTRB = (get-cvtBlanking -RB $Script:GUIActions.CustomScreenMode_RB)
+        $CVT_String = "$($Script:GUIActions.CustomScreenMode_Width) $($Script:GUIActions.CustomScreenMode_Height) $($Script:GUIActions.CustomScreenMode_Framerate) $CVTAspectRatio $CVTMargins $CVTInterlace $CVTRB" 
+    }
 
     $DiskSizetoReport = (Get-ConvertedSize -Size $WPF_DP_Disk_GPTMBR.DiskSizeBytes -ScaleFrom 'B' -AutoScale)
     $NumberofMBRPartitions = ($Script:GUICurrentStatus.GPTMBRPartitionsandBoundaries).Count
@@ -59,6 +67,9 @@ function Get-OptionsBeforeRunningImage {
     $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Disk or Image",$Script:GUIActions.OutputType)
     $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Location to be installed",$Script:GUIActions.OutputPath)
     $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("ScreenMode to Use",$Script:GUIActions.ScreenModetoUseFriendlyName)
+    if ($Script:GUIActions.ScreenModetoUseFriendlyName -eq "Custom ScreenMode"){
+        $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Custom ScreenMode Parameters:","hdmi_cvt=$CVT_String") 
+    }
     $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Disk Size","$($DiskSizetoReport.Size) $($DiskSizetoReport.Scale) `($($WPF_DP_Disk_GPTMBR.DiskSizeBytes) bytes`)")
     $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Number of MBR Partitions to Write",$NumberofMBRPartitions)
     $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Workbench Screen Mode selected (Raspberry Pi):",$Script:GUIActions.ScreenModetoUse)

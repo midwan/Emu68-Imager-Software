@@ -229,6 +229,13 @@ $Script:GUIActions = [PSCustomObject]@{
     InstallType = 'PiStorm'
     #Not in GUI - End
     ScreenModetoUse = $null
+    CustomScreenMode_Width = $null
+    CustomScreenMode_Height = $null
+    CustomScreenMode_Framerate = $null
+    CustomScreenMode_Aspect = $null
+    CustomScreenMode_Margins = $null
+    CustomScreenMode_Interlace = $null
+    CustomScreenMode_RB = $null
     ScreenModeType = $null
     ScreenModetoUseWB = $null
     WorkbenchBackDropEnabled = $null

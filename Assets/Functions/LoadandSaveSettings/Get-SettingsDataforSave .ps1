@@ -43,6 +43,14 @@ function Get-SettingsDataforSave {
     $Output += "Setting;UnicamSizeYPosition;$($Script:GUIActions.UnicamSizeYPosition)"
     $Output += "Setting;UnicamOffsetXPosition;$($Script:GUIActions.UnicamOffsetXPosition)"
     $Output += "Setting;UnicamOffsetYPosition;$($Script:GUIActions.UnicamOffsetYPosition)"
+    $Output += "Setting;CustomScreenMode_Width;$($Script:GUIActions.CustomScreenMode_Width)" 
+    $Output += "Setting;CustomScreenMode_Height;$($Script:GUIActions.CustomScreenMode_Height)"
+    $Output += "Setting;CustomScreenMode_Framerate;$($Script:GUIActions.CustomScreenMode_Framerate)"
+    $Output += "Setting;CustomScreenMode_Aspect;$($Script:GUIActions.CustomScreenMode_Aspect)"
+    $Output += "Setting;CustomScreenMode_Margins;$($Script:GUIActions.CustomScreenMode_Margins)"
+    $Output += "Setting;CustomScreenMode_Interlace;$($Script:GUIActions.CustomScreenMode_Interlace)"
+    $Output += "Setting;CustomScreenMode_RB;$($Script:GUIActions.CustomScreenMode_RB)"
+
    
     $Output += "GPTMBR Disk Details:"
     $Output += "GPTMBRHeader;Type;GPTMBRDisk;DiskType;DiskSizeBytes;MBROverheadBytes;NumberofPartitionsMBR;NextPartitionMBRNumber"

@@ -1,0 +1,64 @@
+<Window x:Name="Window" 
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:WpfApp14"
+            mc:Ignorable="d"
+         Title="Set Custom Resolution" Height="350" Width="500" Left="130" HorizontalAlignment="Center" VerticalAlignment="Center" Topmost="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid x:Name ="Main" Background="#FFE5E5E5">
+        <Button x:Name="OK_Button" Content="OK" HorizontalAlignment="Right" Margin="0,0,5,5" VerticalAlignment="Bottom" Width="50" Height="20" Grid.Column="1"/>
+        <Button x:Name="Cancel_Button" Content="Cancel" HorizontalAlignment="Left" Margin="5,0,0,5" VerticalAlignment="Bottom" Width="50" Height="20"/>
+        <TextBox x:Name="ErrorMessage_Label" HorizontalAlignment="Center" TextWrapping="Wrap" Foreground="Red" VerticalAlignment="Top" Width="380" BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" Text="" Margin="0,10,0,0"/>
+
+        <GroupBox x:Name="Size" Header="Size" Margin="10,50,0,0" Height="117" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200">
+            <Grid>
+                <TextBox x:Name="Width_Label" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" Text="Width" VerticalAlignment="Top" Height="20"  BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" FontWeight="Bold" FontSize="10" Width="55" HorizontalContentAlignment="Center"/>
+                <TextBox x:Name="Width_Input" HorizontalAlignment="Left" Margin="10,20,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="55" Height="20"/>
+                <TextBox x:Name="Height_Label" HorizontalAlignment="Left" Margin="10,45,0,0" TextWrapping="Wrap" Text="Height" VerticalAlignment="Top" Height="20"  BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" FontWeight="Bold" FontSize="10" Width="55" HorizontalContentAlignment="Center"/>
+                <TextBox x:Name="Height_Input" HorizontalAlignment="Left" Margin="10,65,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="55" Height="20"/>
+                <TextBox x:Name="Width_MinMax_Label" HorizontalAlignment="Left" Margin="100,15,0,0" TextWrapping="Wrap" Text="Minimum: 800 Maximum: 3,840" VerticalAlignment="Top" Height="30"  BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" FontWeight="Bold" FontSize="10" Width="85"/>
+                <TextBox x:Name="Height_MinMax_Label" HorizontalAlignment="Left" Margin="100,60,0,0" TextWrapping="Wrap" Text="Minimum: 600 Maximum: 2,160" VerticalAlignment="Top" Height="30"  BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" FontWeight="Bold" FontSize="10" Width="85"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox x:Name="Framerate" Header="Framerate" Margin="10,172,0,0" Height="81" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"  >
+            <Grid>
+                <TextBox x:Name="Framerate_Label" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" Text="Framerate (hz)" VerticalAlignment="Top" Height="29"  BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" FontWeight="Bold" FontSize="10" Width="55" HorizontalContentAlignment="Center"/>
+                <TextBox x:Name="Framerate_Input" HorizontalAlignment="Left" Margin="10,30,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="55" Height="20"/>
+                <TextBox x:Name="Framerate_MinMax_Label" HorizontalAlignment="Left" Margin="100,23,0,0" TextWrapping="Wrap" Text="Minimum: 24 Maximum: 120" VerticalAlignment="Top" Height="33"  BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" FontWeight="Bold" FontSize="10" Width="84"/>
+
+            </Grid>
+        </GroupBox>
+
+        <TextBox x:Name="AspectRatio_Label" HorizontalAlignment="Left" Margin="17,258,0,0" TextWrapping="Wrap" Text="Aspect Ratio" VerticalAlignment="Top" Height="20"  BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" FontWeight="Bold" FontSize="10" Width="70"/>
+
+        <ComboBox x:Name="AspectRatio_Dropdown" HorizontalAlignment="Left" Margin="100,258,0,0" VerticalAlignment="Top" Width="80"/>
+
+
+        <GroupBox x:Name="Blanking_Groupbox" Header="Blanking" Margin="220,50,0,0" Height="70" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"  >
+            <Grid>
+                <RadioButton x:Name="NormalBlanking_radioButton" Content="Normal" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+                <RadioButton x:Name="ReducedBlanking_radioButton" Content="Reduced Blanking" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top"/>
+
+            </Grid>
+        </GroupBox>
+
+        <GroupBox x:Name="Interlace_Groupbox" Header="Interlace vs Progressive" Margin="220,130,0,0" Height="70" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"  >
+            <Grid>
+                <RadioButton x:Name="Progressive_radioButton" Content="Progressive" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+                <RadioButton x:Name="Interlace_radioButton" Content="Interlace" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top"/>
+
+            </Grid>
+        </GroupBox>
+
+        <GroupBox x:Name="Margins_Groupbox" Header="Margins" Margin="220,210,0,0" Height="70" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"  >
+            <Grid>
+                <RadioButton x:Name="MarginsDisabled_radioButton" Content="Disabled" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+                <RadioButton x:Name="MarginsEnabled_radioButton" Content="Enabled" HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top"/>
+
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+</Window>

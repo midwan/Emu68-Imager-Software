@@ -152,7 +152,7 @@ If ($Script:GUICurrentStatus.OperationMode -eq "Simple"){
 
 }
 
-update-ui -MainWindowButtons
+update-ui -MainWindowButtons -Emu68Settings
 
 $WPF_MainWindow.ShowDialog() | out-null
 
@@ -166,4 +166,4 @@ else {
 }
 
 # # $WPF_MainWindow.Close()
-# # [System.Windows.Controls.CheckBox].GetEvents() | Select-Object Name, *Method, EventHandlerType >test.txt
+# # [System.Windows.Controls.Button].GetEvents() | Select-Object Name, *Method, EventHandlerType >test.txt
