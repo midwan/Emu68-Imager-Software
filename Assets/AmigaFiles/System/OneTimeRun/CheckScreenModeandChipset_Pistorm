@@ -1,6 +1,5 @@
 IF EXISTS SYS:System/RexxMast
 	SYS:System/RexxMast >NIL:
 ENDIF
-SYS:Rexxc/RX CheckScreenModeandChipset.rexx
-delete >NIL: CheckScreenModeandChipset.rexx
+SYS:Rexxc/RX SYS:S/CheckScreenModeandChipset.rexx
 delete >NIL: SYS:S/CheckScreenModeandChipset.rexx
