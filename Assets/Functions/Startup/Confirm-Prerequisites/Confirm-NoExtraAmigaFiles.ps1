@@ -28,6 +28,7 @@ $ListofFiles = @"
     \System\OneTimeRun\Ibrowse
     \System\OneTimeRun\Pi4vsPi3_Pistorm
     \System\OneTimeRun\CheckScreenModeandChipset_Pistorm
+    \System\OneTimeRun\CheckScreenModeandChipset
     \System\OneTimeRunWB\LocaleSettings
     \System\PiStorm\Documentation
     \System\PiStorm\Documentation.info
