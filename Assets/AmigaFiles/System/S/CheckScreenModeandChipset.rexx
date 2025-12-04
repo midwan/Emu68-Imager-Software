@@ -46,7 +46,7 @@ else do
 
     ADDRESS COMMAND
 
-
+    'Sys:Prefs/ScreenMode FROM Sys:Prefs/Env-Archive/sys/screenmode.prefs.User USE >NIL:'
     'DELETE >NIL: SYS:PREFS/Env-Archive/Sys/Screenmode.prefs'
     'RENAME from SYS:PREFS/Env-Archive/Sys/Screenmode.prefs.user to SYS:PREFS/Env-Archive/Sys/Screenmode.prefs'
 
