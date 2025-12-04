@@ -1,7 +1,16 @@
+WAIT 1
 IF $FIRSTTIMEBOOTWB EQ "TRUE"
-   WAIT 2
+   ECHO "DELETE >NIL: SYS:WBStartup/OneTimeRunWB.info ALL FORCE *nDELETE >NIL: SYS:WBStartup/OneTimeRunWB ALL FORCE" to S:OneTimeRun/DeleteOneTimeRunWB 
    ECHO "Emu68 Imager - Performing Final Setup"
+   WAIT 3
    ECHO ""
-   ECHO "DELETE >NIL: SYS:WBStartup/OneTimeRunWB" >> S:OneTimeRun/DeleteOneTimeRunWB
-   ECHO "DELETE >NIL: SYS:WBStartup/OneTimeRunWB.info" >> S:OneTimeRun/DeleteOneTimeRunWB
+
+   ECHO "Rebooting the Amiga!"
+   Sys:c/diskchange SDH0:
+   IF $System EQ "WinUAE"
+      Sys:c/reboot
+   ELSE
+      c:EMU68INFO HARDRESET
+   ENDIF
+   ENDCLI
 ENDIF
