@@ -30,6 +30,7 @@ $ListofFiles = @"
     \System\OneTimeRun\CheckScreenModeandChipset_Pistorm
     \System\OneTimeRun\CheckScreenModeandChipset
     \System\OneTimeRunWB\LocaleSettings
+    \System\PiStorm\CheckHashes
     \System\PiStorm\Documentation
     \System\PiStorm\Documentation.info
     \System\PiStorm\Emu68Info.r
