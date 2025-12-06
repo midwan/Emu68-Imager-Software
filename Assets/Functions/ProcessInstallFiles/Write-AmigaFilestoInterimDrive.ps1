@@ -457,13 +457,8 @@ function Write-AmigaFilestoInterimDrive {
       if (test-path "$($Script:Settings.InterimAmigaDrives)\System\libs\68040.libary"){
           $null = remove-item "$($Script:Settings.InterimAmigaDrives)\System\libs\68040.libary" -Force 
       }
-      
-     
-      $IconPosScript_AmigaDrives = (Get-IconPositionScript -AmigaDrives -AmigaPositioning)
+       
       $IconPosScript_Emu68Boot = (Get-IconPositionScript -Emu68Boot)
-      
-      Export-TextFileforAmiga -DatatoExport $IconPosScript_AmigaDrives -ExportFile "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRun\SetIconPositions" -AddLineFeeds 'TRUE'   
-     
       Export-TextFileforAmiga -DatatoExport $IconPosScript_Emu68Boot -ExportFile "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRun\SetIconPositionsEmu68Boot_Pistorm" -AddLineFeeds 'TRUE'   
      
       Write-TaskCompleteMessage 
@@ -648,6 +643,10 @@ function Write-AmigaFilestoInterimDrive {
         $Script:Settings.CurrentTaskName = "Moving WBStartup files for first boot"
         
         Write-StartTaskMessage
+        
+        $IconPosScript_AmigaDrives = (Get-IconPositionScript -AmigaDrives -AmigaPositioning)
+        Export-TextFileforAmiga -DatatoExport $IconPosScript_AmigaDrives -ExportFile "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRunWB\SetIconPositions" -AddLineFeeds 'TRUE'   
+        
         $WBStartupPath = "$($Script:Settings.InterimAmigaDrives)\System\WBStartup"
         $FilestoMove = (Get-ChildItem -Path $WBStartupPath)
         

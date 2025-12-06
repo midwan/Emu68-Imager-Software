@@ -2,7 +2,20 @@ WAIT 1
 IF $FIRSTTIMEBOOTWB EQ "TRUE"
    ECHO "DELETE >NIL: SYS:WBStartup/OneTimeRunWB.info ALL FORCE *nDELETE >NIL: SYS:WBStartup/OneTimeRunWB ALL FORCE" to S:OneTimeRun/DeleteOneTimeRunWB 
    ECHO "Emu68 Imager - Performing Final Setup"
-   WAIT 3
+   c:ce >NIL: S:OneTimeRunWB 
+   IF WARN 
+      ECHO "Running One Time Scripts" 
+      ECHO >T:RunTimeScript "FAILAT 21" 
+      IF $System EQ "WinUAE" 
+         LIST >>T:RunTimeScript S:OneTimeRunWB PAT=~(#?.info|#?_pistorm) LFORMAT="ECHO *"Running Script: %n*"*nEcho *"*"*nExecute *"%p%n*"*nDelete *"%p%n*"*n" ALL FILES
+      ELSE
+         IF NOT $System EQ "RealAmiga" 
+            LIST >>T:RunTimeScriptWB S:OneTimeRunWB PAT=~(#?.info|) LFORMAT="ECHO *"Running Script: %n*"*nEcho *"*"*nExecute *"%p%n*"*nDelete *"%p%n*"*n" ALL FILES
+         ENDIF
+      ENDIF
+      EXECUTE T:RunTimeScriptWB
+      DELETE >NIL: T:RunTimeScriptWB 
+   ENDIF 
    ECHO ""
 
    ECHO "Rebooting the Amiga!"
