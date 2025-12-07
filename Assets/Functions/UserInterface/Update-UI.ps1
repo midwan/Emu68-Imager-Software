@@ -193,12 +193,30 @@ function Update-UI {
         }
 
         if ($Script:GUIActions.UnicamEnabled -eq $false){
+            $WPF_StartPage_Unicam_CheckBox.IsChecked = 0
             $WPF_StartPage_Unicam_button.IsEnabled = 0
 
         }
         elseif ($Script:GUIActions.UnicamEnabled -eq $true){
+            $WPF_StartPage_Unicam_CheckBox.IsChecked = 1
             $WPF_StartPage_Unicam_button.IsEnabled = 1
         }
+        if ($Script:GUIActions.WorkbenchBackDropEnabled -eq $true){
+            $WPF_StartPage_Backdrop_CheckBox.IsChecked = 1
+
+        }
+        else {
+            $WPF_StartPage_Backdrop_CheckBox.IsChecked = 0
+        }
+
+        if ($Script:GUIActions.ScreenModeType -eq "RTG"){
+            $WPF_StartPage_WorkbenchOutput_RadioButtonRTG.IsChecked = 1
+        }
+         
+        elseif ($Script:GUIActions.ScreenModeType -eq "Native"){
+            $WPF_StartPage_WorkbenchOutput_RadioButtonNative.IsChecked = 1
+        }
+
 
     }
 
