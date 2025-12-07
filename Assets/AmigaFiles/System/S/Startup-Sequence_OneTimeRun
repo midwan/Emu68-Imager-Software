@@ -1,62 +1,55 @@
 FAILAT 21 
-VERSION exec.library VERSION 47 >NIL:
-IF Not Warn
-	SETENV KickstartVersion 3.2
-	ELSE
-	VERSION Workbench.Library 45 >NIL:
-	IF not warn 
-		SETENV KickstartVersion 3.9
-		else
-		VERSION exec.library VERSION 40 >NIL:
-		IF not warn
-			SETENV KickstartVersion 3.1
-		ENDIF
-	ENDIF
-ENDIF
-
-VERSION >NIL: uaehf.device 1 
-IF NOT FAIL
-	SETENV System "WinUAE" 
-	ECHO "Setting environment as WinUAE" 
-ELSE 
-	VERSION brcm-emmc.device >nil: 
-	IF NOT FAIL 
-		IF $FIRSTTIMEBOOT EQ "TRUE"
-			ECHO "First time boot!"
-			ECHO "Setting environment as Raspberry Pi 4 (or CM4)"
-		ENDIF
-		SETENV System "PistormRaspi4" 
-	ELSE 
-		VERSION brcm-sdhc.device >NIL:
-		IF NOT fail 
-			IF $FIRSTTIMEBOOT EQ "TRUE"
-				ECHO "Setting environment as Raspberry Pi 3 (or Zero2)" 
-			ENDIF
-			SETENV System "PistormRaspi3" 
-		ELSE 
-			ECHO "Setting environment as Amiga" 
-			SETENV System "RealAmiga" 
-		ENDIF 
-	ENDIF 
+sys:c/sysvars
+IF NOT $UAEMAJOR GT 0
+   VERSION brcm-emmc.device >nil: 
+   IF NOT FAIL 
+      IF $FIRSTTIMEBOOT EQ "TRUE"
+         ECHO "Setting environment as Raspberry Pi 4 (or CM4)"
+      ENDIF
+      SETENV System "PiStorm"
+      SETENV RpiType "Pi4"
+      SYS:C/EMU68INFO variant >ENV:PistormVariant
+   ELSE
+      VERSION brcm-sdhc.device >NIL:
+      IF NOT fail 
+         IF $FIRSTTIMEBOOT EQ "TRUE"
+            ECHO "Setting environment as Raspberry Pi 3 (or Zero2)" 
+         ENDIF
+         SETENV System "PiStorm"
+         SETENV RpiType "Rpi3"
+         SYS:C/EMU68INFO variant >ENV:PistormVariant
+   ENDIF
+ELSE
+   SETENV SYSTEM "UAE"
 ENDIF 
-
+IF $KICKVER EQ 47
+   SETENV KickstartVersion 3.2
+ELSE
+   VERSION Workbench.Library 45 >NIL:
+   IF not warn 
+      SETENV KickstartVersion 3.9
+   ELSE
+      VERSION exec.library VERSION 40 >NIL:
+      IF not warn
+         SETENV KickstartVersion 3.1
+      ENDIF
+   ENDIF
+ENDIF
 c:ce >NIL: S:OneTimeRun 
 IF WARN 
 	ECHO "Running One Time Scripts" 
 	ECHO >T:RunTimeScript "FAILAT 21" 
-	IF $System EQ "WinUAE" 
+	IF $SYSTEM EQ "UAE" 
 		LIST >>T:RunTimeScript S:OneTimeRun PAT=~(#?.info|#?_pistorm) LFORMAT="ECHO *"Running Script: %n*"*nEcho *"*"*nExecute *"%p%n*"*nDelete *"%p%n*"*n" ALL FILES
 	ELSE
-		IF NOT $System EQ "RealAmiga" 
-			LIST >>T:RunTimeScript S:OneTimeRun PAT=~(#?.info|) LFORMAT="ECHO *"Running Script: %n*"*nEcho *"*"*nExecute *"%p%n*"*nDelete *"%p%n*"*n" ALL FILES
-		ENDIF
+		LIST >>T:RunTimeScript S:OneTimeRun PAT=~(#?.info|) LFORMAT="ECHO *"Running Script: %n*"*nEcho *"*"*nExecute *"%p%n*"*nDelete *"%p%n*"*n" ALL FILES		
 	ENDIF
 	EXECUTE T:RunTimeScript
 	DELETE >NIL: T:RunTimeScript 
 ENDIF 
 
 IF $FIRSTTIMEBOOT EQ "TRUE"
-	IF NOT $System EQ "WINUAE"
+	IF NOT $SYSTEM EQ "UAE"
 		ECHO "FALSE" > SYS:PREFS/ENV-ARCHIVE/FIRSTTIMEBOOT
 	ENDIF
 ENDIF
