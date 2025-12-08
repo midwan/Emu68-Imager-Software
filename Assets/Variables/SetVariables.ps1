@@ -92,7 +92,7 @@ $Script:Settings = [PSCustomObject]@{
     }
     IconPositionsCSV = [PSCustomObject]@{
         Path = '.\InputFiles\IconPositions.CSV'
-        GID = '1997107693'
+        GID = '49639817'
     }        
     DocumentationURLsCSV = [PSCustomObject]@{
         Path = '.\InputFiles\DocumentationURLs.CSV'

@@ -300,6 +300,7 @@ function Get-InputCSVs {
                     $CSVtoReturn += [PSCustomObject]@{                              
                         MinimumInstallerVersion = [system.version]$_.MinimumInstallerVersion
                         InstallerVersionLessThan = [system.version]$_.InstallerVersionLessThan
+                        Include = [bool]$_.Include
                         KickstartVersion = [system.version](($_.KickstartVersion -split ',')[$Counter]) 
                         Drive = $_.Drive	
                         File = $_.File		
@@ -320,6 +321,7 @@ function Get-InputCSVs {
                 $CSVtoReturn += [PSCustomObject]@{
                     MinimumInstallerVersion = [system.version]$_.MinimumInstallerVersion
                     InstallerVersionLessThan = [system.version]$_.InstallerVersionLessThan
+                    Include = [bool]$_.Include  
                     KickstartVersion = [system.version]$_.KickstartVersion  
                     Drive = $_.Drive	
                     File = $_.File		
@@ -334,7 +336,7 @@ function Get-InputCSVs {
             }
         }
 
-        $CSVtoReturn = $CSVtoReturn | Where-Object {$_.KickstartVersion -eq $Script:GUIActions.KickstartVersiontoUse}
+        $CSVtoReturn = $CSVtoReturn | Where-Object {($_.KickstartVersion -eq $Script:GUIActions.KickstartVersiontoUse) -and ($_.include -eq $true)} 
     }
     
     elseif ($DocumentationURLs) {
