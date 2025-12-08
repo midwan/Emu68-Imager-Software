@@ -31,6 +31,7 @@ $ListofFiles = @"
     \System\OneTimeRun\CheckScreenModeandChipset
     \System\OneTimeRunWB\LocaleSettings
     \System\PiStorm\CheckHashes
+    \System\PiStorm\CheckIconPositions
     \System\PiStorm\Documentation
     \System\PiStorm\Documentation.info
     \System\PiStorm\Emu68Info.r
