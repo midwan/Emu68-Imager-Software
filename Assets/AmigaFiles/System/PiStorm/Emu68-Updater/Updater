@@ -17,16 +17,8 @@ ENDIF
 
 ASSIGN Emu68-Updater: ""
 
-if $System EQ "PistormRaspi4"
-	C:EMU68INFO variant >ENV:PistormVariant
-endif
-
-if $System EQ "PistormRaspi3"
-	C:EMU68INFO variant >ENV:PistormVariant
-endif
-
 if NOT exists ENV:PistormVariant
-    ECHO "It seems your are not running Emu68, this window will close in 3 seconds"
+    ECHO "It seems you're not running Emu68, this window will close in 3 seconds"
 	SKIP Cleanup
 ENDIF
 
@@ -165,7 +157,6 @@ LAB Cleanup
 DELETE RAM:releases.json FORCE QUIET >NIL:
 DELETE RAM:Emu68-$PistormVariant.zip FORCE QUIET >NIL:
 DELETE RAM:Emu68upd_temp/ ALL FORCE QUIET >NIL:
-DELETE ENV:PistormVariant FORCE QUIET >NIL:
 
 UNSET OldEmu68Version
 UNSET NewEmu68Version

@@ -38,7 +38,7 @@ function Get-CopyFilestoAmigaDiskCommands {
             if (Test-path (Split-Path -Path $SourcePath -Parent)){
                 Write-InformationMessage -Message "Adding commands for copying file(s) to $RDBDeviceName for Drive $($_.Disk)"
                 $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
-                    Command = "fs copy `"$SourcePath`" `"$DestinationPath`" --makedir TRUE --recursive TRUE --uaemetadata UaeFsDb"                
+                    Command = "fs copy `"$SourcePath`" `"$DestinationPath`" --makedir TRUE --recursive TRUE --uaemetadata UaeFsDb --force TRUE"                
                     Sequence = 5
                 }
             }
@@ -59,7 +59,7 @@ function Get-CopyFilestoAmigaDiskCommands {
             $DestinationPath = "$($Script:GUIActions.OutputPath)\MBR\$($_.MBRPartitionNumber)\rdb\$($_.DeviceName)"           
             Write-InformationMessage -Message "Adding commands for copying icon file(s) to $($_.DeviceName)"
             $Script:GUICurrentStatus.HSTCommandstoProcess.WriteFilestoDisk += [PSCustomObject]@{
-                Command = "fs copy `"$SourcePath`" `"$DestinationPath`""
+                Command = "fs copy `"$SourcePath`" `"$DestinationPath`" --force TRUE"
                 Sequence = 6
             }
            

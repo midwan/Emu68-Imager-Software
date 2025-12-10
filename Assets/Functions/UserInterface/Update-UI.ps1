@@ -9,7 +9,10 @@ function Update-UI {
         [Switch]$PhysicalvsImage,
         [Switch]$CheckforRunningImage,
         [Switch]$FreeSpaceAlert,
-        [Switch]$PackageSelectionWindow
+        [Switch]$PackageSelectionWindow,
+        [Switch]$WBScreenModeUpdate,
+        [Switch]$WBScreenModeChangeType,
+        [Switch]$CustomResolution
     )
 
    
@@ -73,20 +76,27 @@ function Update-UI {
 
     }
 
-    if (($CheckforRunningImage) -or ($PackageSelectionWindow) -or ($DiskPartitionWindow)){
+    if (($CheckforRunningImage) -or ($PackageSelectionWindow) -or ($DiskPartitionWindow) -or ($CustomResolution) ){
 
         Check-ProcessingImage
     
     }
 
     if ($Emu68Settings){
+
+        if ($Script:GUICurrentStatus.OperationMode -eq "Simple") {
+            $WPF_StartPage_Unicam_button.Visibility = "Hidden"            
+        }
+
         if ($Script:GUIActions.InstallOSFiles -eq $true){
             $WPF_StartPage_OSSelection_GroupBox.Visibility = 'Visible'
             $WPF_StartPage_SourceFiles_GroupBox.Visibility = 'Visible'
             $WPF_StartPage_ADFpath_Button.Visibility = 'Visible'
             $WPF_StartPage_ADFpath_Button_Check.Visibility = 'Visible'
             $WPF_StartPage_ADFPath_Label.Visibility = 'Visible'
-            $WPF_StartPage_Settings_GroupBox.Visibility = 'Visible'
+            $WPF_StartPage_SettingsScreen_GroupBox.Visibility = 'Visible'
+            $WPF_StartPage_SettingsScreenWB_GroupBox.Visibility = 'Visible'
+            $WPF_StartPage_SettingsWifi_GroupBox.Visibility = 'Visible'
         }
         elseif ($Script:GUIActions.InstallOSFiles -eq $false){
             $WPF_StartPage_OSSelection_GroupBox.Visibility = 'Visible'
@@ -94,7 +104,9 @@ function Update-UI {
             $WPF_StartPage_ADFpath_Button.Visibility = 'Hidden'
             $WPF_StartPage_ADFpath_Button_Check.Visibility = 'Hidden'
             $WPF_StartPage_ADFPath_Label.Visibility = 'Hidden'
-            $WPF_StartPage_Settings_GroupBox.Visibility = 'Visible'
+            $WPF_StartPage_SettingsScreen_GroupBox.Visibility = 'Visible'
+            $WPF_StartPage_SettingsScreenWB_GroupBox.Visibility = 'Hidden'
+            $WPF_StartPage_SettingsWifi_GroupBox.Visibility = 'Hidden'
         }
         if ($Script:GUIActions.ROMLocation){
             $WPF_StartPage_RomPath_Label.Text = Get-FormattedPathforGUI -PathtoTruncate $Script:GUIActions.ROMLocation
@@ -146,6 +158,66 @@ function Update-UI {
         if (($Script:GUIActions.ScreenModetoUseFriendlyName) -and (-not ($WPF_StartPage_ScreenMode_Dropdown.SelectedItem))) {
            $WPF_StartPage_ScreenMode_Dropdown.SelectedItem = $Script:GUIActions.ScreenModetoUseFriendlyName
         }
+
+        if ($Script:GUIActions.ScreenModetoUse -eq "Custom"){
+            $WPF_StartPage_CustomScreenMode_button.Visibility = "Visible"
+            $WPF_StartPage_CustomScreenMode_button.IsEnabled = 1 
+            $CompletenessCheck = Confirm-CustomScreenModeComplete 
+            if ($CompletenessCheck -eq "Complete"){
+                $WPF_StartPage_CustomScreenMode_button.Background ="Green"
+                $WPF_StartPage_CustomScreenMode_button.Foreground = "White"
+                $WPF_StartPage_CustomScreenMode_button.Content = "Custom Resolution set"
+            }
+            else{
+                $WPF_StartPage_CustomScreenMode_button.Background ="#FFDDDDDD" 
+                $WPF_StartPage_CustomScreenMode_button.Foreground ="#FF000000"
+                $WPF_StartPage_CustomScreenMode_button.Content = "Click to set Custom Resolution"
+            }
+        }
+        else{
+            $WPF_StartPage_CustomScreenMode_button.Visibility = "Hidden"
+            $WPF_StartPage_CustomScreenMode_button.IsEnabled = 0             
+        }
+        if ($Script:GUIActions.ScreenModetoUseWB){
+            if ($Script:GUIActions.ScreenModeType -eq "Native"){
+                $WPF_StartPage_WorkbenchColour_Slider.IsEnabled = 1
+                $WPF_StartPage_WorkbenchColour_Slider.Maximum = 8
+                $WPF_StartPage_Unicam_CheckBox.IsEnabled = 0
+                $WPF_StartPage_Unicam_CheckBox.IsChecked = 0                    
+            }                
+            elseif ($Script:GUIActions.ScreenModeType -eq "RTG"){
+                $WPF_StartPage_Unicam_CheckBox.IsEnabled = 1                                                              
+                $WPF_StartPage_WorkbenchColour_Slider.IsEnabled = 0
+                $WPF_StartPage_WorkbenchColour_Slider.Maximum = 24                
+            }
+        }
+
+        if ($Script:GUIActions.UnicamEnabled -eq $false){
+            $WPF_StartPage_Unicam_CheckBox.IsChecked = 0
+            $WPF_StartPage_Unicam_button.IsEnabled = 0
+
+        }
+        elseif ($Script:GUIActions.UnicamEnabled -eq $true){
+            $WPF_StartPage_Unicam_CheckBox.IsChecked = 1
+            $WPF_StartPage_Unicam_button.IsEnabled = 1
+        }
+        if ($Script:GUIActions.WorkbenchBackDropEnabled -eq $true){
+            $WPF_StartPage_Backdrop_CheckBox.IsChecked = 1
+
+        }
+        else {
+            $WPF_StartPage_Backdrop_CheckBox.IsChecked = 0
+        }
+
+        if ($Script:GUIActions.ScreenModeType -eq "RTG"){
+            $WPF_StartPage_WorkbenchOutput_RadioButtonRTG.IsChecked = 1
+        }
+         
+        elseif ($Script:GUIActions.ScreenModeType -eq "Native"){
+            $WPF_StartPage_WorkbenchOutput_RadioButtonNative.IsChecked = 1
+        }
+
+
     }
 
     #  $WPF_DP_Partition_MBR_2.Children[0].Name
@@ -570,4 +642,141 @@ function Update-UI {
 
     }   
     
+    if (($WBScreenModeUpdate) -or ($WBScreenModeChangeType)) {
+
+
+        if ($WBScreenModeChangeType){
+            $Script:GUIActions.ScreenModetoUseWB = $null
+        }
+
+        if ($Script:GUIActions.ScreenModetoUseFriendlyName -eq "Custom ScreenMode"){
+            $PIScreenModeDetails =  [PSCustomObject]@{
+                Width = $Script:GUIActions.CustomScreenMode_Width 
+                Height = $Script:GUIActions.CustomScreenMode_Height
+                FrameRate = $Script:GUIActions.CustomScreenMode_Framerate
+                Aspect = $Script:GUIActions.CustomScreenMode_Aspect
+                Margins = $Script:GUIActions.CustomScreenMode_Margins
+                Interlace = $Script:GUIActions.CustomScreenMode_Interlace
+                rb = $Script:GUIActions.CustomScreenMode_RB 
+                Name =  "Custom"
+                FriendlyName ="Custom ScreenMode"
+                hdmi_group = 2
+                hdmi_mode =  87
+                hdmi_cvt = "$($Script:GUIActions.CustomScreenMode_Width) $($Script:GUIActions.CustomScreenMode_Height) $($Script:GUIActions.CustomScreenMode_Framerate) $CVTAspectRatio $CVTMargins $CVTInterlace $CVTRB" 
+            } 
+                       
+            $CompletenessCheck = Confirm-CustomScreenModeComplete 
+            if ($CompletenessCheck -eq "Complete"){     
+                $ValidCustomMode = $true
+    
+            }
+            else {
+                $ValidCustomMode = $false
+            }
+            
+        }
+        else {
+            $PIScreenModeDetails = ($Script:GUIActions.AvailableScreenModes | Where-Object {$_.FriendlyName -eq $Script:GUIActions.ScreenModetoUseFriendlyName})
+        }
+        
+        $isRTG = $Script:GUIActions.ScreenModeType -eq "RTG"
+
+        if ($isRTG){         
+            $WPF_StartPage_ScreenModeWorkbench_Dropdown.Items.Clear()
+            if ($Script:GUIActions.ScreenModetoUseFriendlyName -eq "Custom ScreenMode" -and $ValidCustomMode -eq $false) {
+                $WPF_StartPage_ScreenModeWorkbench_Dropdown.AddChild("You need to configure the custom screenMode first!")
+                $WPF_StartPage_ScreenModeWorkbench_Dropdown.SelectedItem = "You need to configure the custom screenMode first!"
+                $WPF_StartPage_WorkbenchColour_Label.Visibility = "Hidden"
+                $WPF_StartPage_WorkbenchColour_Value.Visibility = "Hidden"
+                $WPF_StartPage_ColourDepth_groupBox.Visibility = "Hidden"
+                $WPF_StartPage_Unicam_button.Visibility = "Hidden"
+                $WPF_StartPage_Unicam_CheckBox.Visibility = "Hidden"                
+            }
+            else {
+
+                $WPF_StartPage_WorkbenchColour_Label.Visibility = "Visible"
+                $WPF_StartPage_WorkbenchColour_Value.Visibility = "Visible"
+                $WPF_StartPage_ColourDepth_groupBox.Visibility = "Visible"
+                $WPF_StartPage_Unicam_button.Visibility = "Visible"
+                $WPF_StartPage_Unicam_CheckBox.Visibility = "Visible"                     
+                
+                If ($Script:GUIActions.ScreenModetoUseFriendlyName -eq 'Automatic'){
+                    $Script:GUIActions.AvailableScreenModesWB | Where-Object {$_.RTG -eq $isRTG} | ForEach-Object {
+                        $WPF_StartPage_ScreenModeWorkbench_Dropdown.AddChild($_.FriendlyName)
+                        if (-not $Script:GUIActions.ScreenModetoUseWB){
+                            if ($_.DefaultMode -eq $true){
+                                $Script:GUIActions.ScreenModetoUseWB = $_.FriendlyName   
+                                $Script:GUIActions.ScreenModeWBColourDepth = $_.DefaultDepth
+                            }
+                        } 
+                    }
+                    $WPF_StartPage_ScreenModeWorkbench_Dropdown.SelectedItem = $Script:GUIActions.ScreenModetoUseWB    
+                }
+                else {
+                    $Script:GUIActions.AvailableScreenModesWB | Where-Object {$_.RTG -eq $isRTG -and ([int]$_.Width -le [int]$PIScreenModeDetails.Width) -and ([int]$_.Height -le [int]$PIScreenModeDetails.Height)} | ForEach-Object {
+                        $WPF_StartPage_ScreenModeWorkbench_Dropdown.AddChild($_.FriendlyName)
+                    }
+                    if (-not $Script:GUIActions.ScreenModetoUseWB){
+                        $WBScreenModeDetails = ($Script:GUIActions.AvailableScreenModesWB | Where-Object {$_.RTG -eq $true} | Sort-Object {[int]$_.Height}, {[int]$_.Width}-Descending  | Where-Object {([int]$_.Width -le [int]$PIScreenModeDetails.Width) -and ([int]$_.Height -le [int]$PIScreenModeDetails.Height)} | Select-Object -First 1)
+                        $Script:GUIActions.ScreenModetoUseWB = $WBScreenModeDetails.FriendlyName    
+                        $Script:GUIActions.ScreenModeWBColourDepth = $WBScreenModeDetails.DefaultDepth                                                 
+                    }
+                    else {
+                        $WBScreenModeDetails = ($Script:GUIActions.AvailableScreenModesWB | Where-Object {$_.FriendlyName -eq $Script:GUIActions.ScreenModetoUseWB -and $_.RTG -eq $true})
+                         if (([int]$PIScreenModeDetails.Width -lt [int]$WBScreenModeDetails.Width) -or ([int]$PIScreenModeDetails.Height -lt [int]$WBScreenModeDetails.Height)){
+                             $Script:GUIActions.ScreenModetoUseWB = ($Script:GUIActions.AvailableScreenModesWB | Where-Object {$_.RTG -eq $true} | Sort-Object {[int]$_.Height}, {[int]$_.Width}-Descending  | Where-Object {([int]$_.Width -le [int]$PIScreenModeDetails.Width) -and ([int]$_.Height -le [int]$PIScreenModeDetails.Height)} | Select-Object -First 1).FriendlyName
+                         }
+                    }
+                      
+                }
+                $WPF_StartPage_ScreenModeWorkbench_Dropdown.SelectedItem = $Script:GUIActions.ScreenModetoUseWB
+                $WPF_StartPage_WorkbenchColour_Slider.Value = $Script:GUIActions.ScreenModeWBColourDepth 
+                $WPF_StartPage_WorkbenchColour_Value.Text = (Get-NumberOfColours -ColourDepth $Script:GUIActions.ScreenModeWBColourDepth)    
+                
+            }
+        } 
+        
+        else {
+            $WPF_StartPage_ScreenModeWorkbench_Dropdown.Items.Clear()
+            if ($Script:GUIActions.ScreenModetoUseFriendlyName -eq "Custom ScreenMode" -and $ValidCustomMode -eq $false) {
+                $WPF_StartPage_ScreenModeWorkbench_Dropdown.AddChild("You need to configure the custom screenMode first!")
+                $WPF_StartPage_ScreenModeWorkbench_Dropdown.SelectedItem = "You need to configure the custom screenMode first!"
+                $WPF_StartPage_WorkbenchColour_Label.Visibility = "Hidden"
+                $WPF_StartPage_WorkbenchColour_Value.Visibility = "Hidden"
+                $WPF_StartPage_ColourDepth_groupBox.Visibility = "Hidden"
+                $WPF_StartPage_Unicam_button.Visibility = "Hidden"
+                $WPF_StartPage_Unicam_CheckBox.Visibility = "Hidden"
+            }
+            else {
+                $WPF_StartPage_WorkbenchColour_Label.Visibility = "Visible"
+                $WPF_StartPage_WorkbenchColour_Value.Visibility = "Visible"
+                $WPF_StartPage_ColourDepth_groupBox.Visibility = "Visible"
+                $WPF_StartPage_Unicam_button.Visibility = "Visible"
+                $WPF_StartPage_Unicam_CheckBox.Visibility = "Visible"                     
+
+                $Script:GUIActions.AvailableScreenModesWB | Where-Object 'Type' -ne "RTG" | ForEach-Object {
+                    $WPF_StartPage_ScreenModeWorkbench_Dropdown.AddChild($_.FriendlyName)
+                    if (-not $Script:GUIActions.ScreenModetoUseWB){
+                        if ($_.DefaultMode -eq $true){
+                            $Script:GUIActions.ScreenModetoUseWB = $_.FriendlyName   
+                            $Script:GUIActions.ScreenModeWBColourDepth = $_.DefaultDepth                        
+                        }
+                    }
+                }
+    
+                $WPF_StartPage_ScreenModeWorkbench_Dropdown.SelectedItem = $Script:GUIActions.ScreenModetoUseWB
+                $WPF_StartPage_WorkbenchColour_Slider.Value = $Script:GUIActions.ScreenModeWBColourDepth 
+                $WPF_StartPage_WorkbenchColour_Value.Text = (Get-NumberOfColours -ColourDepth $Script:GUIActions.ScreenModeWBColourDepth)    
+            }           
+        }
+    }
 }
+            
+        
+        
+                      
+
+
+
+
+

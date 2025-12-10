@@ -22,6 +22,7 @@ function Get-PackagesfromInternet {
         Write-StartSubTaskMessage 
         if ($Line.Source -eq "Github"){
             $GithubDownloadLocation = $Settings.WebPackagesDownloadLocation
+            #Write-debug "GithubRepository: $($line.SourceLocation) GithubReleaseType: $($Line.GithubReleaseType) Tag_Name: $($line.GithubRelease) Name: $($line.GithubName) LocationforDownload: $("$GithubDownloadLocation\") FileNameforDownload: $($line.FileDownloadName)"
             if (-not(Get-GithubRelease -GithubRepository $line.SourceLocation -GithubReleaseType $Line.GithubReleaseType -Tag_Name $line.GithubRelease -Name $line.GithubName -LocationforDownload "$GithubDownloadLocation\" -FileNameforDownload "$($line.FileDownloadName)")){
                 Write-ErrorMessage -Message "Error downloading $($line.GithubName)! Cannot continue!"
                 return $false

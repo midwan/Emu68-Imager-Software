@@ -78,7 +78,13 @@ function Get-GithubRelease {
         }
         else {
             $GithubDetails_Sorted = $GithubDetails | Where-Object { $_.tag_name -ne 'nightly' -and ($_.draft).tostring() -eq 'False' -and ($_.prerelease).tostring() -eq 'False' -and ($_.name).tostring() -notmatch 'Release Candidate'} | Sort-Object -Property 'tag_name' -Descending | Select-Object -ExpandProperty assets 
-            $GithubDetails_ForDownload = $GithubDetails_Sorted  | Where-Object { $_.name -match $Name } | Select-Object -First 1
+            if ($Name -eq "Emu68-tools 1.0"){
+                $NametoCheck -eq "Emu68-tools.zip"
+            }
+            else {
+                $NametoCheck = $Name
+            }
+            $GithubDetails_ForDownload = $GithubDetails_Sorted  | Where-Object { $_.name -match $NametoCheck } | Select-Object -First 1
         }
     }
     elseif ($GithubReleaseType -eq "nightly"){

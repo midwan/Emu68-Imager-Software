@@ -10,15 +10,27 @@ function Update-ConfigTXT {
     $ConfigTxt = Get-Content -Path $PathtoConfigTXT
     Write-InformationMessage -Message 'Preparing Config.txt'
     $RevisedConfigTxt = @()
-
-
+    
+    If ($Script:GUIActions.ScreenModetoUse -eq "Custom"){
+        $CVTAspectRatio = (Get-CVTAspectRatio -AspectRatio $Script:GUIActions.CustomScreenMode_Aspect)
+        $CVTMargins = (get-cvtMargins -Margins $Script:GUIActions.CustomScreenMode_Margins)
+        $CVTInterlace = (get-cvtInterlace -Interlace $Script:GUIActions.CustomScreenMode_Interlace)
+        $CVTRB = (get-cvtBlanking -RB $Script:GUIActions.CustomScreenMode_RB)
+        $CVT_String = "$($Script:GUIActions.CustomScreenMode_Width) $($Script:GUIActions.CustomScreenMode_Height) $($Script:GUIActions.CustomScreenMode_Framerate) $CVTAspectRatio $CVTMargins $CVTInterlace $CVTRB" 
+    }
+      
     foreach ($Line in $ConfigTxt) {
         if ($line -eq '[ROMPATH]'){
             $RevisedConfigTxt += "initramfs $($Script:GUIActions.FoundKickstarttoUse.Fat32Name)"
         }
         elseif ($line -eq '[VIDEOMODES]'){
             $RevisedConfigTxt +="# The following section defines the screenmode for your monitor for output from the Raspberry Pi. If you wish to "
-            $RevisedConfigTxt +="# select a different screenmode you can comment out the existing mode and remove the comment marks from the new one."            
+            $RevisedConfigTxt +="# select a different screenmode you can comment out the existing mode and remove the comment marks from the new one."        
+            If ($Script:GUIActions.ScreenModetoUse -eq "Custom"){
+                $RevisedConfigTxt += "hdmi_cvt=$CVT_String"
+                $RevisedConfigTxt += "hdmi_group=2"
+                $RevisedConfigTxt += "hdmi_mode=87"
+            }   
             $Script:GUIActions.AvailableScreenModes | ForEach-Object {
                 if ($_.Name -eq $Script:GUIActions.ScreenModetoUse){
                     $RevisedConfigTxt += ""

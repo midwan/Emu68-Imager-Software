@@ -76,7 +76,11 @@ $Script:Settings = [PSCustomObject]@{
     }
     ScreenModesCSV = [PSCustomObject]@{
         Path = '.\InputFiles\ScreenModes.CSV'
-        GID = '860542576'
+        GID = '1007905875'
+    }
+    ScreenModesWBCSV = [PSCustomObject]@{
+        Path = '.\InputFiles\ScreenModesWB.CSV'
+        GID = '491578007'
     }
     FileSystemsCSV = [PSCustomObject]@{
         Path = '.\InputFiles\FileSystems.CSV'
@@ -88,7 +92,7 @@ $Script:Settings = [PSCustomObject]@{
     }
     IconPositionsCSV = [PSCustomObject]@{
         Path = '.\InputFiles\IconPositions.CSV'
-        GID = '1997107693'
+        GID = '49639817'
     }        
     DocumentationURLsCSV = [PSCustomObject]@{
         Path = '.\InputFiles\DocumentationURLs.CSV'
@@ -225,9 +229,31 @@ $Script:GUIActions = [PSCustomObject]@{
     InstallType = 'PiStorm'
     #Not in GUI - End
     ScreenModetoUse = $null
+    CustomScreenMode_Width = $null
+    CustomScreenMode_Height = $null
+    CustomScreenMode_Framerate = $null
+    CustomScreenMode_Aspect = $null
+    CustomScreenMode_Margins = $null
+    CustomScreenMode_Interlace = $null
+    CustomScreenMode_RB = $null
+    ScreenModeType = $null
+    ScreenModetoUseWB = $null
+    WorkbenchBackDropEnabled = $null
+    ScreenModeWBColourDepth = $null
+    UnicamEnabled = $false    
+    UnicamStartonBoot = [bool]$null
+    UnicamScalingType = $null
+    UnicamBParameter = $null
+    UnicamCParameter = $null
+    UnicamPhase = $null
+    UnicamSizeXPosition = $null
+    UnicamSizeYPosition = $null
+    UnicamOffsetXPosition = $null
+    UnicamOffsetYPosition = $null
     ScreenModetoUseFriendlyName =$null
     AvailableKickstarts = $null
     AvailableScreenModes = $null
+    AvailableScreenModesWB = $null
     DefaultPackagesSelected = $null 
     DefaultIconsetSelected = $null
     AvailablePackages = New-Object System.Data.DataTable

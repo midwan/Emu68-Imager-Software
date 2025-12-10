@@ -1,5 +1,4 @@
-Version exec.library version 47 >NIL:
-If Warn
+If NOT $KICKVER EQ 47
   C:RemLib >NIL: icon.library
 EndIf
 

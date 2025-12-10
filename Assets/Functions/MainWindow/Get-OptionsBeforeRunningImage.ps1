@@ -6,6 +6,14 @@ function Get-OptionsBeforeRunningImage {
     Remove-Variable -Name 'WPF_RunWindow_*'
 
     $WPF_RunWindow = Get-XAML -WPFPrefix 'WPF_RunWindow_' -XMLFile '.\Assets\WPF\Window_RunOptions.xaml' -ActionsPath '.\Assets\UIActions\RunWindow\' -AddWPFVariables
+    
+    If ($Script:GUIActions.ScreenModetoUse -eq "Custom"){
+        $CVTAspectRatio = (Get-CVTAspectRatio -AspectRatio $Script:GUIActions.CustomScreenMode_Aspect)
+        $CVTMargins = (get-cvtMargins -Margins $Script:GUIActions.CustomScreenMode_Margins)
+        $CVTInterlace = (get-cvtInterlace -Interlace $Script:GUIActions.CustomScreenMode_Interlace)
+        $CVTRB = (get-cvtBlanking -RB $Script:GUIActions.CustomScreenMode_RB)
+        $CVT_String = "$($Script:GUIActions.CustomScreenMode_Width) $($Script:GUIActions.CustomScreenMode_Height) $($Script:GUIActions.CustomScreenMode_Framerate) $CVTAspectRatio $CVTMargins $CVTInterlace $CVTRB" 
+    }
 
     $DiskSizetoReport = (Get-ConvertedSize -Size $WPF_DP_Disk_GPTMBR.DiskSizeBytes -ScaleFrom 'B' -AutoScale)
     $NumberofMBRPartitions = ($Script:GUICurrentStatus.GPTMBRPartitionsandBoundaries).Count
@@ -35,15 +43,44 @@ function Get-OptionsBeforeRunningImage {
 
     If ($Script:GUIActions.InstallOSFiles -eq $true){
         $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("OS to be Installed",$Script:GUIActions.KickstartVersiontoUseFriendlyName)
+        $MinimumScreenMode = Check-WBScreenMode
+        If ($MinimumScreenMode -eq "RTG"){
+            $WPF_RunWindow_ScreenMode_Label.Text = "RTG screenmode chosen. Please ensure you have a monitor connected to the HDMI port on your Raspberry Pi"
+        } 
+        elseIf ($MinimumScreenMode -eq "AGA"){
+            $WPF_RunWindow_ScreenMode_Label.Text = "AGA screenmode chosen. Please ensure you are running on an Amiga 1200"
+
+        } 
+        elseIf ($MinimumScreenMode -eq "ECS"){
+            $WPF_RunWindow_ScreenMode_Label.Text = "ECS screenmode chosen. Please ensure you are running on an Amiga with an ECS Denise (or an Amiga 1200)"             
+        } 
+        elseif ($MinimumScreenMode -eq "OCS"){
+            $WPF_RunWindow_ScreenMode_Label.Text = ""
+        }
+
+    }
+    else {
+        $WPF_RunWindow_ScreenMode_Label.Visibility = "Hidden"
+
+        $WPF_RunWindow_ScreenMode_Label
     }
     $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Disk or Image",$Script:GUIActions.OutputType)
     $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Location to be installed",$Script:GUIActions.OutputPath)
     $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("ScreenMode to Use",$Script:GUIActions.ScreenModetoUseFriendlyName)
+    if ($Script:GUIActions.ScreenModetoUseFriendlyName -eq "Custom ScreenMode"){
+        $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Custom ScreenMode Parameters:","hdmi_cvt=$CVT_String") 
+    }
     $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Disk Size","$($DiskSizetoReport.Size) $($DiskSizetoReport.Scale) `($($WPF_DP_Disk_GPTMBR.DiskSizeBytes) bytes`)")
     $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Number of MBR Partitions to Write",$NumberofMBRPartitions)
+    $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Workbench Screen Mode selected (Raspberry Pi):",$Script:GUIActions.ScreenModetoUse)
     If ($Script:GUIActions.InstallOSFiles -eq $true){
         $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("SSID to configure:",$SSID)
         $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Wifi Password to set:",$WifiPassword)
+        $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Screen Mode selected (Workbench):",$Script:GUIActions.ScreenModetoUseWB)
+        $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Workbench Backdrop Enabled:",$Script:GUIActions.WorkbenchBackDropEnabled)
+        $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Workbench Screen Mode Colour Depth (bits):",$Script:GUIActions.ScreenModeWBColourDepth)
+        $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Workbench Screen Mode Type:",$Script:GUIActions.ScreenModeType)
+        $null = $Script:GUICurrentStatus.RunOptionstoReport.Rows.Add("Unicam Enabled (Framethrower):",$Script:GUIActions.UnicamEnabled)
     }
     
 
