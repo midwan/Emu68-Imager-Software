@@ -24,7 +24,7 @@ Function Get-IconPaths {
             SourceLocation = $IconLocationDetailsCSV."$($IconType)IconSourceLocation"
             InstallMedia   = $IconLocationDetailsCSV."$($IconType)IconInstallMedia"
             FilestoInstall = $IconLocationDetailsCSV."$($IconType)IconFilestoInstall"
-            ModifyInfoFileTooltype = ($IconLocationDetailsCSV."$($IconType)IconModifyInfoFileToolType")
+            ModifyInfoFileType = ($IconLocationDetailsCSV."$($IconType)IconModifyInfoFileType")
             NewFileNameFlag = [bool]$null
             InstallMediaPath = $null
             NewFileName = $null

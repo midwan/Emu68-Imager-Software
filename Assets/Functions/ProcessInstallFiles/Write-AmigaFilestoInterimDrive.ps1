@@ -202,18 +202,23 @@ function Write-AmigaFilestoInterimDrive {
             $null = Remove-Item -Path  $DestinationPath -Force -Recurse
         }
     
-        $null = New-Item $DestinationPath -ItemType Directory
+        $null = New-Item $DestinationPath -ItemType Directory -Force
     
+        $HSTAmigaScript = [System.Collections.Generic.List[PSCustomObject]]::New()
+
         $IconsPaths | ForEach-Object {
-            $null = New-Item "$DestinationPath\$($_.IconType)" -ItemType Directory
+            $null = New-Item "$DestinationPath\$($_.IconType)" -ItemType Directory -Force
+            
             
             if ($_.InstallMedia -eq "ADF"){
                 $SourcePathtoUse = "$($_.InstallMediaPath)\$($_.FilestoInstall)"
                 if ($_.NewFileNameFlag -eq $true){
-                    $DestinationPathToUse = "$DestinationPath\$($_.IconType)\$($_.NewFileName)"                    
+                    $DestinationPathToUse = "$DestinationPath\$($_.IconType)\$($_.NewFileName)"
+                    $PathtoNewFile = "$DestinationPath\$($_.IconType)\$($_.NewFileName)"                    
                 }
                 else {
-                    $DestinationPathToUse = "$DestinationPath\$($_.IconType)"                        
+                    $DestinationPathToUse = "$DestinationPath\$($_.IconType)"      
+                    $PathtoNewFile = "$DestinationPath\$($_.IconType)\$(Split-Path -path $_.FilestoInstall -Leaf)"                        
                 }
                 $Script:GUICurrentStatus.HSTCommandstoProcess.CopyIconFiles += [PSCustomObject]@{
                     Command = "fs extract `"$SourcePathtoUse`" `"$DestinationPathToUse`" --uaemetadata None --force TRUE"
@@ -223,14 +228,35 @@ function Write-AmigaFilestoInterimDrive {
             }
             elseif ($_.InstallMedia -eq "CD"){
                 $DestinationPathToUse = "$DestinationPath\$($_.IconType)"
+                if ($_.NewFileName) {
+                    $PathtoNewFile = "$DestinationPath\$($_.IconType)\$($_.NewFileName)"   
+                }
+                else {
+                    $PathtoNewFile = "$DestinationPath\$($_.IconType)\$(Split-Path -path $_.FilestoInstall -Leaf)"  
+                }
                 if (-not (Copy-CDFiles -HSTImager -InputFile $($_.InstallMediaPath) -FiletoExtract $($_.FilestoInstall) -OutputDirectory "$DestinationPathtoUse" -NewFileName $($_.NewFileName))){
                     Write-ErrorMessage -Message 'Error extracting file(s) from CD! Quitting'
                     exit      
                 }
             }
-            # Write-Host  $SourcePathtoUse $DestinationPathToUse
+            if ($_.ModifyInfoFiletype){
+                If ($_.ModifyInfoFiletype -eq "Disk"){
+                    $TypeToUse = '1'
+                }
+                If ($_.ModifyInfoFiletype -eq "Drawer"){
+                    $TypeToUse = '2'
+                }
+                $HSTAmigaScript += "icon update $PathtoNewFile --type $TypeToUse"
+            }
+            # Write-debug  $SourcePathtoUse $DestinationPathToUse
+            #Write-debug "Icon file path is: $PathtoNewFile"
         }
         
+        if ($HSTAmigaScript){
+            Write-informationMessage "Adjusting default icon files where necessary"
+            Start-HSTAmigaCommands -HSTScript $HSTAmigaScript 
+        }
+
         if ($Script:GUIActions.OSInstallMediaType -eq "CD"){
        #     $null = Write-AmigaInfoType -IconPath "$DestinationPath\NewFolder\NewFolder.info" -TypetoSet 'Drawer'
         }
@@ -470,7 +496,7 @@ function Write-AmigaFilestoInterimDrive {
     
     Write-StartTaskMessage
 
-    $Script:Settings.TotalNumberofSubTasks = 7
+    $Script:Settings.TotalNumberofSubTasks = 8
 
     If (-not ($wifiprefs)){
         $Script:Settings.TotalNumberofSubTasks -- #No wifi
@@ -630,14 +656,13 @@ function Write-AmigaFilestoInterimDrive {
         
     }
     
-    # $Script:Settings.CurrentSubTaskNumber ++
-    # $Script:Settings.CurrentSubTaskName = "Modifying icon positions"
-    # Write-StartSubTaskMessage
+    $Script:Settings.CurrentSubTaskNumber ++
+    $Script:Settings.CurrentSubTaskName = "Modifying icon positions"
+    Write-StartSubTaskMessage
 
-    # $IconstoModifyScript = Get-IconPositionScriptHSTAmiga
+    $IconstoModifyScript = Get-IconPositionScriptHSTAmiga
 
-    # Start-HSTAmigaCommands -HSTScript $IconstoModifyScript
-
+    Start-HSTAmigaCommands -HSTScript $IconstoModifyScript 
 
     Write-TaskCompleteMessage 
    }
@@ -648,7 +673,8 @@ function Write-AmigaFilestoInterimDrive {
         
         Write-StartTaskMessage
         
-        $IconPosScript_AmigaDrives = (Get-IconPositionScript -AmigaDrives -AmigaPositioning -Emu68Boot)
+      #  $IconPosScript_AmigaDrives = (Get-IconPositionScript -AmigaDrives -AmigaPositioning -Emu68Boot)
+        $IconPosScript_AmigaDrives = (Get-IconPositionScript -AmigaDrives -Emu68Boot)
         Export-TextFileforAmiga -DatatoExport $IconPosScript_AmigaDrives -ExportFile "$($Script:Settings.InterimAmigaDrives)\System\S\OneTimeRunWB\SetIconPositions" -AddLineFeeds 'TRUE'   
         
         $WBStartupPath = "$($Script:Settings.InterimAmigaDrives)\System\WBStartup"
