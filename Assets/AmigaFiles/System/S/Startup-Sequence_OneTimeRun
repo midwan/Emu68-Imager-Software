@@ -18,6 +18,7 @@ IF NOT $UAEMAJOR GT 0
          SETENV System "PiStorm"
          SETENV RpiType "Rpi3"
          SYS:C/EMU68INFO variant >ENV:PistormVariant
+      ENDIF
    ENDIF
 ELSE
    SETENV SYSTEM "UAE"
