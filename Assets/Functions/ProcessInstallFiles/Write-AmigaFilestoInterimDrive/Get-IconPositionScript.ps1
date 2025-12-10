@@ -97,7 +97,7 @@ function Get-IconPositionScript {
      
     if ($Emu68Boot) {
     #    $IconPosScript += "Mount SD0: >NIL:"
-    $IconPosScript += "IF NOT `$System EQ `"WinUAE`""
+    $IconPosScript += "IF NOT `$System EQ `"UAE`""
         # $IconPosScript += "   Delete EMU68BOOT:cmdline.txt QUIET"
         # $IconPosScript += "   rename from EMU68BOOT:cmdlineBAK.txt to EMU68BOOT:cmdline.txt"
         foreach ($Disk in $DefaultDisks) {
