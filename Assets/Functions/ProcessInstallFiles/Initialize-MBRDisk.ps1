@@ -28,7 +28,7 @@ function Initialize-MBRDisk {
             Write-InformationMessage -Message "Adding command to initialise disk for disk at path: $($Script:GUIActions.OutputPath)"
         }
         $Script:GUICurrentStatus.HSTCommandstoProcess.NewDiskorImage += [PSCustomObject]@{
-            Command = "mbr init $($Script:GUIActions.OutputPath)"
+            Command = "mbr init `"$($Script:GUIActions.OutputPath)`""
             Sequence = 3           
         }   
     }
