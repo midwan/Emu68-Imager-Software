@@ -4,7 +4,9 @@ function Read-SettingsFile {
     )
     
     
-   # $SettingsFile = "C:\Users\Matt\OneDrive\Documents\DiskPartitioner\Settings\teest.e68"
+   # $SettingsFile = "C:\Users\Matt\OneDrive\Documents\DiskPartitioner\Settings\test.e68"
+
+   $Script:GUICurrentStatus.LoadingSettings =$true
 
    $Script:GUICurrentStatus.HSTCommandstoProcess.ExtractOSFiles = [System.Collections.Generic.List[PSCustomObject]]::New()
    $Script:GUICurrentStatus.HSTCommandstoProcess.CopyIconFiles = [System.Collections.Generic.List[PSCustomObject]]::New()
@@ -537,6 +539,9 @@ for ($i = 0; $i -lt $Script:GUIActions.AvailablePackages.Columns.Count; $i++) {
     if (-not $Script:GUIActions.ListofRemovableMedia){
         $Script:GUIActions.ListofRemovableMedia = Get-RemovableMedia
     }
+
+
+    $Script:GUICurrentStatus.LoadingSettings = $null
 
     return $true
 

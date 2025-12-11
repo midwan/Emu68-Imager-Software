@@ -152,6 +152,7 @@ $null = $Script:Settings.ProgressBarMarkers.Add([PSCustomObject]@{
 
 
 $Script:GUICurrentStatus = [PSCustomObject]@{
+    LoadingSettings = $null
     OperationMode = $null
     ForceRecheckAmigaPartitionsandBoundaries = $false
     AmigaPartitionsandBoundaries = $null

@@ -646,7 +646,9 @@ function Update-UI {
 
 
         if ($WBScreenModeChangeType){
-            $Script:GUIActions.ScreenModetoUseWB = $null
+            if (-not ($Script:GUICurrentStatus.LoadingSettings)){
+                $Script:GUIActions.ScreenModetoUseWB = $null
+            }
         }
 
         if ($Script:GUIActions.ScreenModetoUseFriendlyName -eq "Custom ScreenMode"){
