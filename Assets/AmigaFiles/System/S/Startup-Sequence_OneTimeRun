@@ -7,7 +7,7 @@ IF NOT $UAEMAJOR GT 0
          ECHO "Setting environment as Raspberry Pi 4 (or CM4)"
       ENDIF
       SETENV System "PiStorm"
-      SETENV RpiType "Pi4"
+      SETENV RpiType "RPi4"
       SYS:C/EMU68INFO variant >ENV:PistormVariant
    ELSE
       VERSION brcm-sdhc.device >NIL:
@@ -16,7 +16,7 @@ IF NOT $UAEMAJOR GT 0
             ECHO "Setting environment as Raspberry Pi 3 (or Zero2)" 
          ENDIF
          SETENV System "PiStorm"
-         SETENV RpiType "Rpi3"
+         SETENV RpiType "RPi3"
          SYS:C/EMU68INFO variant >ENV:PistormVariant
       ENDIF
    ENDIF

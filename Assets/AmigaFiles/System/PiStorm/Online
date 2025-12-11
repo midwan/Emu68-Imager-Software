@@ -33,7 +33,7 @@ If {Action} EQ "Connect"
     endif
     if {ConnectionType} EQ "genet"
     echo "Connecting to Ethernet (Genet.device)"
-        if not $RpiType EQ "Pi4"
+        if not $RpiType EQ "RPi4"
             echo "Genet.device only works on Pistorm with Raspberry Pi4 or CM4! Aborting!"
 			Skip End
         endif
