@@ -62,6 +62,7 @@ $ListofFiles = @"
     \System\PiStorm\Emu68-Updater\Emu68-Updater.info
     \System\PiStorm\Emu68-Updater\tag.rexx
     \System\PiStorm\Emu68-Updater\Updater
+    \System\PiStorm\Emu68-Updater\VersionChecker.rexx
     \System\Prefs\Env-Archive\FIRSTTIMEBOOT
     \System\Prefs\Env-Archive\FIRSTTIMEBOOTWB
     \System\Prefs\Env-Archive\REBOOT
