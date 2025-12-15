@@ -115,6 +115,8 @@ ECHO ""
 
 SET OldEmu68Version `Version "{EMU68DEVICE}{EMU68PATH}Emu68-$PistormVariant"`
 SET NewEmu68Version `Version RAM:Emu68upd_temp/Emu68-$PistormVariant`
+ECHO "Version on your Amiga: $OldEmu68Version "
+ECHO "Version found online: $NewEmu68Version. "
 
 RX Emu68-Updater:VersionChecker.rexx "$OldEmu68Version" "$NewEmu68Version" >NIL:
 
@@ -195,14 +197,16 @@ ECHO "Starting VideoCore update process..."
 ECHO ""
 
 SET OldVC4Version `Version LIBS:Picasso96/VideoCore.card`
-SET NewCV4Version `Version RAM:Emu68tools_temp/VideoCore/VideoCore.card`
+SET NewVC4Version `Version RAM:Emu68tools_temp/VideoCore/VideoCore.card`
 
-;IF "$OldVC4Version" EQ "$NewCV4Version"
+;IF "$OldVC4Version" EQ "$NewVC4Version"
 ;  ECHO "Your version of VideoCore is already up to date."
 ;  SKIP END
 ;ENDIF
 
-RX Emu68-Updater:VersionChecker.rexx "$OldVC4Version" "$NewCV4Version" >NIL:
+ECHO "Version on your Amiga: $OldVC4Version "
+ECHO "Version found online: $NewVC4Version "
+RX Emu68-Updater:VersionChecker.rexx "$OldVC4Version" "$NewVC4Version" >NIL:
 
 IF NOT WARN
   ASK "New $NewVC4Version version found, do you want to update your current $OldVC4Version version? Y/N"
