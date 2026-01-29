@@ -99,11 +99,11 @@ ELSE DO
    SwitchNoCloseMiami = "FALSE"
 END
 
-IF POS('NOSTARTMIAMI', input) > 0 THEN DO
-   SwitchNoStartMiami = "TRUE"
+IF POS('NORESTARTMIAMI', input) > 0 THEN DO
+   SwitchNoReStartMiami = "TRUE"
 END
 ELSE DO
-   SwitchNoStartMiami = "FALSE"
+   SwitchNoReStartMiami = "FALSE"
 END
 
 
@@ -155,7 +155,7 @@ IF DEBUG = "TRUE" then DO
    SAY "Action: "action
    SAY "Device: "device
    SAY "DevicebaseName: "DevicebaseName
-   SAY "SwitchNoStartMiami: "SwitchNoStartMiami 
+   SAY "SwitchNoRestartMiami: "SwitchNoRestartMiami 
    SAY "SwitchNoCloseMiami: "SwitchNoCloseMiami 
    SAY "SwitchNoSyncTime: "SwitchNoSyncTime 
    SAY "SwitchNoCloseWirelessManager: "SwitchNoCloseWirelessManager
@@ -295,7 +295,7 @@ IF action = "CONNECT" then DO
          'run <>nil: Miami:miamidx 'MiamiConfigFile
       END
       ELSE DO
-         IF SwitchNoStartMiami="FALSE" then DO   
+         IF SwitchNoRestartMiami="FALSE" then DO   
             SAY ""
             Say "Miami already running.Quitting."
             ADDRESS 'MIAMI.1'
@@ -579,7 +579,7 @@ ShowUsage:
    SAY "<Action Type>: Connect, Disconnect"
    SAY "<Selected Device>: WifiPi, Genet, Uaenet (applicable for Connect action type)"
    SAY "<IP Stack>: Miami, Roadshow"
-   SAY "<Options>: NoSyncTime, NoStartMiami (applicable for connect action type)"
+   SAY "<Options>: NoSyncTime, NoRestartMiami, NoRestartWirelessManager (applicable for connect action type)"
    SAY "<Options>: NoCloseWirelessManager, NoCloseMiami (applicable for disconnect action type)"
    SAY "<Options>: Debug, WaitatEnd"
    SAY ""
