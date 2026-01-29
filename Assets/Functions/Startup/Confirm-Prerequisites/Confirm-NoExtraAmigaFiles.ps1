@@ -35,6 +35,11 @@ $ListofFiles = @"
     \System\PiStorm\DebugTools\CheckIconPositions
     \System\PiStorm\Documentation
     \System\PiStorm\Documentation.info
+    \System\PiStorm\Emu68-Updater
+    \System\PiStorm\Emu68-Updater.info
+    \System\PiStorm\Emu68UpdaterFiles\tag.rexx
+    \System\PiStorm\Emu68UpdaterFiles\Updater
+    \System\PiStorm\Emu68UpdaterFiles\VersionChecker.rexx
     \System\PiStorm\Emu68 Utilities\Emu68Info.r
     \System\PiStorm\Emu68 Utilities\Emu68Info.r.info
     \System\PiStorm\Emu68 Utilities\Emu68Meter
@@ -42,13 +47,14 @@ $ListofFiles = @"
     \System\PiStorm\Emu68 Utilities\Emu68Meter.png
     \System\PiStorm\Install Packages
     \System\PiStorm\Install Packages.info
-    \System\PiStorm\Offline.info
-    \System\PiStorm\Network\OfflineScriptMenutools
-    \System\PiStorm\OnlineGENet.info
     \System\PiStorm\Network\Network.rexx
+    \System\PiStorm\Network\OfflineScriptMenutools
     \System\PiStorm\Network\OnlineGENetScriptMenutools
-    \System\PiStorm\OnlineWifi.info
     \System\PiStorm\Network\OnlineWifiScriptMenuTools
+    \System\PiStorm\Network\_UAEFSDB.___
+    \System\PiStorm\Offline.info
+    \System\PiStorm\OnlineGENet.info
+    \System\PiStorm\OnlineWifi.info
     \System\PiStorm\RoadshowParameters
     \System\PiStorm\RoadshowParameters.info
     \System\PiStorm\SMB Config
@@ -57,11 +63,6 @@ $ListofFiles = @"
     \System\PiStorm\TransferKick.info
     \System\PiStorm\WiFi Config
     \System\PiStorm\WiFi Config.info
-    \System\PiStorm\Emu68-Updater
-    \System\PiStorm\Emu68-Updater.info
-    \System\PiStorm\Emu68UpdaterFiles\tag.rexx
-    \System\PiStorm\Emu68UpdaterFiles\Updater
-    \System\PiStorm\Emu68UpdaterFiles\VersionChecker.rexx
     \System\Prefs\Env-Archive\FIRSTTIMEBOOT
     \System\Prefs\Env-Archive\FIRSTTIMEBOOTWB
     \System\Prefs\Env-Archive\REBOOT
