@@ -31,25 +31,24 @@ $ListofFiles = @"
     \System\OneTimeRun\CheckScreenModeandChipset
     \System\OneTimeRunWB\LocaleSettings
     \System\OneTimeRunWB\Cmdline
-    \System\PiStorm\CheckHashes
-    \System\PiStorm\CheckIconPositions
+    \System\PiStorm\DebugTools\CheckHashes
+    \System\PiStorm\DebugTools\CheckIconPositions
     \System\PiStorm\Documentation
     \System\PiStorm\Documentation.info
-    \System\PiStorm\Emu68Info.r
-    \System\PiStorm\Emu68Info.r.info
-    \System\PiStorm\Emu68Meter
-    \System\PiStorm\Emu68Meter.info
-    \System\PiStorm\Emu68Meter.png
+    \System\PiStorm\Emu68 Utilities\Emu68Info.r
+    \System\PiStorm\Emu68 Utilities\Emu68Info.r.info
+    \System\PiStorm\Emu68 Utilities\Emu68Meter
+    \System\PiStorm\Emu68 Utilities\Emu68Meter.info
+    \System\PiStorm\Emu68 Utilities\Emu68Meter.png
     \System\PiStorm\Install Packages
     \System\PiStorm\Install Packages.info
     \System\PiStorm\Offline.info
-    \System\PiStorm\OfflineScriptMenutools
-    \System\PiStorm\Online
+    \System\PiStorm\Network\OfflineScriptMenutools
     \System\PiStorm\OnlineGENet.info
-    \System\PiStorm\OnlineGENetScriptMenutools
+    \System\PiStorm\Network\Network.rexx
+    \System\PiStorm\Network\OnlineGENetScriptMenutools
     \System\PiStorm\OnlineWifi.info
-    \System\PiStorm\OnlineWifiScriptMenuTools
-    \System\PiStorm\ReadRoadshowParameters.rexx
+    \System\PiStorm\Network\OnlineWifiScriptMenuTools
     \System\PiStorm\RoadshowParameters
     \System\PiStorm\RoadshowParameters.info
     \System\PiStorm\SMB Config
@@ -58,11 +57,11 @@ $ListofFiles = @"
     \System\PiStorm\TransferKick.info
     \System\PiStorm\WiFi Config
     \System\PiStorm\WiFi Config.info
-    \System\PiStorm\Emu68-Updater\Emu68-Updater
-    \System\PiStorm\Emu68-Updater\Emu68-Updater.info
-    \System\PiStorm\Emu68-Updater\tag.rexx
-    \System\PiStorm\Emu68-Updater\Updater
-    \System\PiStorm\Emu68-Updater\VersionChecker.rexx
+    \System\PiStorm\Emu68-Updater
+    \System\PiStorm\Emu68-Updater.info
+    \System\PiStorm\Emu68UpdaterFiles\tag.rexx
+    \System\PiStorm\Emu68UpdaterFiles\Updater
+    \System\PiStorm\Emu68UpdaterFiles\VersionChecker.rexx
     \System\Prefs\Env-Archive\FIRSTTIMEBOOT
     \System\Prefs\Env-Archive\FIRSTTIMEBOOTWB
     \System\Prefs\Env-Archive\REBOOT
