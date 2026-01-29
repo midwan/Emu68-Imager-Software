@@ -8,7 +8,7 @@
  * - IP Stack:       Miami or Roadshow                                        *
  * - Devices:        genet.device or wifipi.device or                         *
  *                   uaenet.device(for UAE, built-in)                         *
- * - Tools (in C:):  SetDST, WirelessManager, WaitUntilConnected, sntp, mecho,* 
+ * - Tools (in C:):  SetDST, WirelessManager, WaitUntilConnected, sntp, mecho,*
  *                    KillDev                                                 *
  * - Script (in S:): ProgressBar                                              *
  *                                                                            *
@@ -542,12 +542,13 @@ RpiVersion:
    END
 LoadRoadshowParams:
    PARSE ARG targetDevice
-   IF ~EXISTS(RoadshowParametersFile) THEN RETURN 0
-   
+   IF ~EXISTS(RoadshowParametersFile) THEN DO
+      RETURN 0
+   END
    IF OPEN('pf', RoadshowParametersFile, 'READ') THEN DO
       DO UNTIL EOF('pf')
          line = READLN('pf')
-         IF line ~= "" THEN DO
+         IF line ~= "" & LEFT(line, 1) ~= ";" THEN DO
             PARSE VAR line vType ';' vName ';' vVal
             /* Match and assign to the caller's scope */
             IF UPPER(vType) = UPPER(targetDevice) THEN DO
