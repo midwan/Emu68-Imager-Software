@@ -72,11 +72,11 @@ $Script:Settings = [PSCustomObject]@{
     }
     ListofPackagestoInstallCSV = [PSCustomObject]@{
         Path = '.\InputFiles\ListofPackagestoInstall.CSV'
-        GID = '1229567025'
+        GID = '550697464'
     }
     ScreenModesCSV = [PSCustomObject]@{
         Path = '.\InputFiles\ScreenModes.CSV'
-        GID = '1007905875'
+        GID = '1007905875'       
     }
     ScreenModesWBCSV = [PSCustomObject]@{
         Path = '.\InputFiles\ScreenModesWB.CSV'
@@ -264,6 +264,7 @@ $Script:GUIActions = [PSCustomObject]@{
     KickstartVersiontoUseFriendlyName = $null
     OSInstallMediaType = $null
     #UseGlowIcons = $null
+    NetworkStack = $null
     SSID = $null
     WifiPassword = $null
     FoundInstallMediatoUse = $null

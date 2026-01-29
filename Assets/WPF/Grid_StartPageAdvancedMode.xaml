@@ -44,12 +44,16 @@
 
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="SettingsWifi_GroupBox" Header="Wifi Settings" Height="100" Background="Transparent" Margin="154,250,0,0" Width="400" VerticalAlignment="Top" HorizontalAlignment="Right">
+                   <GroupBox x:Name="SettingsNetwork_GroupBox" Header="Network Settings" Height="100" Background="Transparent" Margin="154,250,0,0" Width="400" VerticalAlignment="Top" HorizontalAlignment="Right">
                 <Grid>
-                    <TextBox x:Name="SSID_Label" HorizontalAlignment="Left" Margin="10,5,0,0" TextWrapping="Wrap" Text="Enter your SSID" VerticalAlignment="Top" Width="150" BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False"/>
-                    <TextBox x:Name="Password_Label" HorizontalAlignment="Left" Margin="10,25,0,0" TextWrapping="Wrap" Text="Enter your Wifi password"  VerticalAlignment="Top" Width="150" BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" />
-                    <TextBox x:Name="SSID_Textbox" ToolTip="Set your SSID for wifi on the Amiga (leave empty if you wish to configure on the Amiga)" HorizontalAlignment="Left" Margin="177,5,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="200" />
-                    <TextBox x:Name="Password_Textbox" ToolTip="Set your password for wifi on the Amiga (leave empty if you wish to configure on the Amiga)" HorizontalAlignment="Left" Margin="177,25,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="200" />
+                    <TextBox x:Name="NetworkStack_Label" HorizontalAlignment="Left" Margin="10,5,0,0" TextWrapping="Wrap" Text="TCP/IP Stack" VerticalAlignment="Top" Width="150" BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False"/>
+                    <RadioButton x:Name="NetworkStack_RadioButtonRoadshow" Content="Roadshow" HorizontalAlignment="Left" Margin="180,5,0,0"/>
+                    <RadioButton x:Name="NetworkStack_RadioButtonMiami" Content="Miami" HorizontalAlignment="Left" Margin="260,5,0,0"/>
+                    <RadioButton x:Name="NetworkStack_RadioButtonNone" Content="None" HorizontalAlignment="Left" Margin="320,5,0,0"/>
+                    <TextBox x:Name="SSID_Label" HorizontalAlignment="Left" Margin="10,30,0,0" TextWrapping="Wrap" Text="Enter your SSID" VerticalAlignment="Top" Width="150" BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False"/>
+                    <TextBox x:Name="Password_Label" HorizontalAlignment="Left" Margin="10,50,0,0" TextWrapping="Wrap" Text="Enter your Wifi password"  VerticalAlignment="Top" Width="150" BorderBrush="Transparent" Background="Transparent" IsReadOnly="True" IsUndoEnabled="False" IsTabStop="False" IsHitTestVisible="False" Focusable="False" />
+                    <TextBox x:Name="SSID_Textbox" ToolTip="Set your SSID for wifi on the Amiga (leave empty if you wish to configure on the Amiga)" HorizontalAlignment="Left" Margin="177,30,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="200" />
+                    <TextBox x:Name="Password_Textbox" ToolTip="Set your password for wifi on the Amiga (leave empty if you wish to configure on the Amiga)" HorizontalAlignment="Left" Margin="177,50,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="200" />
                 </Grid>
 
             </GroupBox>

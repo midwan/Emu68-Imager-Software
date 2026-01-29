@@ -54,6 +54,7 @@ $MessageBody =
         $Script:GUIActions.UnicamOffsetYPosition = $null        
         $Script:GUIActions.WorkbenchBackDropEnabled = $null
         $Script:GUIActions.AvailableScreenModesWB = $null
+        $Script:GUIActions.NetworkStack = $null
 
         Update-UI -Emu68Settings -MainWindowButtons
     }

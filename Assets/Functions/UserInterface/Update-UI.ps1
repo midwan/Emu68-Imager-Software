@@ -85,7 +85,8 @@ function Update-UI {
     if ($Emu68Settings){
 
         if ($Script:GUICurrentStatus.OperationMode -eq "Simple") {
-            $WPF_StartPage_Unicam_button.Visibility = "Hidden"            
+            $WPF_StartPage_Unicam_button.Visibility = "Hidden"
+            $WPF_StartPage_NetworkStack_RadioButtonNone.Visibility = "Hidden"            
         }
 
         if ($Script:GUIActions.InstallOSFiles -eq $true){
@@ -96,7 +97,7 @@ function Update-UI {
             $WPF_StartPage_ADFPath_Label.Visibility = 'Visible'
             $WPF_StartPage_SettingsScreen_GroupBox.Visibility = 'Visible'
             $WPF_StartPage_SettingsScreenWB_GroupBox.Visibility = 'Visible'
-            $WPF_StartPage_SettingsWifi_GroupBox.Visibility = 'Visible'
+            $WPF_StartPage_SettingsNetwork_GroupBox.Visibility = 'Visible'
         }
         elseif ($Script:GUIActions.InstallOSFiles -eq $false){
             $WPF_StartPage_OSSelection_GroupBox.Visibility = 'Visible'
@@ -106,7 +107,7 @@ function Update-UI {
             $WPF_StartPage_ADFPath_Label.Visibility = 'Hidden'
             $WPF_StartPage_SettingsScreen_GroupBox.Visibility = 'Visible'
             $WPF_StartPage_SettingsScreenWB_GroupBox.Visibility = 'Hidden'
-            $WPF_StartPage_SettingsWifi_GroupBox.Visibility = 'Hidden'
+            $WPF_StartPage_SettingsNetwork_GroupBox.Visibility = 'Hidden'
         }
         if ($Script:GUIActions.ROMLocation){
             $WPF_StartPage_RomPath_Label.Text = Get-FormattedPathforGUI -PathtoTruncate $Script:GUIActions.ROMLocation
@@ -155,6 +156,13 @@ function Update-UI {
             $WPF_StartPage_Password_Textbox.Text = $Script:GUIActions.WifiPassword 
         }
         
+        if ($Script:GUIActions.NetworkStack -eq "Miami"){
+            $WPF_StartPage_NetworkStack_RadioButtonMiami.IsChecked = 1
+        }
+        if ($Script:GUIActions.NetworkStack -eq "Roadshow"){
+            $WPF_StartPage_NetworkStack_RadioButtonRoadshow.IsChecked = 1
+        }
+
         if (($Script:GUIActions.ScreenModetoUseFriendlyName) -and (-not ($WPF_StartPage_ScreenMode_Dropdown.SelectedItem))) {
            $WPF_StartPage_ScreenMode_Dropdown.SelectedItem = $Script:GUIActions.ScreenModetoUseFriendlyName
         }

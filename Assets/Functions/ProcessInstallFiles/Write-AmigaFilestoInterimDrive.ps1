@@ -34,7 +34,8 @@ function Write-AmigaFilestoInterimDrive {
     }
     else {
     
-        $ListofPackagestoInstall = Get-InputCSVs -PackagestoInstall | Where-Object {(($_.KickstartVersion -eq $Script:GUIActions.KickstartVersiontoUse) -and ($_.IconsetName -eq "" -or $_.IconsetName -eq $Script:GUIActions.SelectedIconSet))} 
+        $ListofPackagestoInstall = Get-InputCSVs -PackagestoInstall | Where-Object {(($_.KickstartVersion -eq $Script:GUIActions.KickstartVersiontoUse) -and (($_.NetworkStack -eq "Any") -or ($_.NetworkStack -eq  $Script:GUIActions.NetworkStack)) -and ($_.IconsetName -eq "" -or $_.IconsetName -eq $Script:GUIActions.SelectedIconSet))} 
+                
         $ListofPackagestoInstall | Add-Member -NotePropertyName 'InstallMediaPath' -NotePropertyValue $null
         $ListofPackagestoInstall | Add-Member -NotePropertyName 'PackageNameUserSelected' -NotePropertyValue $null
         
@@ -99,7 +100,9 @@ function Write-AmigaFilestoInterimDrive {
        
        $ListofLocalPackages = $ListofPackagestoInstall | Where-Object {$_.KickstartVersion -eq $Script:GUIActions.KickstartVersiontoUse -and $_.Source -eq 'Local - LHA File'} | Select-Object 'SourceLocation' -Unique
        
-       Expand-Packages -Local -ListofPackages $ListofLocalPackages
+       If ($ListofLocalPackages){
+           Expand-Packages -Local -ListofPackages $ListofLocalPackages
+       }
        
        Write-TaskCompleteMessage 
     

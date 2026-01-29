@@ -141,6 +141,9 @@ If IPStack = "ROADSHOW" then DO
        CALL CloseWindowMessage()
       EXIT 10
    END
+   ELSE DO
+      'c:Netshutdown >NIL:'
+   END
 END
 If IPStack = "MIAMI" then DO
    IF ~IsMiamiInstalled() THEN DO
@@ -412,7 +415,7 @@ IF action = "DISCONNECT" then DO
       'killdev DOSDEV=SMB0 >NIL:'
    END
    If ipstack = "ROADSHOW" THEN DO
-      'c:Netshutdown'
+      'c:Netshutdown >NIL:'
    END
    IF ipstack = "MIAMI" THEN DO
       IF ~IsMiamiInstalled() THEN DO

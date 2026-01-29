@@ -40,6 +40,7 @@ $ListofFiles = @"
     \System\PiStorm\Emu68UpdaterFiles\tag.rexx
     \System\PiStorm\Emu68UpdaterFiles\Updater
     \System\PiStorm\Emu68UpdaterFiles\VersionChecker.rexx
+    \System\PiStorm\Emu68UpdaterFiles\ParseEmu68Boot.rexx
     \System\PiStorm\Emu68 Utilities\Emu68Info.r
     \System\PiStorm\Emu68 Utilities\Emu68Info.r.info
     \System\PiStorm\Emu68 Utilities\Emu68Meter
@@ -48,13 +49,19 @@ $ListofFiles = @"
     \System\PiStorm\Install Packages
     \System\PiStorm\Install Packages.info
     \System\PiStorm\Network\Network.rexx
-    \System\PiStorm\Network\OfflineScriptMenutools
-    \System\PiStorm\Network\OnlineGENetScriptMenutools
-    \System\PiStorm\Network\OnlineWifiScriptMenuTools
+    \System\PiStorm\Network\OfflineScriptMenutools_Roadshow
+    \System\PiStorm\Network\OnlineGENetScriptMenutools_Roadshow
+    \System\PiStorm\Network\OnlineWifiScriptMenuTools_Roadshow
+    \System\PiStorm\Network\OfflineScriptMenutools_Miami
+    \System\PiStorm\Network\OnlineGENetScriptMenutools_Miami
+    \System\PiStorm\Network\OnlineWifiScriptMenuTools_Miami
     \System\PiStorm\Network\_UAEFSDB.___
-    \System\PiStorm\Offline.info
-    \System\PiStorm\OnlineGENet.info
-    \System\PiStorm\OnlineWifi.info
+    \System\PiStorm\Offline_Miami.info
+    \System\PiStorm\OnlineGENet_Miami.info
+    \System\PiStorm\OnlineWifi_Miami.info
+    \System\PiStorm\Offline_Roadshow.info
+    \System\PiStorm\OnlineGENet_Roadshow.info
+    \System\PiStorm\OnlineWifi_Roadshow.info
     \System\PiStorm\RoadshowParameters
     \System\PiStorm\RoadshowParameters.info
     \System\PiStorm\SMB Config
@@ -70,9 +77,17 @@ $ListofFiles = @"
     \System\Prefs\Env-Archive\Picasso96\DisableAmigaBlitter
     \System\Prefs\Env-Archive\Sys\screenmode.prefs
     \System\Prefs\Env-Archive\Sys\Workbench.prefs
+    \System\Prefs\Env-Archive\genet_Miami.prefs
+    \System\Prefs\Env-Archive\genet_Roadshow.prefs       
     \System\Programs\DOpus\DirectoryOpus.info.txt
     \System\Programs\DOpus\C\DOpusEdit
     \System\Programs\IBrowse\IBrowse.prefs
+    \System\Programs\Miami\Genet.default
+    \System\Programs\Miami\Genet.default.info
+    \System\Programs\Miami\Uaenet.default
+    \System\Programs\Miami\Uaenet.default.info
+    \System\Programs\Miami\Wifipi.default
+    \System\Programs\Miami\Wifipi.default.info
     \System\S\CheckScreenModeandChipset.rexx
     \System\S\DirectoryOpus.CFG
     \System\S\DST.dat
@@ -88,6 +103,7 @@ $ListofFiles = @"
     \System\S\User-Startup_MUI38
     \System\S\User-Startup_Picasso96
     \System\S\User-Startup_Roadshow
+    \System\S\User-Startup_Miami
     \System\S\_UAEFSDB.___
     \System\Storage\DosDrivers\SMB0
     \System\Storage\DosDrivers\SMB0.info.txt
