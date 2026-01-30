@@ -3,62 +3,77 @@
 * ARexx Parser for Emu68BOOT Device   *
 *                                     */
 
-PARSE ARG target_driver
-
-IF target_driver = "" THEN DO
-    SAY "Usage: rx ParseEmu68Boot.rexx <drivername>"
-    EXIT 10
-END
+DeviceListPath = 'C:ListDevices'
+Drivername1 = 'brcm-emmc.device'
+Drivername2 = 'brcm-sdhc.device'
+TargetDostype = '46415401'
 
 filename = "T:DriveInfo.txt"
-address command 'SYS:Pistorm/Emu68UpdaterFiles/doslist >' filename
+filename2 = "T:Emu68FilesLocation.txt"
 
-if ~open(inf, filename, 'R') then exit 10
 
-active = 0
+address command DeviceListPath 'device_name='Drivername1','Drivername2' NOFORMATTABLE >'filename 
+
+
+if ~open(inf, filename, 'R') then DO
+   SAY "Error accessing list of drives!"
+   exit 10
+end
+
 found_count = 0
 first_device = ""
 
 do while ~eof(inf)
-    line = readln(inf)
-    
-    select
-        when pos('Device: "', line) > 0 then do
-            parse var line 'Device: "' device '"' .
-            dname = ""
-            active = 1 
-        end
+    line = readln(inf)
+    parse var line vDevice';'vRawDosType';'vDosType';'vDeviceName';'vUnit';'vVolume
+    found_count = found_count + 1
+    if found_count = 1 then first_device = vDevice':'
+end
+  
+close(inf)
 
-        when pos('No environment vector', line) > 0 then active = 0
 
-        when active & pos('Device name is "', line) > 0 then do
-            parse var line 'is "' dname '"' .
-        end
+ADDRESS COMMAND 'delete 'filename' QUIET >NIL:' 
 
-        when active & pos('DosType is', line) > 0 then do
-            if upper(dname) = upper(target_driver) then do
-                found_count = found_count + 1
-                if found_count = 1 then first_device = device
-            end
-            active = 0
-        end
-        otherwise nop
-    end
+If found_count = 0 then DO
+   SAY "No device found!"
+   EXIT 10
+end
+
+ADDRESS COMMAND 'list all files 'first_device' Pat=(Emu68-pistorm#?) Lformat="%p" >'filename2
+
+if ~open(inf, filename2, 'R') then DO
+   SAY "Cannot open list of files!"
+   exit 10
+END
+
+captured_line = ""
+
+do while ~eof(inf)
+    line = strip(readln(inf))
+    if line = "" | eof(inf) then iterate   
+    if captured_line ~= line & captured_line ~="" then do
+       SAY "Multiple locations for Emu68 files!"
+       close(inf)
+       ADDRESS COMMAND 'delete 'filename' QUIET >NIL:' 
+       EXIT 10
+    end
+    captured_line = line
 end
 
 close(inf)
 
 ADDRESS COMMAND 'delete 'filename' QUIET >NIL:' 
 
-if found_count >= 1 then DO
-   ADDRESS COMMAND 'SETENV EMU68BootDrive 'first_device
-   say first_device
-END
-
-/* Exit logic based on match count */
-if found_count = 1 then do
-    exit 0
+if captured_line = "" then DO
+  say "File was empty."
+  EXIT 10
 end
 
-/* Exit 5 if none found OR more than one found */
-exit 5
+
+Emu68FilePath = captured_line
+
+ADDRESS COMMAND 'SETENV EMU68FilePath 'Emu68FilePath
+
+
+EXIT 0
