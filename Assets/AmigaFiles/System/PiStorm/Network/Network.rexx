@@ -6,7 +6,6 @@
  *                                                                            *
  * REQUIREMENTS:                                                              *
  * - IP Stack:            Miami or Roadshow                                   *
- * - Libraries:           rexxtricks.library                                  *
  * - Devices:             genet.device or wifipi.device or                    *
  *                        uaenet.device(for UAE, built-in)                    *
  * - Tools (in C:):       SetDST, WirelessManager, WaitUntilConnected, sntp,  *
@@ -29,11 +28,20 @@ ipstack = STRIP(ipstack)
 device  = STRIP(device)
 action  = STRIP(action)
 
-IF POS('WAITATEND', input) > 0 THEN SwitchWaitatEnd = "TRUE"
-ELSE SwitchWaitatEnd = "FALSE"
+IF POS('WAITATEND', input) > 0 THEN DO
+   SwitchWaitatEnd = "TRUE"
+END
+ELSE DO
+   SwitchWaitatEnd = "FALSE"
+END
 
-IF action = "" | ipstack = "" THEN SIGNAL ShowUsage
-IF action = "CONNECT" & device = "" THEN SIGNAL ShowUsage
+
+IF action = "" | ipstack = "" THEN DO 
+   SIGNAL ShowUsage
+END
+IF action = "CONNECT" & device = "" THEN DO 
+   SIGNAL ShowUsage
+END
 
 IF FIND("CONNECT DISCONNECT",action) = 0 THEN DO
    SAY "Error: Invalid ACTION '"action"'. Must be Connect or Disconnect."
@@ -72,23 +80,45 @@ If ipstack = "ROADSHOW" then DO
 END
 
 
-IF POS('NOCLOSEWIRELESSMANAGER', input) > 0 SwitchNoCloseWirelessManager = "TRUE"
-ELSE SwitchNoCloseWirelessManager = "FALSE"
+IF POS('NOCLOSEWIRELESSMANAGER', input) > 0 THEN DO
+   SwitchNoCloseWirelessManager = "TRUE"
+END
+ELSE DO
+   SwitchNoCloseWirelessManager = "FALSE"
+END
 
+IF POS('NOSYNCTIME', input) > 0 THEN DO
+   SwitchNoSyncTime = "TRUE"
+END
+ELSE DO
+   SwitchNoSyncTime = "FALSE"
+END
 
-IF POS('NOSYNCTIME', input) > 0 THEN SwitchNoSyncTime = "TRUE"
-ELSE SwitchNoSyncTime = "FALSE"
+IF POS('NOCLOSEMIAMI', input) > 0 THEN DO
+   SwitchNoCloseMiami = "TRUE"
+END
+ELSE DO
+   SwitchNoCloseMiami = "FALSE"
+END
 
-IF POS('NOCLOSEMIAMI', input) > 0 THEN SwitchNoCloseMiami = "TRUE"
-ELSE SwitchNoCloseMiami = "FALSE"
+IF POS('NORESTARTMIAMI', input) > 0 THEN DO
+   SwitchNoReStartMiami = "TRUE"
+END
+ELSE DO
+   SwitchNoReStartMiami = "FALSE"
+END
 
-IF POS('NORESTARTMIAMI', input) > 0 THEN SwitchNoReStartMiami = "TRUE"
-ELSE SwitchNoReStartMiami = "FALSE"
+IF POS('NORESTARTWIRELESSMANAGER', input) > 0 THEN DO
+   SwitchNoReStartWirelessManager = "TRUE"
+END
+ELSE DO
+   SwitchNoReStartWirelessManager = "FALSE"
+END
 
-IF POS('NORESTARTWIRELESSMANAGER', input) > 0 SwitchNoReStartWirelessManager = "TRUE"
-ELSE SwitchNoReStartWirelessManager = "FALSE"
+IF device ~= "" & ~POS(".", device) > 0 THEN DO
+   device = device || ".DEVICE"
+END
 
-IF device ~= "" & ~POS(".", device) > 0 THEN device = device || ".DEVICE"
 
 IF action = "CONNECT" then DO
    DevicebaseName = left(device,(LENGTH(device) - 7))
@@ -99,8 +129,12 @@ IF action = "CONNECT" then DO
    END
 END
 
-IF POS('DEBUG', input) > 0 THEN DEBUG = "TRUE"
-ELSE DEBUG = "FALSE"
+IF POS('DEBUG', input) > 0 THEN DO
+   DEBUG = "TRUE"
+END
+ELSE DO
+   DEBUG = "FALSE"
+END
 
 ADDRESS COMMAND
 
@@ -144,8 +178,12 @@ END
 
 
 IF action = "CONNECT" then DO
-   If IPStack = "MIAMI" THEN CALL KillMiami()
-   If IPStack = "Roadshow" THEN CALL KillRoadshow()
+   If IPStack = "MIAMI" then DO
+      CALL KillMiami()
+   END
+   If IPStack = "Roadshow" then DO
+      CALL KillRoadshow()
+   END
    IF device = "WIFIPI.DEVICE" THEN DO
       SAY ""
       SAY "Connecting to Wifi Network"
@@ -169,7 +207,9 @@ IF action = "CONNECT" then DO
                   EXIT 10
                END
                ELSE DO
-                  IF DEBUG="TRUE" then SAY "SSID found was: "vSSID
+                  IF DEBUG="TRUE" then DO
+                     SAY "SSID found was: "vSSID
+                  END
                   LEAVE
                END        
             END
@@ -190,8 +230,12 @@ IF action = "CONNECT" then DO
                IF ~EOF('f') then DO
                   WirelessManagerPID = STRIP(READLN('f'))
                   CALL CLOSE ('f')
-                  IF DATATYPE(WirelessManagerPID,'W') then WirelessManagerActive = "TRUE"
-                  ELSE WirelessManagerActive = "FALSE"
+                  IF DATATYPE(WirelessManagerPID,'W') then DO
+                     WirelessManagerActive = "TRUE"
+                  END
+                  ELSE DO
+                     WirelessManagerActive = "FALSE"
+                  END
                END
             END
          END
@@ -225,7 +269,7 @@ IF action = "CONNECT" then DO
    IF device = "GENET.DEVICE" THEN DO
       SAY ""
       SAY "Connecting to Ethernet"
-      If RPIVersion() ~= "RPi4" then DO
+      If RPIVersion() ~= "Pi4" then DO
          SAY ""
          Say "Genet.device only works on Pistorm with Raspberry Pi4 or CM4! Aborting!"
          CALL CloseWindowMessage()
@@ -367,13 +411,23 @@ IF action = "CONNECT" then DO
          CALL CloseWindowMessage()
          EXIT 5
       END
-      ELSE 'Delete' sntpLog 'QUIET'
+      ELSE DO
+         'Delete' sntpLog 'QUIET'
+      END 
       IF EXISTS("SYS:Prefs/ENV-ARCHIVE/TZONEOVERRIDE") THEN DO
          'SYS:Rexxc/rx "push `getenv TZONEOVERRIDE`"'
          pull vTimeZoneOverride
       END
-      IF vTimeZoneOverride ~= "VTIMEZONEOVERRIDE" THEN 'C:SetDST ZONE='vTimeZoneOverride
-      ELSE 'C:SetDST NOASK NOREQ QUIET >NIL:'
+      IF vTimeZoneOverride ~= "VTIMEZONEOVERRIDE" THEN DO
+      say vTimeZoneOverride 
+      say "should not be here"
+          'wait sec=2'
+         'C:SetDST ZONE='vTimeZoneOverride
+      END
+      ELSE DO
+         'wait sec=2'
+         'C:SetDST NOASK NOREQ QUIET >NIL:'
+      END
       SAY "Time set and DST applied if applicable"
    END
    IF ipstack = "ROADSHOW" THEN DO
@@ -390,41 +444,50 @@ IF action = "DISCONNECT" then DO
    SAY ""
    SAY "Killing network shares"
    CALL KillNetworkShares()
-   If ipstack = "ROADSHOW" THEN CALL KillRoadshow()
+   If ipstack = "ROADSHOW" THEN DO
+      CALL KillRoadshow()
+   END
    IF ipstack = "MIAMI" THEN DO
-      IF ~SHOW('P', 'MIAMI.1') THEN DO
+      IF ~IsMiamiInstalled() THEN DO
          SAY ""
-         SAY "Miami is already closed and offline!"
+         Say "Miami not installed! Cannot take it offline!"
       END
       ELSE DO
-         ADDRESS 'MIAMI.1'
-         'ISONLINE'
-         IF RC = 0 THEN DO
-            ADDRESS COMMAND
+         IF ~SHOW('P', 'MIAMI.1') THEN DO
             SAY ""
-            SAY "Miami is already offline!"
+            SAY "Miami is already closed and offline!"
          END
          ELSE DO
-            'OFFLINE'
+            ADDRESS 'MIAMI.1'
             'ISONLINE'
-            IF RC = 1 THEN DO
+            IF RC = 0 THEN DO
                ADDRESS COMMAND
                SAY ""
-               SAY "Couldn't get Miami offline!"
+               SAY "Miami is already offline!"
             END
             ELSE DO
-               If DEBUG = "TRUE" then DO
+               'OFFLINE'
+               'ISONLINE'
+               IF RC = 1 THEN DO
+                  ADDRESS COMMAND
                   SAY ""
-                  SAY "Miami is now offline"
+                  SAY "Couldn't get Miami offline!"
                END
-               If SwitchNoCloseMiami = "FALSE" then DO                  
-                  CALL KillMiami()
+               ELSE DO
                   If DEBUG = "TRUE" then DO
                      SAY ""
-                     SAY "Miami is now closed"
+                     SAY "Miami is now offline"
                   END
+                  If SwitchNoCloseMiami = "FALSE" then DO                  
+                     CALL KillMiami()
+                     If DEBUG = "TRUE" then DO
+                        SAY ""
+                        SAY "Miami is now closed"
+                     END
+                  END
+                  ADDRESS COMMAND
+                  
                END
-               ADDRESS COMMAND         
             END
          END
       END
@@ -443,6 +506,50 @@ Call CloseWindowMessage()
 EXIT 0
 
 /* ================= FUNCTIONS ================= */
+
+IsMiamiInstalled:
+   'assign exists Miami: >NIL:'
+   IF RC >= 5 then DO
+      SAY "Miami not installed!"
+      RETURN 0
+   END
+   ELSE DO
+      IF EXISTS('Libs:bsdsocket.library') THEN DO
+         SAY ""
+         Say "Miami installed but existing bsdsocket.library!"
+         CALL CloseWindowMessage()
+         EXIT 10
+      END
+      RETURN 1
+   END
+IsUAE:
+   'VERSION uaehf.device'
+   If RC >0 THEN DO
+      If debug = "TRUE" THEN DO
+         SAY "UAE not detected"
+      END   
+      RETURN 1
+   END
+   ELSE DO
+      If debug = "TRUE" THEN DO
+         SAY "UAE detected"
+      END
+      RETURN 0
+   END
+IsRoadshowInstalled:
+   IF EXISTS('Libs:bsdsocket.library') THEN DO
+      IF DEBUG ="TRUE" then DO 
+         SAY "Roadshow installed"
+      END
+      RETURN 1
+   END
+   ELSE DO
+      IF DEBUG ="TRUE" then DO
+         SAY "Roadshow not installed"
+      END
+      RETURN 0
+   END
+   
 
 KillRoadshow:
    'c:Netshutdown >NIL:'
@@ -463,51 +570,6 @@ KillNetworkShares:
          'killdev DOSDEV='vDevice' >NIL:'
       END
    END
-IsUAE:
-   'VERSION uaehf.device'
-   If RC >0 THEN DO
-      If debug = "TRUE" THEN SAY "UAE not detected"
-      RETURN 1
-   END
-   ELSE DO
-      If debug = "TRUE" THEN SAY "UAE detected"
-      RETURN 0
-   END
-IsRoadshowInstalled:
-   IF EXISTS('Libs:bsdsocket.library') THEN DO
-      IF DEBUG ="TRUE" then SAY "Roadshow installed"
-      RETURN 1
-   END
-   ELSE DO
-      IF DEBUG ="TRUE" then SAY "Roadshow not installed"
-      RETURN 0
-   END
-   
-
-KillRoadshow:
-   'c:Netshutdown >NIL:'
-   Return
-KillMiami:
-   IF SHOW('P', 'MIAMI.1') THEN DO
-      ADDRESS 'MIAMI.1'
-      QUIT
-      ADDRESS COMMAND
-   END
-   Return
-   
-KillNetworkShares:
-   'c:ListDevices device_name=L:smb-handler,L:smb2-handler NOFORMATTABLE >T:NetworkShares.txt'
-   IF OPEN('f','T:NetworkShares.txt','R') then DO
-      DO while ~EOF('f')  
-      Line = STRIP(READLN('f'))
-      If line = "" then iterate
-      parse var Line vDevice';'vRawDosType';'vDosType';'vDeviceName';'vUnit';'vVolume
-      vCmd = 'c:killdev 'vDevice
-      IF DEBUG="TRUE" say "Running command: "vCmd 
-      vCmd
-      END
-   END
-   call close('f')
    'delete T:NetworkShares.txt QUIET >NIL:'
    RETURN
 KillWirelessManager:
@@ -547,22 +609,33 @@ KillWirelessManager:
    END
 
 RpiVersion:
-   RpiType = GETENV(rpitype)
-   if RpiType~="" THEN RETURN RpiType
    'VERSION brcm-emmc.device >nil:'
-   if RC=0 then RETURN 'RPi4'
+   if RC=0 then DO
+      Return "Pi4"
+   END
    'version brcm-sdhc.device >NIL:'
-   if RC=0 then RETURN 'RPi3'
-   Return "Unknown"
+   If RC=0 then DO
+      Return "Pi3"
+   END
+   ELSE DO 
+      SAY ""
+      say "You are not running a PiStorm!"
+      Return "Unknown"
+   END
 LoadRoadshowParams:
    PARSE ARG targetDevice
-   IF ~EXISTS(RoadshowParametersFile) THEN RETURN 0
+   IF ~EXISTS(RoadshowParametersFile) THEN DO
+      RETURN 0
+   END
    IF OPEN('pf', RoadshowParametersFile, 'READ') THEN DO
       DO UNTIL EOF('pf')
          line = READLN('pf')
          IF line ~= "" & LEFT(line, 1) ~= ";" THEN DO
             PARSE VAR line vType ';' vName ';' vVal
-            IF UPPER(vType) = UPPER(targetDevice) THEN INTERPRET vName '= vVal'
+            /* Match and assign to the caller's scope */
+            IF UPPER(vType) = UPPER(targetDevice) THEN DO
+               INTERPRET vName '= vVal'
+            END
          END
       END
       CALL CLOSE('pf')
