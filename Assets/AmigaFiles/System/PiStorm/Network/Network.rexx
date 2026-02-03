@@ -13,7 +13,7 @@
  *                        mecho,KillDev,ListDevices                           *
  * - Script (in S:):      ProgressBar                                         *
  *                                                                            *
- ******************************************************************************/
+ *****************************************************************************/
 
 OPTIONS RESULTS
 
@@ -29,20 +29,11 @@ ipstack = STRIP(ipstack)
 device  = STRIP(device)
 action  = STRIP(action)
 
-IF POS('WAITATEND', input) > 0 THEN DO
-   SwitchWaitatEnd = "TRUE"
-END
-ELSE DO
-   SwitchWaitatEnd = "FALSE"
-END
+SwitchWaitatEnd = "FALSE"
+IF POS('WAITATEND', input) > 0 THEN SwitchWaitatEnd = "TRUE"
 
-
-IF action = "" | ipstack = "" THEN DO 
-   SIGNAL ShowUsage
-END
-IF action = "CONNECT" & device = "" THEN DO 
-   SIGNAL ShowUsage
-END
+IF action = "" | ipstack = "" THEN SIGNAL ShowUsage
+IF action = "CONNECT" & device = "" THEN SIGNAL ShowUsage
 
 IF FIND("CONNECT DISCONNECT",action) = 0 THEN DO
    SAY "Error: Invalid ACTION '"action"'. Must be Connect or Disconnect."
@@ -80,46 +71,19 @@ If ipstack = "ROADSHOW" then DO
    END
 END
 
+SwitchNoCloseWirelessManager = "FALSE"
+SwitchNoSyncTime = "FALSE"
+SwitchNoCloseMiami = "FALSE"
+SwitchNoReStartMiami = "FALSE"
+SwitchNoReStartWirelessManager = "FALSE"
 
-IF POS('NOCLOSEWIRELESSMANAGER', input) > 0 THEN DO
-   SwitchNoCloseWirelessManager = "TRUE"
-END
-ELSE DO
-   SwitchNoCloseWirelessManager = "FALSE"
-END
+IF POS('NOCLOSEWIRELESSMANAGER', input) > 0 THEN SwitchNoCloseWirelessManager = "TRUE"
+IF POS('NOSYNCTIME', input) > 0 THEN SwitchNoSyncTime = "TRUE"
+IF POS('NOCLOSEMIAMI', input) > 0 THEN SwitchNoCloseMiami = "TRUE"
+IF POS('NORESTARTMIAMI', input) > 0 THEN SwitchNoReStartMiami = "TRUE"
+IF POS('NORESTARTWIRELESSMANAGER', input) > 0 THEN SwitchNoReStartWirelessManager = "TRUE"
 
-IF POS('NOSYNCTIME', input) > 0 THEN DO
-   SwitchNoSyncTime = "TRUE"
-END
-ELSE DO
-   SwitchNoSyncTime = "FALSE"
-END
-
-IF POS('NOCLOSEMIAMI', input) > 0 THEN DO
-   SwitchNoCloseMiami = "TRUE"
-END
-ELSE DO
-   SwitchNoCloseMiami = "FALSE"
-END
-
-IF POS('NORESTARTMIAMI', input) > 0 THEN DO
-   SwitchNoReStartMiami = "TRUE"
-END
-ELSE DO
-   SwitchNoReStartMiami = "FALSE"
-END
-
-IF POS('NORESTARTWIRELESSMANAGER', input) > 0 THEN DO
-   SwitchNoReStartWirelessManager = "TRUE"
-END
-ELSE DO
-   SwitchNoReStartWirelessManager = "FALSE"
-END
-
-IF device ~= "" & ~POS(".", device) > 0 THEN DO
-   device = device || ".DEVICE"
-END
-
+IF device ~= "" & ~POS(".", device) > 0 THEN device = device || ".DEVICE"
 
 IF action = "CONNECT" then DO
    DevicebaseName = left(device,(LENGTH(device) - 7))
@@ -130,12 +94,8 @@ IF action = "CONNECT" then DO
    END
 END
 
-IF POS('DEBUG', input) > 0 THEN DO
-   DEBUG = "TRUE"
-END
-ELSE DO
-   DEBUG = "FALSE"
-END
+DEBUG = "FALSE"
+IF POS('DEBUG', input) > 0 THEN DEBUG = "TRUE"
 
 ADDRESS COMMAND
 
@@ -180,9 +140,11 @@ END
 
 IF action = "CONNECT" then DO
    If IPStack = "MIAMI" then DO
+      CALL KillNetworkShares()
       CALL KillMiami()
    END
-   If IPStack = "Roadshow" then DO
+   If IPStack = "ROADSHOW" then DO
+      CALL KillNetworkShares()
       CALL KillRoadshow()
    END
    IF device = "WIFIPI.DEVICE" THEN DO
@@ -208,9 +170,7 @@ IF action = "CONNECT" then DO
                   EXIT 10
                END
                ELSE DO
-                  IF DEBUG="TRUE" then DO
-                     SAY "SSID found was: "vSSID
-                  END
+                  IF DEBUG="TRUE" then SAY "SSID found was: "vSSID
                   LEAVE
                END        
             END
@@ -224,19 +184,15 @@ IF action = "CONNECT" then DO
             EXIT 10
          END      
       END
-      ELSE DO  
+      ELSE DO
         'Status COM=c:wirelessmanager >T:WirelessManagerStatus'
          IF EXISTS('T:WirelessManagerStatus') THEN DO
             IF OPEN('f','T:WirelessManagerStatus','R') then DO
                IF ~EOF('f') then DO
                   WirelessManagerPID = STRIP(READLN('f'))
                   CALL CLOSE ('f')
-                  IF DATATYPE(WirelessManagerPID,'W') then DO
-                     WirelessManagerActive = "TRUE"
-                  END
-                  ELSE DO
-                     WirelessManagerActive = "FALSE"
-                  END
+                  WirelessManagerActive = "FALSE"
+                  IF DATATYPE(WirelessManagerPID,'W') then WirelessManagerActive = "TRUE"
                END
             END
          END
@@ -365,34 +321,36 @@ IF action = "CONNECT" then DO
       DO i=1 to 3
          'Online'
          'ISONLINE'
-         if RC=0 then DO
-            Say "Attempt number "i "to go online failed"
-         end
-         ELSE DO
-            LEAVE
-         END
+         if RC=0 then Say "Attempt number "i "to go online failed"
+         ELSE LEAVE
       END
       
-      if RC=1 then DO 
-         hide
-      END
-      ELSE DO     
+      if RC=1 then hide
+      ELSE DO
          SAY "" 
          Say "All attempts to go online failed!"
          If ~KillWirelessManager() then DO
             CALL CloseWindowMessage()
             EXIT 10
          END
-         CALL CloseWindowMessage()         
+         CALL CloseWindowMessage()
          exit 10
       END
-
       ADDRESS COMMAND 
-      
    END
    if SwitchNoSyncTime = "FALSE" then DO
       SAY ""
       SAY "Updating system time"
+      TZONE = GETENV(TZONE) 
+      if TZONE="" THEN DO
+         TimeZoneOverride = GETENV(TZONEOVERRIDE)
+         if TimeZoneOverride~="" then DO
+            say TimeZoneOverride 
+            say "should not be here"
+            'C:SetDST ZONE='vTimeZoneOverride
+         END
+         ELSE 'C:SetDST NOASK NOREQ QUIET >NIL:'
+      END    
       'c:sntp pool.ntp.org >'sntpLog
       'Search' sntpLog '"Unknown host" >NIL:'
       IF RC = 0 THEN DO
@@ -404,20 +362,6 @@ IF action = "CONNECT" then DO
       ELSE DO
          'Delete' sntpLog 'QUIET'
       END 
-      IF EXISTS("SYS:Prefs/ENV-ARCHIVE/TZONEOVERRIDE") THEN DO
-         'SYS:Rexxc/rx "push `getenv TZONEOVERRIDE`"'
-         pull vTimeZoneOverride
-      END
-      IF vTimeZoneOverride ~= "VTIMEZONEOVERRIDE" THEN DO
-      say vTimeZoneOverride 
-      say "should not be here"
-          'wait sec=2'
-         'C:SetDST ZONE='vTimeZoneOverride
-      END
-      ELSE DO
-         /*'wait sec=2'*/
-         'C:SetDST NOASK NOREQ QUIET >NIL:'
-      END
       SAY "Time set and DST applied if applicable"
    END
    IF ipstack = "ROADSHOW" THEN DO
@@ -434,9 +378,7 @@ IF action = "DISCONNECT" then DO
    SAY ""
    SAY "Killing network shares"
    CALL KillNetworkShares()
-   If ipstack = "ROADSHOW" THEN DO
-      CALL KillRoadshow()
-   END
+   If ipstack = "ROADSHOW" THEN CALL KillRoadshow()
    IF ipstack = "MIAMI" THEN DO
       IF ~SHOW('P', 'MIAMI.1') THEN DO
          SAY ""
@@ -521,9 +463,7 @@ IsUAE:
    END
 IsRoadshowInstalled:
    IF EXISTS('Libs:bsdsocket.library') THEN DO
-      IF DEBUG ="TRUE" then DO 
-         SAY "Roadshow installed"
-      END
+      IF DEBUG ="TRUE" then SAY "Roadshow installed"
       RETURN 1
    END
    ELSE DO

@@ -1,5 +1,5 @@
 Lab ProgressMeter
-If $NetworkInProgress EQ 1 
+If $InProgressBar EQ 1 
 mecho -e  " [ .                    ]" \r
 mecho -e  " [ ..                   ]" \r
 mecho -e  " [ ...                  ]" \r
