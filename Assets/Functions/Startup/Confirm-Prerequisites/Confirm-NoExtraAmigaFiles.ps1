@@ -36,12 +36,8 @@ $ListofFiles = @"
     \System\PiStorm\DebugTools\CheckIconPositions
     \System\PiStorm\Documentation
     \System\PiStorm\Documentation.info
-    \System\PiStorm\Emu68-Updater
+    \System\PiStorm\Emu68-Updater.rexx
     \System\PiStorm\Emu68-Updater.info
-    \System\PiStorm\Emu68UpdaterFiles\tag.rexx
-    \System\PiStorm\Emu68UpdaterFiles\Updater
-    \System\PiStorm\Emu68UpdaterFiles\VersionChecker.rexx
-    \System\PiStorm\Emu68UpdaterFiles\ParseEmu68Boot.rexx
     \System\PiStorm\Emu68 Utilities\Emu68Info.r
     \System\PiStorm\Emu68 Utilities\Emu68Info.r.info
     \System\PiStorm\Emu68 Utilities\Emu68Meter
