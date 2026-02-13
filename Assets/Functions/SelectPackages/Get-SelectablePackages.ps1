@@ -5,7 +5,7 @@ function Get-SelectablePackages {
 
     $Script:GUIActions.AvailablePackages.Clear()
 
-    $UserSelectablePackageswithSourceLocation = Get-InputCSVs -PackagestoInstall | Where-Object {$_.PackageMandatory -eq 'FALSE'} | Select-Object 'Source','SourceLocation',@{Name='PackageNameUserSelected';Expression = 'PackageNameDefaultInstall'},'PackageNameDefaultInstall','PackageNameFriendlyName','PackageNameGroup','PackageNameDescription' -Unique    
+    $UserSelectablePackageswithSourceLocation = Get-InputCSVs -PackagestoInstall | Where-Object {$_.PackageType -eq 'Selectable' -and (($_.NetworkStack -eq "Any") -or ($_.NetworkStack -eq  $Script:GUIActions.NetworkStack))} | Select-Object 'Source','SourceLocation',@{Name='PackageNameUserSelected';Expression = 'PackageNameDefaultInstall'},'PackageNameDefaultInstall','PackageNameFriendlyName','PackageNameGroup','PackageNameDescription' -Unique    
     
     $HashTableforInstallMedia = @{} # Clear Hash
 

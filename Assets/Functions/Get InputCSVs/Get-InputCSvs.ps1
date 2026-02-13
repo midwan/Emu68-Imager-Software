@@ -52,6 +52,9 @@ function Get-InputCSVs {
 
     $CSV = @()
     
+    #$caller = (Get-PSCallStack)[1]
+    #Write-debug "I was called by: $($caller.FunctionName) at line $($caller.ScriptLineNumber)"
+        
     import-csv -path $Pathtouse -Delimiter ";" | ForEach-Object {
         if ($_.MinimumInstallerVersion -ne "" -and $_.InstallerVersionLessThan -ne ""){
             if (($Script:Settings.Version -ge [system.version]$_.MinimumInstallerVersion) -and ($Script:Settings.Version -lt [system.version]$_.InstallerVersionLessThan)){
@@ -178,8 +181,9 @@ function Get-InputCSVs {
                         InstallerVersionLessThan = [system.version]$_.InstallerVersionLessThan
                         KickstartVersion = [system.version](($_.KickstartVersion -split ',')[$Counter]) 
                         IconSetName = $_.IconSetName
+                        NetworkStack = $_.NetworkStack
+                        PackageType = $_.PackageType
                         PackageName = $_.PackageName
-                        PackageMandatory =	$_.PackageMandatory
                         PackageNameDefaultInstall = $_.PackageNameDefaultInstall 
                         PackageNameFriendlyName = $_.PackageNameFriendlyName
                         PackageNameGroup = $_.PackageNameGroup 
@@ -233,8 +237,9 @@ function Get-InputCSVs {
                     InstallerVersionLessThan = [system.version]$_.InstallerVersionLessThan
                     KickstartVersion = [system.version]$_.KickstartVersion
                     IconSetName = $_.IconSetName
+                    NetworkStack = $_.NetworkStack
+                    PackageType = $_.PackageType
                     PackageName = $_.PackageName
-                    PackageMandatory =	$_.PackageMandatory
                     PackageNameDefaultInstall = $_.PackageNameDefaultInstall 
                     PackageNameFriendlyName = $_.PackageNameFriendlyName
                     PackageNameGroup = $_.PackageNameGroup 

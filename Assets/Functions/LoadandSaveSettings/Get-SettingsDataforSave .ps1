@@ -19,6 +19,7 @@ function Get-SettingsDataforSave {
     $Output += "Setting;KickstartVersiontoUse;$($Script:GUIActions.KickstartVersiontoUse)"
     $Output += "Setting;KickstartVersiontoUseFriendlyName;$($Script:GUIActions.KickstartVersiontoUseFriendlyName)" 
     $Output += "Setting;OSInstallMediaType;$($Script:GUIActions.OSInstallMediaType)" 
+    $Output += "Setting;NetworkStack;$($Script:GUIActions.NetworkStack)"
     $Output += "Setting;SSID;$($Script:GUIActions.SSID)"
     $Output += "Setting;WifiPassword;$($Script:GUIActions.WifiPassword)"
     $Output += "Setting;DiskTypeSelected;$($Script:GUIActions.DiskTypeSelected)"
